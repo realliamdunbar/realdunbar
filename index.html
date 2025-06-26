@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      padding: 0;
+      padding: 40px 15px;
       font-family: 'Georgia', serif;
       color: white;
       background-image: url('bg.jpg');
@@ -16,11 +16,6 @@
       background-repeat: no-repeat;
       backdrop-filter: blur(2px);
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
     }
 
     .title {
@@ -30,14 +25,15 @@
       padding: 10px 30px;
       border-radius: 10px;
       margin-bottom: 20px;
+      display: inline-block;
     }
 
     .bubble {
       background-color: rgba(0, 0, 0, 0.6);
       border-radius: 15px;
       padding: 15px 25px;
-      margin: 10px;
-      max-width: 90%;
+      margin: 10px auto;
+      max-width: 800px;
       line-height: 1.6;
     }
 
@@ -46,19 +42,59 @@
       max-width: 560px;
       height: 315px;
       border: none;
-      margin-top: 20px;
+      margin: 20px auto;
       border-radius: 15px;
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+      display: block;
     }
 
     .footer {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin: 30px 0 10px;
+    }
+
+    .section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      padding: 30px 0;
+    }
+
+    .column {
+      flex: 1 1 300px;
+      background-color: rgba(0, 0, 0, 0.55);
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 500px;
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    .column strong {
+      color: #ffcccc;
+    }
+
+    .closing {
       margin-top: 30px;
-      font-size: 1.2em;
       font-style: italic;
+      font-size: 1.1em;
+    }
+
+    @media (max-width: 600px) {
+      .footer {
+        font-size: 1.2em;
+      }
+
+      .column {
+        padding: 15px;
+      }
     }
   </style>
 </head>
 <body>
+
   <div class="title">FAHLAN ADITYA</div>
 
   <div class="bubble">
@@ -70,7 +106,36 @@
   </div>
 
   <iframe src="https://www.youtube-nocookie.com/embed/2fSelGD7QK8?si=QH4MgIijodgWCBEh" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/ooO-yVmuasI?si=ABzNJ6uDDuJvonDV" allowfullscreen></iframe>
 
-  <div class="footer">I have: Social Anxiety</div>
+  <div class="section">
+    <div class="column">
+      <div class="footer">I have: Social Anxiety</div>
+      <ul>
+        <li><strong>Autism Spectrum Disorder</strong><br><em>noun</em><br>A developmental condition that affects how a person thinks, feels, communicates, and interacts with others.</li>
+        <li><strong>Borderline Personality Traits (BPD)</strong><br><em>noun</em><br>A pattern of emotional instability, impulsive behavior, and unstable relationships.</li>
+        <li><strong>Complex Post-Traumatic Stress Disorder (CPTSD)</strong><br><em>noun</em><br>Caused by chronic trauma, leads to emotional struggles like rage, depression, and deep pain.</li>
+        <li><strong>Chronic Loneliness and Alienation</strong><br><em>noun</em><br>A painful feeling of isolation, disconnection, or being misunderstood.</li>
+      </ul>
+    </div>
+
+    <div class="column">
+      <div class="footer">I have: Depression</div>
+      <ul>
+        <li><strong>Intermittent Explosive Disorder (IED)</strong><br><em>noun</em><br>Marked by sudden, intense outbursts of anger or violence, often followed by regret.</li>
+        <li><strong>Executive Dysfunction</strong><br><em>noun</em><br>Disruption in planning, focus, and task management that makes daily life exhausting.</li>
+        <li><strong>Dissociative Symptoms</strong><br><em>noun</em><br>Feeling unreal, on “autopilot,” or detached from self and surroundings.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="closing">
+    You can use this as a weapon to hurt me, judge me, and turn it against me.<br>
+    Or…<br>
+    You can choose to understand what I carry, show kindness, and earn the rarest thing I give: my trust.<br><br>
+    Either way, I’m done hiding. This is the list I carry, the scars I wear.<br>
+    Decide who you’ll be to me.
+  </div>
+
 </body>
 </html>
