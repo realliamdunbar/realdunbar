@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,226 +16,232 @@
       background-repeat: no-repeat;
       backdrop-filter: blur(2px);
       text-align: center;
-    }.title {
-  font-size: 1.8em;
-  font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 10px 30px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  display: inline-block;
-}
+    }
 
-.bubble {
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 15px;
-  padding: 15px 25px;
-  margin: 10px auto;
-  max-width: 800px;
-  line-height: 1.6;
-}
+    .title {
+      font-size: 1.8em;
+      font-weight: bold;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px 30px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
 
-.videos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 30px;
-}
+    .bubble {
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
+      padding: 15px 25px;
+      margin: 10px auto;
+      max-width: 800px;
+      line-height: 1.6;
+    }
 
-.video-block {
-  max-width: 560px;
-  width: 100%;
-}
+    .videos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 30px;
+    }
 
-iframe {
-  width: 100%;
-  height: 315px;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-}
+    .video-block {
+      max-width: 560px;
+      width: 100%;
+    }
 
-.video-title {
-  margin-top: 10px;
-  font-weight: bold;
-  font-size: 1.3em;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 8px 15px;
-  border-radius: 10px;
-}
+    iframe {
+      width: 100%;
+      height: 315px;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+    }
 
-.blur-box {
-  background-color: rgba(0, 0, 0, 0.55);
-  border-radius: 20px;
-  padding: 30px 20px;
-  margin-top: 40px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
-}
+    .video-title {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 1.3em;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 8px 15px;
+      border-radius: 10px;
+    }
 
-.column {
-  flex: 1 1 300px;
-  max-width: 500px;
-  text-align: left;
-  line-height: 1.6;
-}
+    .blur-box {
+      background-color: rgba(0, 0, 0, 0.55);
+      border-radius: 20px;
+      padding: 30px 20px;
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+    }
 
-.column p {
-  margin-bottom: 30px;
-}
+    .column {
+      flex: 1 1 300px;
+      max-width: 500px;
+      text-align: left;
+      line-height: 1.6;
+    }
 
-.column strong {
-  color: #ffcccc;
-}
+    .column p {
+      margin-bottom: 30px;
+    }
 
-.closing {
-  margin-top: 30px;
-  font-style: italic;
-  font-size: 1.1em;
-}
+    .column strong {
+      color: #ffcccc;
+    }
 
-@media (max-width: 700px) {
-  .video-title {
-    font-size: 1.1em;
-  }
+    .closing {
+      margin-top: 30px;
+      font-style: italic;
+      font-size: 1.1em;
+    }
 
-  .column {
-    padding: 0;
-  }
-}
+    @media (max-width: 700px) {
+      .video-title {
+        font-size: 1.1em;
+      }
 
-.misunderstood-box {
-  margin-top: 60px;
-  padding: 30px;
-  background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 20px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  color: white;
-  animation: fadeInOut 5s infinite;
-}
+      .column {
+        padding: 0;
+      }
+    }
 
-.misunderstood-title {
-  font-size: 2.2em;
-  font-weight: bold;
-  color: white;
-  text-shadow: 0 0 10px white, 0 0 20px white;
-  position: relative;
-  animation: glitchTop 1.5s infinite;
-}
+    .misunderstood-box {
+      margin-top: 60px;
+      padding: 30px;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 20px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      color: white;
+      animation: fadeInOut 5s infinite;
+    }
 
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-}
+    .misunderstood-title {
+      font-size: 2.2em;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0 0 10px white, 0 0 20px white;
+    }
 
-.glitch::before {
-  animation: glitchTop 2s infinite linear alternate-reverse;
-  color: red;
-  top: -2px;
-}
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
 
-.glitch::after {
-  animation: glitchBottom 2s infinite linear alternate-reverse;
-  color: blue;
-  top: 2px;
-}
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0.8;
+    }
 
-.ipa {
-  font-style: italic;
-  margin-top: 10px;
-  color: #ff6666;
-}
+    .glitch::before {
+      animation: glitchTop 2s infinite linear alternate-reverse;
+      color: red;
+    }
 
-.definition {
-  margin-top: 10px;
-  font-size: 1.1em;
-}
+    .glitch::after {
+      animation: glitchBottom 2s infinite linear alternate-reverse;
+      color: blue;
+    }
 
-.example {
-  font-style: italic;
-  font-size: 0.95em;
-  margin-top: 10px;
-  color: #ccc;
-}
+    .ipa {
+      font-style: italic;
+      margin-top: 10px;
+      color: #ff6666;
+    }
 
-@keyframes fadeInOut {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
+    .definition {
+      margin-top: 10px;
+      font-size: 1.1em;
+    }
 
-@keyframes glitchTop {
-  0% { clip-path: inset(0 0 90% 0); transform: translate(-2px, -2px); }
-  25% { clip-path: inset(10% 0 80% 0); transform: translate(2px, 2px); }
-  50% { clip-path: inset(20% 0 60% 0); transform: translate(-1px, 1px); }
-  75% { clip-path: inset(30% 0 40% 0); transform: translate(1px, -1px); }
-  100% { clip-path: inset(0 0 90% 0); transform: translate(0, 0); }
-}
+    .example {
+      font-style: italic;
+      font-size: 0.95em;
+      margin-top: 10px;
+      color: #ccc;
+    }
 
-@keyframes glitchBottom {
-  0% { clip-path: inset(90% 0 0 0); transform: translate(2px, 2px); }
-  25% { clip-path: inset(80% 0 10% 0); transform: translate(-2px, -2px); }
-  50% { clip-path: inset(60% 0 20% 0); transform: translate(1px, -1px); }
-  75% { clip-path: inset(40% 0 30% 0); transform: translate(-1px, 1px); }
-  100% { clip-path: inset(90% 0 0 0); transform: translate(0, 0); }
-}
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
 
+    @keyframes glitchTop {
+      0% { clip-path: inset(0 0 90% 0); transform: translate(-2px, -2px); }
+      25% { clip-path: inset(10% 0 80% 0); transform: translate(2px, 2px); }
+      50% { clip-path: inset(20% 0 60% 0); transform: translate(-1px, 1px); }
+      75% { clip-path: inset(30% 0 40% 0); transform: translate(1px, -1px); }
+      100% { clip-path: inset(0 0 90% 0); transform: translate(0, 0); }
+    }
+
+    @keyframes glitchBottom {
+      0% { clip-path: inset(90% 0 0 0); transform: translate(2px, 2px); }
+      25% { clip-path: inset(80% 0 10% 0); transform: translate(-2px, -2px); }
+      50% { clip-path: inset(60% 0 20% 0); transform: translate(1px, -1px); }
+      75% { clip-path: inset(40% 0 30% 0); transform: translate(-1px, 1px); }
+      100% { clip-path: inset(90% 0 0 0); transform: translate(0, 0); }
+    }
   </style>
 </head>
 <body>
-  <div class="title">FAHLAN ADITYA</div>  <div class="bubble">
+  <div class="title">FAHLAN ADITYA</div>
+  <div class="bubble">
     If you want to know me, <strong>really</strong> know me, start here. And only stay if you’re ready to understand.
-  </div>  <div class="bubble">
+  </div>
+  <div class="bubble">
     This is not a cry for attention. This is a boundary. I made this to explain what words often fail to. Please watch with an open heart.
-  </div>  <div class="videos">
+  </div>
+  <div class="videos">
     <div class="video-block">
       <iframe src="https://www.youtube-nocookie.com/embed/2fSelGD7QK8?si=QH4MgIijodgWCBEh" allowfullscreen></iframe>
       <div class="video-title">I have: Social Anxiety</div>
-    </div><div class="video-block">
-  <iframe src="https://www.youtube.com/embed/ooO-yVmuasI?si=ABzNJ6uDDuJvonDV" allowfullscreen></iframe>
-  <div class="video-title">I have: Depression</div>
-</div>
-
-  </div>  <div class="blur-box">
+    </div>
+    <div class="video-block">
+      <iframe src="https://www.youtube.com/embed/ooO-yVmuasI?si=ABzNJ6uDDuJvonDV" allowfullscreen></iframe>
+      <div class="video-title">I have: Depression</div>
+    </div>
+  </div>
+  <div class="blur-box">
     <div class="column">
       <p><strong>Autism Spectrum Disorder</strong><br><em>noun</em><br>
-      A developmental condition that affects how a person thinks, feels, communicates, and interacts with others. It often includes challenges with social skills, repetitive behaviors, and sensitivity to sensory input.</p><p><strong>Borderline Personality Traits (BPD)</strong><br><em>noun</em><br>
-  A pattern of emotional instability, impulsive behavior, distorted self-image, and unstable relationships. People with BPD traits may struggle with fear of abandonment and intense mood swings.</p>
-
-  <p><strong>Complex Post-Traumatic Stress Disorder (CPTSD)</strong><br><em>noun</em><br>
-  A mental health condition that can develop after chronic (long-term) trauma. It causes behavioral difficulties, such as impulsivity, aggressiveness, and self-destructive behavior. It can also lead to emotional struggles like rage, depression, and deep pain.</p>
-
-  <p><strong>Chronic Loneliness and Alienation</strong><br><em>noun</em><br>
-  A long-term, painful feeling of being isolated, disconnected, or different from others, even when not physically alone. It’s often linked to feeling unseen, misunderstood, or unwanted.</p>
-</div>
-
-<div class="column">
-  <p><strong>Intermittent Explosive Disorder (IED)</strong><br><em>noun</em><br>
-  A mental health condition marked by sudden, intense outbursts of anger or violence that are disproportionate to the situation, often followed by regret or remorse.</p>
-
-  <p><strong>Executive Dysfunction</strong><br><em>noun</em><br>
-  A disruption in the brain's ability to manage tasks, focus, plan ahead, control impulses, or follow through on goals. It often makes everyday functioning difficult and exhausting.</p>
-
-  <p><strong>Dissociative Symptoms</strong><br><em>noun</em><br>
-  Mental experiences of disconnection or detachment from reality, self, thoughts, or surroundings. It can feel like being on “autopilot,” feeling unreal, or watching yourself from outside your body.</p>
-</div>
-
-  </div>  <div class="closing">
+      A developmental condition that affects how a person thinks, feels, communicates, and interacts with others. It often includes challenges with social skills, repetitive behaviors, and sensitivity to sensory input.</p>
+      <p><strong>Borderline Personality Traits (BPD)</strong><br><em>noun</em><br>
+      A pattern of emotional instability, impulsive behavior, distorted self-image, and unstable relationships. People with BPD traits may struggle with fear of abandonment and intense mood swings.</p>
+      <p><strong>Complex Post-Traumatic Stress Disorder (CPTSD)</strong><br><em>noun</em><br>
+      A mental health condition that can develop after chronic (long-term) trauma. It causes behavioral difficulties, such as impulsivity, aggressiveness, and self-destructive behavior. It can also lead to emotional struggles like rage, depression, and deep pain.</p>
+      <p><strong>Chronic Loneliness and Alienation</strong><br><em>noun</em><br>
+      A long-term, painful feeling of being isolated, disconnected, or different from others, even when not physically alone. It’s often linked to feeling unseen, misunderstood, or unwanted.</p>
+    </div>
+    <div class="column">
+      <p><strong>Intermittent Explosive Disorder (IED)</strong><br><em>noun</em><br>
+      A mental health condition marked by sudden, intense outbursts of anger or violence that are disproportionate to the situation, often followed by regret or remorse.</p>
+      <p><strong>Executive Dysfunction</strong><br><em>noun</em><br>
+      A disruption in the brain's ability to manage tasks, focus, plan ahead, control impulses, or follow through on goals. It often makes everyday functioning difficult and exhausting.</p>
+      <p><strong>Dissociative Symptoms</strong><br><em>noun</em><br>
+      Mental experiences of disconnection or detachment from reality, self, thoughts, or surroundings. It can feel like being on “autopilot,” feeling unreal, or watching yourself from outside your body.</p>
+    </div>
+  </div>
+  <div class="closing">
     You can use this as a weapon to hurt me, judge me, and turn it against me.<br>
     Or…<br>
     You can choose to understand what I carry, show kindness, and earn the rarest thing I give: my trust.<br><br>
     Either way, I’m done hiding. This is the list I carry, the scars I wear.<br>
     Decide who you’ll be to me.
-  </div>  <div class="blur-box" style="margin-top: 40px;">
+  </div>
+  <div class="blur-box" style="margin-top: 40px;">
     <div class="column" style="max-width: 1000px; text-align: center; color: #ff6b6b;">
       <p>I tried.</p>
       <p>That’s all I ever did.</p>
@@ -245,7 +252,8 @@ iframe {
       <p>But I tried.</p>
       <p>And maybe… that means I wasn’t the failure after all.</p>
     </div>
-  </div>  <div class="misunderstood-box">
+  </div>
+  <div class="misunderstood-box">
     <div class="misunderstood-title glitch" data-text="MISUNDERSTOOD">MISUNDERSTOOD</div>
     <div class="misunderstood-body">
       <div class="ipa">/ˌmɪsʌndərˈstʊd/</div>
