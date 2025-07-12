@@ -10,10 +10,8 @@
       padding: 40px 15px;
       font-family: 'Georgia', serif;
       color: white;
-      background-image: url('bg.jpg');
+      background: url('bg.jpg') no-repeat center center fixed;
       background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
       backdrop-filter: blur(2px);
       text-align: center;
     }
@@ -99,48 +97,31 @@
       font-size: 1.1em;
     }
 
-    .big-quote {
-      max-width: 1000px;
-      text-align: center;
-      margin: 40px auto;
+    .middle-box {
       background-color: rgba(255, 0, 0, 0.2);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       padding: 40px 20px;
+      margin: 80px auto 30px;
+      max-width: 600px;
+      text-align: center;
       border-radius: 15px;
       box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
     }
 
-    .big-quote p {
-      margin: 15px 0;
-      font-size: 1.1em;
+    .middle-box h1 {
+      margin: 0;
+      font-size: 2.5em;
     }
 
-    .definition-box {
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      padding: 30px 40px;
-      border-radius: 15px;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      text-align: center;
-      max-width: 600px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      margin: 60px auto 40px;
-    }
-
-    .definition-box h1 {
-      font-size: 2.2em;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    .phonetic, .definition, .quote {
+    .middle-box .phonetic,
+    .middle-box .definition,
+    .middle-box .quote {
       margin: 10px 0;
       font-size: 1.1em;
     }
 
-    .quote {
+    .middle-box .quote {
       font-style: italic;
       opacity: 0.8;
     }
@@ -162,6 +143,7 @@
 
     .next-button:hover {
       background: rgba(255, 0, 0, 0.7);
+      color: white;
       box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
       transform: scale(1.05);
     }
@@ -194,6 +176,7 @@
       <iframe src="https://www.youtube-nocookie.com/embed/2fSelGD7QK8?si=QH4MgIijodgWCBEh" allowfullscreen></iframe>
       <div class="video-title">I have: Social Anxiety</div>
     </div>
+
     <div class="video-block">
       <iframe src="https://www.youtube.com/embed/ooO-yVmuasI?si=ABzNJ6uDDuJvonDV" allowfullscreen></iframe>
       <div class="video-title">I have: Depression</div>
@@ -202,26 +185,40 @@
 
   <div class="blur-box">
     <div class="column">
-      <p><strong>Autism Spectrum Disorder</strong><br><em>noun</em><br>A developmental condition...</p>
-      <p><strong>Borderline Personality Traits (BPD)</strong><br><em>noun</em><br>A pattern of emotional instability...</p>
-      <p><strong>Complex PTSD</strong><br><em>noun</em><br>A mental health condition from long-term trauma...</p>
-      <p><strong>Chronic Loneliness and Alienation</strong><br><em>noun</em><br>A long-term feeling of being unseen, misunderstood...</p>
+      <p><strong>Autism Spectrum Disorder</strong><br><em>noun</em><br>
+        A developmental condition that affects how a person thinks, feels, communicates, and interacts with others. It often includes challenges with social skills, repetitive behaviors, and sensitivity to sensory input.</p>
+
+      <p><strong>Borderline Personality Traits (BPD)</strong><br><em>noun</em><br>
+        A pattern of emotional instability, impulsive behavior, distorted self-image, and unstable relationships. People with BPD traits may struggle with fear of abandonment and intense mood swings.</p>
+
+      <p><strong>Complex Post-Traumatic Stress Disorder (CPTSD)</strong><br><em>noun</em><br>
+        A mental health condition that can develop after chronic (long-term) trauma. It causes behavioral difficulties, such as impulsivity, aggressiveness, and self-destructive behavior. It can also lead to emotional struggles like rage, depression, and deep pain.</p>
+
+      <p><strong>Chronic Loneliness and Alienation</strong><br><em>noun</em><br>
+        A long-term, painful feeling of being isolated, disconnected, or different from others, even when not physically alone. It’s often linked to feeling unseen, misunderstood, or unwanted.</p>
     </div>
+
     <div class="column">
-      <p><strong>Intermittent Explosive Disorder (IED)</strong><br><em>noun</em><br>Sudden, intense anger outbursts...</p>
-      <p><strong>Executive Dysfunction</strong><br><em>noun</em><br>Disruption in the brain’s ability to manage tasks...</p>
-      <p><strong>Dissociative Symptoms</strong><br><em>noun</em><br>Disconnection from reality, self, or surroundings...</p>
+      <p><strong>Intermittent Explosive Disorder (IED)</strong><br><em>noun</em><br>
+        A mental health condition marked by sudden, intense outbursts of anger or violence that are disproportionate to the situation, often followed by regret or remorse.</p>
+
+      <p><strong>Executive Dysfunction</strong><br><em>noun</em><br>
+        A disruption in the brain's ability to manage tasks, focus, plan ahead, control impulses, or follow through on goals. It often makes everyday functioning difficult and exhausting.</p>
+
+      <p><strong>Dissociative Symptoms</strong><br><em>noun</em><br>
+        Mental experiences of disconnection or detachment from reality, self, thoughts, or surroundings. It can feel like being on “autopilot,” feeling unreal, or watching yourself from outside your body.</p>
     </div>
   </div>
 
   <div class="closing">
     You can use this as a weapon to hurt me, judge me, and turn it against me.<br>
-    Or… show kindness and earn the rarest thing I give: my trust.<br><br>
+    Or…<br>
+    You can choose to understand what I carry, show kindness, and earn the rarest thing I give: my trust.<br><br>
     Either way, I’m done hiding. This is the list I carry, the scars I wear.<br>
     Decide who you’ll be to me.
   </div>
 
-  <div class="big-quote">
+  <div class="middle-box">
     <p>I tried.</p>
     <p>That’s all I ever did.</p>
     <p>Even when no one saw it.</p>
@@ -232,7 +229,7 @@
     <p>And maybe… that means I wasn’t the failure after all.</p>
   </div>
 
-  <div class="definition-box">
+  <div class="middle-box">
     <h1>MISUNDERSTOOD</h1>
     <div class="phonetic">/ˌmɪsʌndərˈstʊd/</div>
     <div class="definition">incorrectly interpreted or understood.</div>
