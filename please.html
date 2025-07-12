@@ -2,36 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Please Choose Me</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      background: rgba(255, 0, 0, 0.25);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      color: white;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('bg.jpg') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    .text-box {
-      font-size: 1.5rem;
+    .blur-box {
+      background-color: rgba(255, 0, 0, 0.4); /* red background with opacity */
+      color: white;
+      padding: 40px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      text-align: center;
       max-width: 600px;
+      font-size: 1.5rem;
       line-height: 1.6;
     }
   </style>
 </head>
 <body>
-  <div class="text-box">
+  <div class="blur-box">
     <p>Please choose me.<br>
     Nobody ever chooses me.<br>
-    Please." I-I beg. <br>
+    Please." I-I beg.<br>
     "Accept my v-version of love."</p>
   </div>
 </body>
