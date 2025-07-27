@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Please Choose Me</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       height: 100vh;
@@ -13,29 +19,70 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'EB Garamond', serif;
+      position: relative;
+    }
+
+    /* subtle dark overlay to bring focus to box */
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 0;
     }
 
     .blur-box {
-      background-color: rgba(255, 0, 0, 0.4); /* red background with opacity */
-      color: white;
-      padding: 40px;
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      text-align: center;
+      position: relative;
+      background: rgba(255, 0, 0, 0.25);
+      padding: 50px 40px;
+      border-radius: 30px;
+      backdrop-filter: blur(14px) saturate(120%);
+      -webkit-backdrop-filter: blur(14px) saturate(120%);
+      color: #fff;
+      font-size: 1.7rem;
+      line-height: 1.7;
       max-width: 600px;
-      font-size: 1.5rem;
-      line-height: 1.6;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+
+    .blur-box:hover {
+      transform: scale(1.02);
+    }
+
+    p {
+      margin: 0;
+      white-space: pre-line;
+    }
+
+    p::before {
+      content: "“";
+      font-size: 3rem;
+      vertical-align: top;
+      line-height: 0;
+      opacity: 0.6;
+    }
+
+    p::after {
+      content: "”";
+      font-size: 3rem;
+      vertical-align: bottom;
+      line-height: 0;
+      opacity: 0.6;
     }
   </style>
 </head>
 <body>
   <div class="blur-box">
-    <p>Please choose me.<br>
-    Nobody ever chooses me.<br>
-    Please." I-I beg.<br>
-    "Accept my v-version of love."</p>
+    <p>
+      Please choose me.  
+      Nobody ever chooses me.  
+      Please." I-I beg.  
+      "Accept my v-version of love."
+    </p>
   </div>
 </body>
 </html>
