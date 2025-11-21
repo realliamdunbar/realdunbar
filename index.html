@@ -1,244 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fahlan Aditya</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 40px 15px;
-      font-family: 'Georgia', serif;
-      color: white;
-      background: url('bg.jpg') no-repeat center center fixed;
-      background-size: cover;
-      backdrop-filter: blur(2px);
-      text-align: center;
-    }
-
-    .title {
-      font-size: 1.8em;
-      font-weight: bold;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 10px 30px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      display: inline-block;
-    }
-
-    .bubble {
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 15px;
-      padding: 15px 25px;
-      margin: 10px auto;
-      max-width: 800px;
-      line-height: 1.6;
-    }
-
-    .videos {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 40px;
-      margin-top: 30px;
-    }
-
-    .video-block {
-      max-width: 560px;
-      width: 100%;
-    }
-
-    iframe {
-      width: 100%;
-      height: 315px;
-      border: none;
-      border-radius: 15px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-    }
-
-    .video-title {
-      margin-top: 10px;
-      font-weight: bold;
-      font-size: 1.3em;
-      background-color: rgba(0, 0, 0, 0.4);
-      padding: 8px 15px;
-      border-radius: 10px;
-    }
-
-    .blur-box {
-      background-color: rgba(0, 0, 0, 0.55);
-      border-radius: 20px;
-      padding: 30px 20px;
-      margin-top: 40px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 40px;
-    }
-
-    .column {
-      flex: 1 1 300px;
-      max-width: 500px;
-      text-align: left;
-      line-height: 1.6;
-    }
-
-    .column p {
-      margin-bottom: 30px;
-    }
-
-    .column strong {
-      color: #ffcccc;
-    }
-
-    .closing {
-      margin-top: 30px;
-      font-style: italic;
-      font-size: 1.1em;
-    }
-
-    .middle-box {
-      background-color: rgba(255, 0, 0, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 40px 20px;
-      margin: 80px auto 30px;
-      max-width: 600px;
-      text-align: center;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-    }
-
-    .middle-box h1 {
-      margin: 0;
-      font-size: 2.5em;
-    }
-
-    .middle-box .phonetic,
-    .middle-box .definition,
-    .middle-box .quote {
-      margin: 10px 0;
-      font-size: 1.1em;
-    }
-
-    .middle-box .quote {
-      font-style: italic;
-      opacity: 0.8;
-    }
-
-    .next-button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 28px;
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 25px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: all 0.3s ease;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
-    }
-
-    .next-button:hover {
-      background: rgba(255, 0, 0, 0.7);
-      color: white;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-      transform: scale(1.05);
-    }
-
-    @media (max-width: 700px) {
-      .video-title {
-        font-size: 1.1em;
-      }
-
-      .column {
-        padding: 0;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Liam Dunbar</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <div class="title">FAHLAN ADITYA</div>
+<div class="container">
 
-  <div class="bubble">
-    If you want to know me, <strong>really</strong> know me, start here. And only stay if you’re ready to understand.
-  </div>
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
 
-  <div class="bubble">
-    This is not a cry for attention. This is a boundary. I made this to explain what words often fail to. Please watch with an open heart.
-  </div>
+        <div class="pfp-box">
+            <img src="profilepic.jpg" alt="Profile Picture">
+        </div>
 
-  <div class="videos">
-    <div class="video-block">
-      <iframe src="https://www.youtube-nocookie.com/embed/2fSelGD7QK8?si=QH4MgIijodgWCBEh" allowfullscreen></iframe>
-      <div class="video-title">I have: Social Anxiety</div>
-    </div>
+        <h2 class="name">LIAM DUNBAR</h2>
 
-    <div class="video-block">
-      <iframe src="https://www.youtube.com/embed/ooO-yVmuasI?si=ABzNJ6uDDuJvonDV" allowfullscreen></iframe>
-      <div class="video-title">I have: Depression</div>
-    </div>
-  </div>
+        <button class="tab-btn" onclick="showTab('info')">Information</button>
+        <button class="tab-btn" onclick="showTab('wounds')">Wounds</button>
+        <button class="tab-btn" onclick="showTab('music')">Music</button>
+        <button class="tab-btn" onclick="showTab('show')">Show</button>
 
-  <div class="blur-box">
-    <div class="column">
-      <p><strong>Autism Spectrum Disorder</strong><br><em>noun</em><br>
-        A developmental condition that affects how a person thinks, feels, communicates, and interacts with others. It often includes challenges with social skills, repetitive behaviors, and sensitivity to sensory input.</p>
+    </aside>
 
-      <p><strong>Borderline Personality Traits (BPD)</strong><br><em>noun</em><br>
-        A pattern of emotional instability, impulsive behavior, distorted self-image, and unstable relationships. People with BPD traits may struggle with fear of abandonment and intense mood swings.</p>
+    <!-- RIGHT CONTENT -->
+    <section class="content">
 
-      <p><strong>Complex Post-Traumatic Stress Disorder (CPTSD)</strong><br><em>noun</em><br>
-        A mental health condition that can develop after chronic (long-term) trauma. It causes behavioral difficulties, such as impulsivity, aggressiveness, and self-destructive behavior. It can also lead to emotional struggles like rage, depression, and deep pain.</p>
+        <!-- INFORMATION -->
+        <div id="info" class="tab-content">
+            <h1>Information</h1>
+            <p>
+                Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia.
+                He has a calm but introspective presence. He speaks Indonesian and English with a preference
+                for a UK accent, and he’s currently learning German. His heart is drawn to Austria and Germany —
+                places he dreams of living in someday.
+            </p>
+            <br>
+            <p>
+                Fahlan Aditya is a quiet soul with many storms inside. He grew up being told to silence his emotions,
+                but deep down he feels everything — maybe too much. His past carved wounds that never fully healed.
+                He calls himself “a boy made of water and soil,” fragile yet undeniably real.
+            </p>
+            <br>
+            <p>
+                Though life has been cruel, Fahlan has a beauty in him that doesn’t fade: his empathy.
+                He sees pain in others even when no one else notices. He protects the broken, the lonely,
+                the forgotten. That’s how his heart works: raw, human, protective.
+            </p>
+        </div>
 
-      <p><strong>Chronic Loneliness and Alienation</strong><br><em>noun</em><br>
-        A long-term, painful feeling of being isolated, disconnected, or different from others, even when not physically alone. It’s often linked to feeling unseen, misunderstood, or unwanted.</p>
-    </div>
+        <!-- WOUNDS -->
+        <div id="wounds" class="tab-content">
+            <h1>Wounds That Never Heal</h1>
 
-    <div class="column">
-      <p><strong>Intermittent Explosive Disorder (IED)</strong><br><em>noun</em><br>
-        A mental health condition marked by sudden, intense outbursts of anger or violence that are disproportionate to the situation, often followed by regret or remorse.</p>
+            <h2>Social Anxiety</h2>
+            <p>An anxiety disorder characterized by excessive fear of social situations.</p>
 
-      <p><strong>Executive Dysfunction</strong><br><em>noun</em><br>
-        A disruption in the brain's ability to manage tasks, focus, plan ahead, control impulses, or follow through on goals. It often makes everyday functioning difficult and exhausting.</p>
+            <h2>Depression</h2>
+            <p>A mental illness causing long-term sadness and difficulty functioning normally.</p>
 
-      <p><strong>Dissociative Symptoms</strong><br><em>noun</em><br>
-        Mental experiences of disconnection or detachment from reality, self, thoughts, or surroundings. It can feel like being on “autopilot,” feeling unreal, or watching yourself from outside your body.</p>
-    </div>
-  </div>
+            <h2>Intermittent Explosive Disorder (IED)</h2>
+            <p>Marked by sudden, intense outbursts of anger disproportionate to the situation.</p>
 
-  <div class="closing">
-    You can use this as a weapon to hurt me, judge me, and turn it against me.<br>
-    Or…<br>
-    You can choose to understand what I carry, show kindness, and earn the rarest thing I give: my trust.<br><br>
-    Either way, I’m done hiding. This is the list I carry, the scars I wear.<br>
-    Decide who you’ll be to me.
-  </div>
+            <h2>Complex PTSD (CPTSD)</h2>
+            <p>Develops after chronic trauma, involving impulsivity, aggression, and emotional pain.</p>
 
-  <div class="middle-box">
-    <p>I tried.</p>
-    <p>That’s all I ever did.</p>
-    <p>Even when no one saw it.</p>
-    <p>Even when it never looked like enough.</p>
-    <p>Even when it hurt to keep trying.</p>
-    <p>Maybe that’s all I ever was — a silent scream no one heard.</p>
-    <p>But I tried.</p>
-    <p>And maybe… that means I wasn’t the failure after all.</p>
-  </div>
+            <h2>Autism Spectrum Disorder</h2>
+            <p>A developmental condition affecting communication, interaction, and sensory processing.</p>
 
-  <div class="middle-box">
-    <h1>MISUNDERSTOOD</h1>
-    <div class="phonetic">/ˌmɪsʌndərˈstʊd/</div>
-    <div class="definition">incorrectly interpreted or understood.</div>
-    <div class="quote">"he is one of the most misunderstood villains"</div>
-  </div>
+            <h2>Borderline Personality Traits (BPD)</h2>
+            <p>Emotional instability, impulsive behavior, fear of abandonment, and intense mood swings.</p>
+        </div>
 
-  <div style="text-align:center;">
-    <a href="https://realliamdunbar.github.io/realdunbar/please.html" class="next-button">NEXT PAGE</a>
-  </div>
+        <!-- MUSIC -->
+        <div id="music" class="tab-content">
+            <h1>Music</h1>
+            <p>Add anything you want about music here...</p>
+        </div>
+
+        <!-- SHOW -->
+        <div id="show" class="tab-content">
+            <h1>Show</h1>
+            <p>Your additional content goes here...</p>
+        </div>
+
+    </section>
+</div>
+
+<script>
+    function showTab(id) {
+        document.querySelectorAll(".tab-content").forEach(div => {
+            div.style.display = "none";
+        });
+        document.getElementById(id).style.display = "block";
+    }
+
+    // Default tab
+    showTab('info');
+</script>
 
 </body>
 </html>
