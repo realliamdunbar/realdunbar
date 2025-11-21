@@ -3,7 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <title>Liam Dunbar</title>
-    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: url("bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            backdrop-filter: blur(2px);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 320px;
+            background: rgba(20, 0, 0, 0.7);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pfp-box img {
+            width: 260px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .name {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* BUTTONS */
+        .tab-btn {
+            width: 90%;
+            padding: 12px;
+            margin: 8px 0;
+            background: #9e1b22;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tab-btn:hover {
+            background: #c0262e;
+        }
+
+        /* RIGHT CONTENT */
+        .content {
+            flex: 1;
+            padding: 50px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 25px;
+            font-size: 26px;
+        }
+
+        p {
+            font-size: 18px;
+            max-width: 900px;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 
 <body>
@@ -60,13 +143,13 @@
             <p>An anxiety disorder characterized by excessive fear of social situations.</p>
 
             <h2>Depression</h2>
-            <p>A mental illness causing long-term sadness and difficulty functioning normally.</p>
+            <p>A mental illness causing long-term sadness and difficulty living normally.</p>
 
             <h2>Intermittent Explosive Disorder (IED)</h2>
-            <p>Marked by sudden, intense outbursts of anger disproportionate to the situation.</p>
+            <p>Sudden, intense outbursts of anger disproportionate to the situation.</p>
 
             <h2>Complex PTSD (CPTSD)</h2>
-            <p>Develops after chronic trauma, involving impulsivity, aggression, and emotional pain.</p>
+            <p>Develops after long-term trauma, causing emotional pain and impulsive behavior.</p>
 
             <h2>Autism Spectrum Disorder</h2>
             <p>A developmental condition affecting communication, interaction, and sensory processing.</p>
@@ -78,13 +161,13 @@
         <!-- MUSIC -->
         <div id="music" class="tab-content">
             <h1>Music</h1>
-            <p>Add anything you want about music here...</p>
+            <p>You can add music lists, playlists, or descriptions here.</p>
         </div>
 
         <!-- SHOW -->
         <div id="show" class="tab-content">
             <h1>Show</h1>
-            <p>Your additional content goes here...</p>
+            <p>This section can show anything you want — videos, quotes, images, etc.</p>
         </div>
 
     </section>
