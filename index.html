@@ -369,7 +369,9 @@
   buttons.forEach(btn=>{
     btn.addEventListener('click', (e)=>{
       e.preventDefault();
-      const target = btn.dataset-target || btn.dataset.target;
+      // FIXED: correct dataset access (no hyphen) and safety check
+      const target = btn.dataset.target;
+      if(!target) return;
       showFrame(target, {focus:true});
       setTimeout(()=> btn.blur(), 50);
     });
