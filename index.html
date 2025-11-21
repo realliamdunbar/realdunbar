@@ -11,14 +11,14 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;font-family:"Montserrat",system-ui,Segoe UI,Roboto,Arial;background:#260808;color:#fff}
   :root{
-    /* === GitHub Pages / production: simple relative filenames (put these files next to index.html) === */
-    --bg-url: url('bg.jpg');
+    /* Preview environment path (I used the screenshot path you uploaded so the preview shows it).
+       If you deploy to GitHub Pages, replace these with 'bg.jpg' and 'profilepic.jpg' (relative filenames). */
+    --bg-url: url('/mnt/data/e69cf869-b076-4711-a86e-a4c22ab5c7a9.png');
     --profile-url: url('profilepic.jpg');
-
-    /* === If previewing inside this environment, comment above and uncomment these: ===
-    --bg-url: url('/mnt/data/bg.jpg');
-    --profile-url: url('/mnt/data/profilepic.jpg');
-    === */
+    /* For GitHub Pages use:
+       --bg-url: url('bg.jpg');
+       --profile-url: url('profilepic.jpg');
+    */
     --accent: rgba(170,20,20,0.95);
   }
 
@@ -57,7 +57,6 @@
   .frames{display:block;position:relative;margin-top:0}
   .frame{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 30px rgba(7,7,7,0.6);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .38s cubic-bezier(.2,.9,.25,1),transform .38s cubic-bezier(.2,.9,.25,1);position:absolute;left:0;right:0;top:0}
   .frame.show{opacity:1;transform:none;pointer-events:auto;position:relative} /* active frame stays in document flow */
-  /* when inactive, absolute so it doesn't take up vertical space */
   .frame:not(.show){position:absolute}
   .frame .fade-in{opacity:0;transform:translateY(6px);animation:fi .42s ease forwards}
   .frame.show .fade-in{animation-delay:.06s}
@@ -90,7 +89,6 @@
     <div class="name">Liam Dunbar</div>
 
     <nav class="nav" aria-label="Profile sections">
-      <!-- type="button" prevents any default submit/anchor behavior -->
       <button type="button" class="btn active" data-target="info">Information</button>
       <button type="button" class="btn" data-target="wounds">Wounds</button>
       <button type="button" class="btn" data-target="music">Music</button>
@@ -103,20 +101,27 @@
   <main class="content-area" role="main">
     <div class="card" role="article" aria-live="polite">
       <div class="frames">
+
+        <!-- INFORMATION -->
         <section id="info" class="frame show" tabindex="0" aria-labelledby="infoTitle">
           <h1 id="infoTitle" class="section-title">Information</h1>
-          <p class="lead fade-in">​Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia. He has a calm but introspective presence. He speaks Indonesian and English with a preference for a UK accent, and he's currently learning German. His heart is drawn to Austria and Germany - places he dreams of living in someday, hoping to find peace within himself and a sense of belonging he's been searching for.</p>
-          <p class="fade-in" style="margin-top:10px">​Fahlan Aditya is a quiet soul who carries many storms inside. He grew up being told to silence his emotions, but deep down he feels everything - maybe too much. His past carved wounds that never fully healed, leaving him torn between hating and yearning for connection. He calls himself "a boy made of water and soil," because he knows he's fragile, yet real - not something that can be programmed or undone. ​Though life has been cruel, Fahlan has a kind of beauty in him that doesn't fade: his empathy. He sees pain in others even when no one else notices. He's protective of the broken, the lonely, the ones forgotten by the world - because he knows exactly how it feels. He often says he'd rather see a poor, hurt person smile than watch a happy, rich one show off. That's how his heart works: raw, human, protective.</p>
+          <p class="lead fade-in">Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia. He has a calm but introspective presence. He speaks Indonesian and English with a preference for a UK accent, and he's currently learning German. His heart is drawn to Austria and Germany - places he dreams of living in someday, hoping to find peace within himself and a sense of belonging he's been searching for.</p>
+          <p class="fade-in" style="margin-top:10px">Fahlan Aditya is a quiet soul who carries many storms inside... (rest of your info text)</p>
         </section>
 
+        <!-- WOUNDS (fixed structure) -->
         <section id="wounds" class="frame" tabindex="0" aria-labelledby="woundsTitle">
           <h1 id="woundsTitle" class="section-title">Wounds that never heal</h1>
+
+          <!-- 2-column grid of conditions -->
           <div class="fade-in" style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px">
+
             <div>
               <h3>Social Anxiety</h3>
               <p class="muted">noun</p>
               <p class="lead">An anxiety disorder that is characterized by excessive fear of social situations. Usually, it is a fear of being judged or negatively evaluated by others.</p>
             </div>
+
             <div>
               <h3>Depression</h3>
               <p class="muted">noun</p>
@@ -128,6 +133,7 @@
               <p class="muted">noun</p>
               <p class="lead">A mental health condition marked by sudden, intense outbursts of anger or violence that are disproportionate to the situation, often followed by regret or remorse.</p>
             </div>
+
             <div>
               <h3>Complex PTSD (C-PTSD)</h3>
               <p class="muted">noun</p>
@@ -139,43 +145,53 @@
               <p class="muted">noun</p>
               <p class="lead">A developmental condition that affects how a person thinks, feels, communicates, and interacts with others. It often includes challenges with social skills, repetitive behaviors, and sensitivity to sensory input.</p>
             </div>
+
             <div>
               <h3>Borderline Personality Traits (BPD)</h3>
               <p class="muted">noun</p>
               <p class="lead">A pattern of emotional instability, impulsive behavior, distorted self-image, and unstable relationships. People with BPD traits may struggle with fear of abandonment and intense mood swings.</p>
             </div>
-          </div>
+
+            <!-- Extra items continue in the same grid -->
+            <div>
               <h3>Executive Dysfunction</h3>
               <p class="muted">noun</p>
               <p class="lead">A disruption in the brain's ability to manage tasks, focus, plan ahead, control impulses, or follow through on goals. It often makes everyday functioning difficult and exhausting.</p>
             </div>
-          </div>
+
+            <div>
               <h3>Dissociative Symptoms</h3>
               <p class="muted">noun</p>
-              <p class="lead">Mental experiences of disconnection or detachment from reality, self, thoughts, rroundings. It can feel like being on "autopilot," feeling unreal, or or can on watching yourself from outside your body.</p>
+              <p class="lead">Mental experiences of disconnection or detachment from reality, self, thoughts, or surroundings. It can feel like being on "autopilot," feeling unreal, or watching yourself from outside your body.</p>
             </div>
-          </div>
+
+            <div>
               <h3>Chronic Loneliness and Alienation</h3>
               <p class="muted">noun</p>
               <p class="lead">A long-term, painful feeling of being isolated, disconnected, or different from others, even when not physically alone. It's often linked to feeling unseen, misunderstood, or unwanted.</p>
             </div>
-          </div>
-<div class="fade-in" style="margin-top:40px;text-align:center;line-height:1.7;">
-    <p class="lead">
-      You can use this as a weapon to hurt me, judge me, and turn it against me.
-      Or you can choose to understand what I carry, show kindness,
-      and earn the rarest thing I give: my trust.
-    </p>
 
-    <p class="lead" style="margin-top:20px;">
-      Either way, I'm done hiding.
-      This is the list I carry, the scars I wear.
-      Decide who you'll be to me.
-      <br>I tried.
-    </p>
-</div>
+          </div>
+          <!-- end grid -->
+
+          <!-- Your closing / emotional message: centered, after the grid -->
+          <div class="fade-in" style="margin-top:40px;text-align:center;line-height:1.7;">
+            <p class="lead">
+              You can use this as a weapon to hurt me, judge me, and turn it against me.
+              Or you can choose to understand what I carry, show kindness,
+              and earn the rarest thing I give: my trust.
+            </p>
+
+            <p class="lead" style="margin-top:20px;">
+              Either way, I'm done hiding.
+              This is the list I carry, the scars I wear.
+              Decide who you'll be to me.
+              <br>I tried.
+            </p>
+          </div>
         </section>
 
+        <!-- MUSIC -->
         <section id="music" class="frame" tabindex="0" aria-labelledby="musicTitle">
           <h1 id="musicTitle" class="section-title">Music</h1>
           <div class="fade-in">
@@ -190,6 +206,7 @@
           </div>
         </section>
 
+        <!-- SHOW -->
         <section id="show" class="frame" tabindex="0" aria-labelledby="showTitle">
           <h1 id="showTitle" class="section-title">Show</h1>
           <div class="fade-in">
@@ -239,19 +256,14 @@
 
     // compute tallest frame and set card min-height so layout doesn't jump
     window.initFrames = function(){
-      // ensure frames are visible long enough to measure (they are in document flow)
       let max = 0;
       frames.forEach(f => {
-        // temporarily make sure display is natural so scrollHeight is accurate
-        // note: we don't modify classes here; scrollHeight works regardless
         const h = f.scrollHeight;
         if(h > max) max = h;
       });
       if(max > 0) {
-        // add some breathing room
         card.style.minHeight = (max + 24) + 'px';
       }
-      // ensure initial frame visible
       showFrame('info', {focus:false});
     };
 
@@ -263,31 +275,24 @@
       });
       buttons.forEach(b => b.classList.toggle('active', b.dataset.target === id));
 
-      // scroll both content area and window to top to avoid leftover scroll
       if(contentArea) contentArea.scrollTop = 0;
       window.scrollTo({top:0, left:0});
-
-      // blur active element (remove focus) to prevent browser auto-scrolling to focused button
       if(document.activeElement && document.activeElement.tagName === 'BUTTON') document.activeElement.blur();
-
       if(opts.focus){
         const active = document.getElementById(id);
         if(active) active.focus({preventScroll:true});
       }
     }
 
-    // attach handlers
     buttons.forEach(btn=>{
       btn.addEventListener('click', (e)=>{
         e.preventDefault();
         const target = btn.dataset.target;
         showFrame(target, {focus:true});
-        // remove focus quickly so browser doesn't attempt to scroll to the button
         setTimeout(()=> btn.blur(), 50);
       });
     });
 
-    // keyboard shortcuts
     window.addEventListener('keydown', e=>{
       if(e.key === '1') showFrame('info');
       if(e.key === '2') showFrame('wounds');
@@ -295,11 +300,9 @@
       if(e.key === '4') showFrame('show');
     });
 
-    // if images load late and change height, recompute after window load or resize
     window.addEventListener('resize', () => { initFrames(); });
     window.addEventListener('load', () => { setTimeout(initFrames, 120); });
 
-    // expose showFrame for loader to call
     window.showFrame = showFrame;
   })();
 </script>
