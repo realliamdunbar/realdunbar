@@ -1,202 +1,400 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Liam Dunbar</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Profile — Liam Dunbar (demo)</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: "Poppins", sans-serif;
-            background: url("bg.jpg") no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-        }
+<!-- Custom font(s) to get the rounded/decorative look -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
-        .container {
-            display: flex;
-            height: 100vh;
-            backdrop-filter: blur(2px);
-        }
+<style>
+  /* Basic resets */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Montserrat",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background: #340707;
+    color:#fff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
 
-        /* SIDEBAR */
-        .sidebar {
-            width: 320px;
-            background: rgba(20, 0, 0, 0.7);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+  /* ---------- Using uploaded files as image sources ----------
+     The background and profile image use the local paths you provided.
+     The server/tool that serves this page will transform those local paths
+     into URLs. If you name your own files bg.jpg / profilepic.jpg, update the URLs below.
+  -----------------------------------------------------------------*/
+  :root{
+    --bg-url: url('/mnt/data/Screenshot 2025-11-21 225427.png'); /* <- background image file path (server will convert) */
+    --profile-url: url('/mnt/data/Screenshot 2025-11-21 225356.png'); /* <- profile image file path (server will convert) */
+    --accent: rgba(170,20,20,0.95);
+    --glass: rgba(14,9,9,0.55);
+  }
 
-        .pfp-box img {
-            width: 260px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
+  /* Loading overlay (covers the whole page until loaded) */
+  #loader {
+    position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(180deg,#250606, #0f0404);
+    z-index:9999;color:#fff;
+    flex-direction:column;gap:18px;
+  }
+  #loader .ring{
+    width:72px;height:72px;border-radius:50%;
+    border:6px solid rgba(255,255,255,0.08);
+    border-top-color:rgba(255,255,255,0.9);
+    animation:spin 1s linear infinite;
+  }
+  #loader .txt{font-family:"Baloo 2",cursive;font-size:16px;opacity:.95}
+  @keyframes spin{to{transform:rotate(360deg)}}
 
-        .name {
-            font-size: 28px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+  /* page fade-in after loader */
+  #app{
+    opacity:0;
+    transform: translateY(6px);
+    transition:opacity .6s ease, transform .6s ease;
+    height:100vh; width:100vw;
+    display:flex;
+  }
 
-        /* BUTTONS */
-        .tab-btn {
-            width: 90%;
-            padding: 12px;
-            margin: 8px 0;
-            background: #9e1b22;
-            border: none;
-            border-radius: 20px;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+  /* background layer with subtle patterns & blur */
+  .bg{
+    position:fixed;inset:0;z-index:0;
+    background-image: var(--bg-url);
+    background-size:cover;
+    background-position:center;
+    filter: saturate(.7) blur(0.8px) contrast(.9);
+    opacity:.95;
+  }
+  .bg::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,0,0,0.35), rgba(20,0,0,0.6));
+    mix-blend-mode:multiply;
+  }
 
-        .tab-btn:hover {
-            background: #c0262e;
-        }
+  /* layout */
+  .sidebar{
+    width:320px;
+    min-width:260px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.45));
+    margin:28px;
+    padding:22px;
+    border-radius:20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    z-index:2;
+    display:flex;flex-direction:column;gap:18px;
+    align-items:center;
+    backdrop-filter: blur(6px) saturate(.9);
+  }
 
-        /* RIGHT CONTENT */
-        .content {
-            flex: 1;
-            padding: 50px;
-            overflow-y: auto;
-            background: rgba(0, 0, 0, 0.4);
-        }
+  .profile-pic{
+    width:210px;height:210px;border-radius:16px;
+    background-image: var(--profile-url);
+    background-size:cover;background-position:center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    border:6px solid rgba(0,0,0,0.3);
+  }
 
-        /* Fade-in animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+  .name{
+    width:100%;
+    text-align:center;
+    font-family:"Baloo 2",cursive;
+    font-size:28px;
+    letter-spacing:1px;
+    padding:10px 12px;
+    background: linear-gradient(90deg, rgba(170,20,20,0.95), rgba(120,10,10,0.9));
+    border-radius:12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  }
 
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.6s ease;
-        }
+  .nav{
+    width:100%;
+    display:flex;flex-direction:column;gap:12px;
+    align-items:stretch;
+  }
+  .btn{
+    padding:14px 18px;
+    border-radius:12px;
+    background: rgba(0,0,0,0.28);
+    border:1px solid rgba(255,255,255,0.03);
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+    transition:transform .12s ease, background .18s ease, box-shadow .12s ease;
+    text-align:left;
+    font-size:15px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.45);
+  }
+  .btn:hover{ transform:translateY(-3px); background: rgba(0,0,0,0.38) }
+  .btn.active{
+    background: linear-gradient(90deg, rgba(180,30,30,0.95), rgba(130,10,10,0.9));
+    box-shadow: 0 10px 28px rgba(140,10,10,0.35);
+  }
 
-        h1 {
-            font-size: 42px;
-            margin-bottom: 20px;
-        }
+  /* right content area */
+  .content-wrap{
+    flex:1; margin:28px 28px 28px 0; overflow:auto; z-index:1; padding:36px 46px;
+    border-radius:12px; position:relative;
+    display:flex;align-items:flex-start;
+  }
 
-        h2 {
-            margin-top: 25px;
-            font-size: 26px;
-        }
+  .card{
+    width:100%;
+    background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.12));
+    border-radius:12px;
+    padding:28px 34px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
 
-        p {
-            font-size: 18px;
-            max-width: 900px;
-            line-height: 1.6;
-        }
-    </style>
+  h1.section-title{
+    font-family:"Baloo 2",cursive;
+    font-size:34px;
+    margin-bottom:18px;
+    letter-spacing:.4px;
+  }
+  p.lead{line-height:1.6;color:rgba(255,255,255,0.9);font-size:15.5px}
+
+  /* content frames */
+  .frames{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:18px;
+    margin-top:10px;
+  }
+
+  .frame{
+    padding:18px;
+    border-radius:10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow: 0 8px 30px rgba(7,7,7,0.6);
+    opacity:0; transform: translateY(10px) scale(.995);
+    pointer-events:none;
+    transition: opacity .45s cubic-bezier(.2,.9,.25,1), transform .45s cubic-bezier(.2,.9,.25,1);
+  }
+  .frame.show{
+    opacity:1; transform: translateY(0) scale(1);
+    pointer-events:auto;
+  }
+
+  /* small responsive tweaks */
+  @media (max-width:900px){
+    .sidebar{position:fixed;left:12px;top:12px;z-index:4; width:240px}
+    .content-wrap{margin-left:0;padding:20px 16px 80px 16px}
+  }
+
+  /* little accent header in content */
+  .accent{
+    display:inline-block;padding:6px 12px;border-radius:10px;
+    background: linear-gradient(90deg, rgba(170,20,20,0.95), rgba(120,10,10,0.9));
+    font-weight:700;font-size:13px;margin-bottom:10px;
+  }
+
+  /* subtle fade-in for text blocks inside frame */
+  .frame .fade-in{
+    opacity:0;transform:translateY(6px);
+    animation:fi .45s ease forwards;
+  }
+  .frame.show .fade-in{ animation-delay:0.08s }
+  @keyframes fi{ to{opacity:1;transform:none} }
+
+  /* small helper for footer note */
+  .muted{ color: rgba(255,255,255,0.6); font-size:13px; margin-top:12px}
+</style>
 </head>
-
 <body>
 
-<div class="container">
-
-    <!-- LEFT SIDEBAR -->
-    <aside class="sidebar">
-
-        <div class="pfp-box">
-            <img src="profilepic.jpg" alt="Profile Picture">
-        </div>
-
-        <h2 class="name">LIAM DUNBAR</h2>
-
-        <button class="tab-btn" onclick="showTab('info')">Information</button>
-        <button class="tab-btn" onclick="showTab('wounds')">Wounds</button>
-        <button class="tab-btn" onclick="showTab('music')">Music</button>
-        <button class="tab-btn" onclick="showTab('show')">Show</button>
-
-    </aside>
-
-    <!-- RIGHT CONTENT -->
-    <section class="content">
-
-        <!-- INFORMATION -->
-        <div id="info" class="tab-content">
-            <h1>Information</h1>
-            <p>
-                Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia.
-                He has a calm but introspective presence. He speaks Indonesian and English with a preference
-                for a UK accent, and he’s currently learning German.
-            </p>
-            <br>
-            <p>
-                Fahlan Aditya is a quiet soul with many storms inside. His past carved wounds that never fully healed.
-                He calls himself “a boy made of water and soil,” fragile yet undeniably real.
-            </p>
-            <br>
-            <p>
-                Though life has been cruel, Fahlan’s empathy remains. He sees pain in others, protects the broken,
-                and finds beauty in raw humanity.
-            </p>
-        </div>
-
-        <!-- WOUNDS -->
-        <div id="wounds" class="tab-content">
-            <h1>Wounds That Never Heal</h1>
-
-            <h2>Social Anxiety</h2>
-            <p>Excessive fear of social situations.</p>
-
-            <h2>Depression</h2>
-            <p>Long-term sadness and emotional numbness.</p>
-
-            <h2>Intermittent Explosive Disorder (IED)</h2>
-            <p>Sudden, intense anger outbursts.</p>
-
-            <h2>Complex PTSD (CPTSD)</h2>
-            <p>Emotional pain caused by long-term trauma.</p>
-
-            <h2>Autism Spectrum Disorder</h2>
-            <p>Challenges in communication and sensory processing.</p>
-
-            <h2>Borderline Personality Traits (BPD)</h2>
-            <p>Instability in emotions, relationships, and identity.</p>
-        </div>
-
-        <!-- MUSIC -->
-        <div id="music" class="tab-content">
-            <h1>Music</h1>
-            <p>Add playlists, favorite artists, or your own music here.</p>
-        </div>
-
-        <!-- SHOW -->
-        <div id="show" class="tab-content">
-            <h1>Show</h1>
-            <p>Anything you want to display — photos, quotes, videos, etc.</p>
-        </div>
-
-    </section>
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <div class="ring" aria-hidden="true"></div>
+  <div class="txt">Preparing your page…</div>
+  <div id="progress" style="font-family:monospace;margin-top:8px;opacity:.9">0%</div>
 </div>
 
+<!-- APP -->
+<div id="app" aria-hidden="true">
+  <div class="bg" role="img" aria-label="Decorative background"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" role="navigation" aria-label="Main sidebar">
+    <div class="profile-pic" title="Profile picture"></div>
+    <div class="name" id="fullname">Liam Dunbar</div>
+
+    <nav class="nav" aria-label="Profile sections">
+      <button class="btn active" data-target="info">Information</button>
+      <button class="btn" data-target="wounds">Wounds</button>
+      <button class="btn" data-target="music">Music</button>
+      <button class="btn" data-target="show">Show</button>
+    </nav>
+
+    <div style="margin-top:auto;text-align:center;width:100%">
+      <div class="muted">Made with patience. — Dad</div>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content-wrap" role="main">
+    <div class="card" role="article" aria-live="polite">
+      <div class="accent">Information</div>
+
+      <div class="frames">
+        <!-- Information -->
+        <section id="info" class="frame show" tabindex="0" aria-labelledby="infoTitle">
+          <h1 id="infoTitle" class="section-title">Information</h1>
+          <p class="lead fade-in">
+            Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia.
+            He has a calm but introspective presence. He speaks Indonesian and English with a preference for a UK accent, and he's currently learning German.
+          </p>
+          <p class="fade-in" style="margin-top:12px">
+            He carries many storms inside. Though life has been cruel, he is protective of the lonely and the broken: raw, human, and real.
+          </p>
+        </section>
+
+        <!-- Wounds -->
+        <section id="wounds" class="frame" tabindex="0" aria-labelledby="woundsTitle">
+          <h1 id="woundsTitle" class="section-title">Wounds that never heal</h1>
+          <div class="fade-in" style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px">
+            <div>
+              <h3>Social Anxiety</h3>
+              <p class="muted">noun</p>
+              <p class="lead">An anxiety disorder characterized by excessive fear of social situations and evaluation.</p>
+            </div>
+            <div>
+              <h3>Depression</h3>
+              <p class="muted">noun</p>
+              <p class="lead">A mental illness in which a person feels very unhappy and anxious for long periods and struggles with daily life.</p>
+            </div>
+
+            <div>
+              <h3>Intermittent Explosive Disorder (IED)</h3>
+              <p class="muted">noun</p>
+              <p class="lead">Marked by sudden, intense outbursts of anger or violence that are disproportionate to the situation.</p>
+            </div>
+            <div>
+              <h3>Complex PTSD (C-PTSD)</h3>
+              <p class="muted">noun</p>
+              <p class="lead">A mental health condition that can develop after chronic trauma and may cause difficulties with relationships and emotion regulation.</p>
+            </div>
+
+            <div>
+              <h3>Autism Spectrum Disorder</h3>
+              <p class="muted">noun</p>
+              <p class="lead">A developmental condition that affects how a person thinks, feels, and interacts, often with sensitivities to social input.</p>
+            </div>
+            <div>
+              <h3>Borderline Personality Traits (BPD)</h3>
+              <p class="muted">noun</p>
+              <p class="lead">Emotional instability, impulsive behavior, distorted self-image and fear of abandonment.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Music -->
+        <section id="music" class="frame" tabindex="0" aria-labelledby="musicTitle">
+          <h1 id="musicTitle" class="section-title">Music</h1>
+          <div class="fade-in">
+            <p class="lead">Here are songs that resonate — a small playlist (titles only):</p>
+            <ul style="margin-top:12px;line-height:1.8">
+              <li>Lost Boy — Ruth B.</li>
+              <li>Mirror — Lil Wayne ft. Bruno Mars</li>
+              <li>Iris — Goo Goo Dolls</li>
+              <li>Somewhere I Belong — Linkin Park</li>
+              <li>Unwell — Matchbox Twenty</li>
+            </ul>
+            <p class="muted">You can replace this with audio players or embedded playlists when you want.</p>
+          </div>
+        </section>
+
+        <!-- Show -->
+        <section id="show" class="frame" tabindex="0" aria-labelledby="showTitle">
+          <h1 id="showTitle" class="section-title">Show</h1>
+          <div class="fade-in">
+            <p class="lead">Use this area to display any extra content, like a gallery, social links, or a longer biography. It can be turned into a fullscreen panel or modal if you prefer.</p>
+            <p class="muted">Tip: put images in the same folder and reference them. Example: <code>images/pic1.jpg</code>.</p>
+          </div>
+        </section>
+
+      </div><!-- frames -->
+    </div><!-- card -->
+  </main><!-- content-wrap -->
+</div><!-- app -->
+
 <script>
-    function showTab(id) {
-        // Hide all tabs
-        document.querySelectorAll(".tab-content").forEach(div => {
-            div.style.display = "none";
-        });
+  // Simple loader progress simulation until window 'load'
+  (function(){
+    const progressEl = document.getElementById('progress');
+    const loader = document.getElementById('loader');
+    const app = document.getElementById('app');
+    let pct = 0;
+    // small progress tick while loading
+    const timer = setInterval(()=> {
+      pct = Math.min(95, pct + Math.round(Math.random()*6));
+      progressEl.textContent = pct + '%';
+    }, 120);
 
-        // Show chosen tab + reset animation trigger
-        const tab = document.getElementById(id);
-        tab.style.display = "block";
-        tab.style.animation = "none";
+    // when everything finishes loading, finalize
+    window.addEventListener('load', ()=> {
+      clearInterval(timer);
+      progressEl.textContent = '100%';
+      // small delay so user sees 100%
+      setTimeout(()=> {
+        loader.style.transition = 'opacity .45s ease';
+        loader.style.opacity = '0';
+        setTimeout(()=> loader.remove(), 480);
+        // show app
+        app.style.opacity = '1';
+        app.style.transform = 'none';
+        app.setAttribute('aria-hidden','false');
+      }, 350);
+    });
+    // fallback: remove loader after 3s if load never fires
+    setTimeout(()=> {
+      if(document.getElementById('loader')){
+        loader.style.opacity = '0';
+        setTimeout(()=> loader.remove(), 380);
+        app.style.opacity = '1'; app.style.transform = 'none';
+      }
+    }, 3800);
+  })();
 
-        // Small timeout to restart animation
-        setTimeout(() => {
-            tab.style.animation = "fadeIn 0.6s ease";
-        }, 10);
+  // Navigation and frame switching
+  (function(){
+    const buttons = Array.from(document.querySelectorAll('.btn'));
+    const frames = Array.from(document.querySelectorAll('.frame'));
+
+    function showFrame(id){
+      frames.forEach(f=>{
+        if(f.id === id){ f.classList.add('show'); }
+        else { f.classList.remove('show'); }
+      });
+      buttons.forEach(b=>{
+        b.classList.toggle('active', b.dataset.target === id);
+      });
+      // set aria-live text for screen readers (optional)
+      const active = document.getElementById(id);
+      if(active) active.setAttribute('aria-hidden','false');
     }
 
-    // Default tab
-    showTab('info');
+    // click handling
+    buttons.forEach(btn=>{
+      btn.addEventListener('click', ()=> {
+        const target = btn.dataset.target;
+        showFrame(target);
+      });
+    });
+
+    // keyboard: 1-4 quick switch
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === '1') showFrame('info');
+      if(e.key === '2') showFrame('wounds');
+      if(e.key === '3') showFrame('music');
+      if(e.key === '4') showFrame('show');
+    });
+
+    // initial show
+    showFrame('info');
+  })();
 </script>
 
 </body>
