@@ -1,28 +1,24 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Liam Dunbar — profile</title>
 
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
-  /* Reset */
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;font-family:"Montserrat",system-ui,Segoe UI,Roboto,Arial;background:#260808;color:#fff}
   :root{
-    /* === For GitHub Pages: use relative filenames placed in same folder as index.html === */
+    /* === GitHub Pages / production: simple relative filenames (put these files next to index.html) === */
     --bg-url: url('bg.jpg');
     --profile-url: url('profilepic.jpg');
 
-    /* === If you're previewing inside this environment (like my preview), uncomment these instead:
+    /* === If previewing inside this environment, comment above and uncomment these: ===
     --bg-url: url('/mnt/data/bg.jpg');
     --profile-url: url('/mnt/data/profilepic.jpg');
-    ===
-    Make sure only the correct paths are active for the environment you're using.
-    */
+    === */
     --accent: rgba(170,20,20,0.95);
   }
 
@@ -53,22 +49,20 @@
 
   /* Main content area - top aligned so no big empty center space */
   .content-area{flex:1;margin:24px;padding:18px 34px 40px 34px;overflow:auto;z-index:1;display:flex;align-items:flex-start}
-  .card{width:100%;background:linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.08));border-radius:12px;padding:18px 22px;box-shadow:0 20px 60px rgba(0,0,0,0.55)}
+  .card{width:100%;background:linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.08));border-radius:12px;padding:18px 22px;box-shadow:0 20px 60px rgba(0,0,0,0.55);min-height:0}
   h1.section-title{font-family:"Baloo 2",cursive;font-size:32px;margin-bottom:12px}
   p.lead{line-height:1.6;color:rgba(255,255,255,0.92);font-size:15.5px}
 
-  /* Frames: no extra top margin, and we'll ensure frame container grows to content */
-  .frames{display:block;margin-top:0}
-  .frame{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 30px rgba(7,7,7,0.6);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .38s cubic-bezier(.2,.9,.25,1),transform .38s cubic-bezier(.2,.9,.25,1)}
-  .frame.show{opacity:1;transform:none;pointer-events:auto}
+  /* Frames - they will overlap, but card keeps a min-height equal to the tallest frame */
+  .frames{display:block;position:relative;margin-top:0}
+  .frame{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 30px rgba(7,7,7,0.6);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .38s cubic-bezier(.2,.9,.25,1),transform .38s cubic-bezier(.2,.9,.25,1);position:absolute;left:0;right:0;top:0}
+  .frame.show{opacity:1;transform:none;pointer-events:auto;position:relative} /* active frame stays in document flow */
+  /* when inactive, absolute so it doesn't take up vertical space */
+  .frame:not(.show){position:absolute}
   .frame .fade-in{opacity:0;transform:translateY(6px);animation:fi .42s ease forwards}
   .frame.show .fade-in{animation-delay:.06s}
   @keyframes fi{to{opacity:1;transform:none}}
 
-  /* Remove big bottom blank space by not forcing card to be too tall */
-  .card{min-height:0}
-
-  /* Make sure there is consistent spacing between frames if stacked */
   .frame + .frame{margin-top:12px}
 
   @media (max-width:900px){
@@ -82,7 +76,6 @@
 </head>
 <body>
 
-<!-- Loader -->
 <div id="loader">
   <div class="ring" aria-hidden="true"></div>
   <div class="txt">Preparing your page…</div>
@@ -92,36 +85,30 @@
 <div id="app" aria-hidden="true">
   <div class="bg" role="img" aria-label="Decorative background"></div>
 
-  <!-- Sidebar -->
   <aside class="sidebar" role="navigation" aria-label="Main sidebar">
     <div class="profile-pic" title="Profile picture"></div>
     <div class="name">Liam Dunbar</div>
 
     <nav class="nav" aria-label="Profile sections">
-      <button class="btn active" data-target="info">Information</button>
-      <button class="btn" data-target="wounds">Wounds</button>
-      <button class="btn" data-target="music">Music</button>
-      <button class="btn" data-target="show">Show</button>
+      <!-- type="button" prevents any default submit/anchor behavior -->
+      <button type="button" class="btn active" data-target="info">Information</button>
+      <button type="button" class="btn" data-target="wounds">Wounds</button>
+      <button type="button" class="btn" data-target="music">Music</button>
+      <button type="button" class="btn" data-target="show">Show</button>
     </nav>
 
     <div style="margin-top:auto;text-align:center;width:100%"><div class="muted">Made with patience. — Dad</div></div>
   </aside>
 
-  <!-- Content -->
   <main class="content-area" role="main">
     <div class="card" role="article" aria-live="polite">
       <div class="frames">
-        <!-- Info -->
         <section id="info" class="frame show" tabindex="0" aria-labelledby="infoTitle">
           <h1 id="infoTitle" class="section-title">Information</h1>
-          <p class="lead fade-in">
-            Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia.
-            He has a calm but introspective presence. He speaks Indonesian and English with a preference for a UK accent, and he's currently learning German.
-          </p>
+          <p class="lead fade-in">Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia. He has a calm but introspective presence. He speaks Indonesian and English with a preference for a UK accent, and he's currently learning German.</p>
           <p class="fade-in" style="margin-top:10px">He carries many storms inside. Though life has been cruel, he is protective of the lonely and the broken: raw, human, real.</p>
         </section>
 
-        <!-- Wounds -->
         <section id="wounds" class="frame" tabindex="0" aria-labelledby="woundsTitle">
           <h1 id="woundsTitle" class="section-title">Wounds that never heal</h1>
           <div class="fade-in" style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px">
@@ -160,7 +147,6 @@
           </div>
         </section>
 
-        <!-- Music -->
         <section id="music" class="frame" tabindex="0" aria-labelledby="musicTitle">
           <h1 id="musicTitle" class="section-title">Music</h1>
           <div class="fade-in">
@@ -175,7 +161,6 @@
           </div>
         </section>
 
-        <!-- Show -->
         <section id="show" class="frame" tabindex="0" aria-labelledby="showTitle">
           <h1 id="showTitle" class="section-title">Show</h1>
           <div class="fade-in">
@@ -186,11 +171,11 @@
 
       </div><!-- frames -->
     </div><!-- card -->
-  </main><!-- content-area -->
-</div><!-- app -->
+  </main>
+</div>
 
 <script>
-  /* Loader (simple simulated progress) */
+  // Loader
   (function(){
     const progressEl = document.getElementById('progress');
     const loader = document.getElementById('loader');
@@ -208,7 +193,7 @@
         app.style.opacity = '1';
         app.style.transform = 'none';
         app.setAttribute('aria-hidden','false');
-        showFrame('info');
+        initFrames(); // measure and lock card height after assets are loaded
       }, 200);
     }
 
@@ -216,13 +201,32 @@
     setTimeout(()=> { if(document.getElementById('loader')) finishLoad(); }, 3500);
   })();
 
-  /* Frame switching and scroll-to-top to remove empty space */
+  // Frame switching + measure heights to prevent shifting
   (function(){
     const buttons = Array.from(document.querySelectorAll('.btn'));
     const frames = Array.from(document.querySelectorAll('.frame'));
+    const card = document.querySelector('.card');
     const contentArea = document.querySelector('.content-area');
 
-    function showFrame(id){
+    // compute tallest frame and set card min-height so layout doesn't jump
+    window.initFrames = function(){
+      // ensure frames are visible long enough to measure (they are in document flow)
+      let max = 0;
+      frames.forEach(f => {
+        // temporarily make sure display is natural so scrollHeight is accurate
+        // note: we don't modify classes here; scrollHeight works regardless
+        const h = f.scrollHeight;
+        if(h > max) max = h;
+      });
+      if(max > 0) {
+        // add some breathing room
+        card.style.minHeight = (max + 24) + 'px';
+      }
+      // ensure initial frame visible
+      showFrame('info', {focus:false});
+    };
+
+    function showFrame(id, opts = {focus:true}){
       frames.forEach(f=>{
         const is = (f.id === id);
         f.classList.toggle('show', is);
@@ -230,26 +234,44 @@
       });
       buttons.forEach(b => b.classList.toggle('active', b.dataset.target === id));
 
-      // scroll to top of content area so the newly-shown frame isn't hidden below fold
+      // scroll both content area and window to top to avoid leftover scroll
       if(contentArea) contentArea.scrollTop = 0;
+      window.scrollTo({top:0, left:0});
 
-      // focus the frame for keyboard users
-      const active = document.getElementById(id);
-      if(active) active.focus({preventScroll:true});
+      // blur active element (remove focus) to prevent browser auto-scrolling to focused button
+      if(document.activeElement && document.activeElement.tagName === 'BUTTON') document.activeElement.blur();
+
+      if(opts.focus){
+        const active = document.getElementById(id);
+        if(active) active.focus({preventScroll:true});
+      }
     }
 
-    buttons.forEach(btn => btn.addEventListener('click', () => showFrame(btn.dataset.target)));
+    // attach handlers
+    buttons.forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const target = btn.dataset.target;
+        showFrame(target, {focus:true});
+        // remove focus quickly so browser doesn't attempt to scroll to the button
+        setTimeout(()=> btn.blur(), 50);
+      });
+    });
 
-    // keyboard shortcuts 1-4
-    window.addEventListener('keydown', (e)=>{
+    // keyboard shortcuts
+    window.addEventListener('keydown', e=>{
       if(e.key === '1') showFrame('info');
       if(e.key === '2') showFrame('wounds');
       if(e.key === '3') showFrame('music');
       if(e.key === '4') showFrame('show');
     });
 
-    // initial
-    if(document.readyState === 'complete') showFrame('info'); else window.addEventListener('load', ()=>showFrame('info'));
+    // if images load late and change height, recompute after window load or resize
+    window.addEventListener('resize', () => { initFrames(); });
+    window.addEventListener('load', () => { setTimeout(initFrames, 120); });
+
+    // expose showFrame for loader to call
+    window.showFrame = showFrame;
   })();
 </script>
 
