@@ -1,90 +1,134 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Liam Dunbar — profile</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
+  /* RESET */
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;font-family:"Montserrat",system-ui,Segoe UI,Roboto,Arial;background:#260808;color:#fff}
   :root{
-    /* Preview environment path (I used the screenshot path you uploaded so the preview shows it).
-       If you deploy to GitHub Pages, replace these with 'bg.jpg' and 'profilepic.jpg' (relative filenames). */
+    /* PREVIEW PATHS (in this environment). For GitHub Pages replace both with 'bg.jpg' and 'profilepic.jpg' */
     --bg-url: url('/mnt/data/e69cf869-b076-4711-a86e-a4c22ab5c7a9.png');
-    --profile-url: url('profilepic.jpg');
-    /* For GitHub Pages use:
-       --bg-url: url('bg.jpg');
-       --profile-url: url('profilepic.jpg');
-    */
+    --profile-url: url('/mnt/data/Screenshot 2025-11-21 225356.png');
     --accent: rgba(170,20,20,0.95);
+    --card-bg: linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.08));
   }
 
-  /* Loader */
+  /* LOADER */
   #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:linear-gradient(180deg,#250606,#0f0404);z-index:9999}
-  #loader .ring{width:60px;height:60px;border-radius:50%;border:6px solid rgba(255,255,255,0.06);border-top-color:rgba(255,255,255,0.95);animation:spin 1s linear infinite}
-  #loader .txt{font-family:"Baloo 2",cursive;font-size:15px}
+  #loader .ring{width:56px;height:56px;border-radius:50%;border:6px solid rgba(255,255,255,0.06);border-top-color:rgba(255,255,255,0.95);animation:spin 1s linear infinite}
+  #loader .txt{font-family:"Baloo 2",cursive;font-size:14px}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* App wrapper */
+  /* APP LAYOUT */
   #app{opacity:0;transform:translateY(6px);transition:opacity .45s ease,transform .45s ease;min-height:100vh;display:flex;align-items:flex-start}
   .bg{position:fixed;inset:0;z-index:0;background-image:var(--bg-url);background-size:cover;background-position:center;filter:saturate(.72) blur(.6px) contrast(.9);opacity:.98}
   .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,0,0,0.35), rgba(20,0,0,0.6));mix-blend-mode:multiply}
 
-  /* Sidebar */
+  /* SIDEBAR / TOPBAR */
   .sidebar{
     width:300px;min-width:240px;margin:24px;padding:22px;border-radius:18px;
     background:linear-gradient(180deg, rgba(0,0,0,0.56), rgba(0,0,0,0.42));
-    box-shadow:0 10px 40px rgba(0,0,0,0.6);z-index:2;backdrop-filter: blur(6px);display:flex;flex-direction:column;gap:18px;align-items:center;
+    box-shadow:0 10px 40px rgba(0,0,0,0.6);z-index:3;backdrop-filter: blur(6px);display:flex;flex-direction:column;gap:18px;align-items:center;
   }
   .profile-pic{width:190px;height:190px;border-radius:14px;background-image:var(--profile-url);background-size:cover;background-position:center;border:6px solid rgba(0,0,0,0.28);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
   .name{width:100%;text-align:center;font-family:"Baloo 2",cursive;font-size:26px;padding:12px;border-radius:12px;background:linear-gradient(90deg,var(--accent),rgba(120,10,10,0.9));box-shadow:0 6px 18px rgba(0,0,0,0.6)}
-
   .nav{width:100%;display:flex;flex-direction:column;gap:12px}
   .btn{padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.28);border:1px solid rgba(255,255,255,0.03);color:#fff;text-align:left;font-weight:600;cursor:pointer;transition:transform .12s,background .15s}
   .btn:hover{transform:translateY(-3px);background:rgba(0,0,0,0.36)}
   .btn.active{background:linear-gradient(90deg,var(--accent),rgba(130,10,10,0.9));box-shadow:0 8px 20px rgba(140,10,10,0.28)}
 
-  /* Main content area - top aligned so no big empty center space */
+  /* topbar for small screens (hidden on desktop) */
+  .topbar{
+    display:none;
+    position:fixed;left:0;right:0;top:0;height:64px;padding:8px 12px;background:linear-gradient(180deg, rgba(0,0,0,0.62), rgba(0,0,0,0.32));z-index:6;align-items:center;gap:12px;
+  }
+  .topbar .hamburger{width:44px;height:44px;border-radius:10px;background:rgba(0,0,0,0.32);display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .topbar .title{font-family:"Baloo 2",cursive;font-size:18px;letter-spacing:.3px}
+  .sidebar.offcanvas{position:fixed;left:12px;top:76px;width:calc(100% - 24px);max-width:400px;margin:0;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5));box-shadow:0 30px 80px rgba(0,0,0,0.7);transform-origin:top;animation:slideIn .18s ease both}
+  @keyframes slideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+
+  /* CONTENT */
   .content-area{flex:1;margin:24px;padding:18px 34px 40px 34px;overflow:auto;z-index:1;display:flex;align-items:flex-start}
-  .card{width:100%;background:linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.08));border-radius:12px;padding:18px 22px;box-shadow:0 20px 60px rgba(0,0,0,0.55);min-height:0}
+  .card{width:100%;background:var(--card-bg);border-radius:12px;padding:18px 22px;box-shadow:0 20px 60px rgba(0,0,0,0.55);min-height:0}
   h1.section-title{font-family:"Baloo 2",cursive;font-size:32px;margin-bottom:12px}
   p.lead{line-height:1.6;color:rgba(255,255,255,0.92);font-size:15.5px}
 
-  /* Frames - they will overlap, but card keeps a min-height equal to the tallest frame */
+  /* FRAMES */
   .frames{display:block;position:relative;margin-top:0}
   .frame{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 30px rgba(7,7,7,0.6);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .38s cubic-bezier(.2,.9,.25,1),transform .38s cubic-bezier(.2,.9,.25,1);position:absolute;left:0;right:0;top:0}
-  .frame.show{opacity:1;transform:none;pointer-events:auto;position:relative} /* active frame stays in document flow */
+  .frame.show{opacity:1;transform:none;pointer-events:auto;position:relative}
   .frame:not(.show){position:absolute}
   .frame .fade-in{opacity:0;transform:translateY(6px);animation:fi .42s ease forwards}
   .frame.show .fade-in{animation-delay:.06s}
   @keyframes fi{to{opacity:1;transform:none}}
-
   .frame + .frame{margin-top:12px}
 
-  @media (max-width:900px){
-    .sidebar{position:fixed;left:12px;top:12px;width:240px}
-    .content-area{margin-left:0;padding:12px}
-  }
+  /* GRID responsive */
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .grid-1{display:grid;grid-template-columns:1fr;gap:14px}
 
+  /* UTILS */
   .muted{color:rgba(255,255,255,0.6);font-size:13px;margin-top:12px}
   code{background:rgba(255,255,255,0.03);padding:4px 6px;border-radius:6px}
+
+  /* BREAKPOINTS: tablet and phone adjustments */
+  @media (max-width:900px){
+    .sidebar{display:none}
+    .topbar{display:flex}
+    .content-area{margin-top:80px;margin-left:12px;margin-right:12px;padding:12px}
+    /* small cards slightly larger fonts for readability */
+    h1.section-title{font-size:28px}
+    p.lead{font-size:15px}
+    /* frames: allow normal flow (no absolute) so content stacks naturally */
+    .frame{position:relative;opacity:1;transform:none;pointer-events:auto}
+    .frame:not(.show){display:none}
+    /* make grid single column on narrow screens */
+    .grid-2{grid-template-columns:1fr}
+    .card{padding:14px}
+    .profile-pic{width:110px;height:110px}
+    .name{font-size:18px;padding:8px}
+  }
+
+  @media (max-width:520px){
+    .topbar{height:56px}
+    .topbar .title{font-size:16px}
+    .btn{padding:10px 12px;font-size:14px}
+    .content-area{margin:70px 10px 20px 10px;padding:10px}
+    .card{padding:12px;border-radius:10px}
+    h1.section-title{font-size:22px}
+    p.lead{font-size:14px;line-height:1.7}
+  }
 </style>
 </head>
 <body>
 
+<!-- LOADER -->
 <div id="loader">
   <div class="ring" aria-hidden="true"></div>
   <div class="txt">Preparing your page…</div>
   <div id="progress" style="font-family:monospace;margin-top:6px;opacity:.95">0%</div>
 </div>
 
+<!-- TOPBAR for small screens -->
+<header class="topbar" aria-hidden="true">
+  <div class="hamburger" id="hamburger" title="Open menu" aria-label="Open menu" role="button">
+    <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="2" rx="1" fill="white" opacity="0.95"/><rect y="6" width="20" height="2" rx="1" fill="white" opacity="0.9"/><rect y="12" width="20" height="2" rx="1" fill="white" opacity="0.85"/></svg>
+  </div>
+  <div class="title">Liam Dunbar</div>
+</header>
+
+<!-- APP -->
 <div id="app" aria-hidden="true">
   <div class="bg" role="img" aria-label="Decorative background"></div>
 
-  <aside class="sidebar" role="navigation" aria-label="Main sidebar">
+  <!-- SIDEBAR (desktop) -->
+  <aside class="sidebar" role="navigation" aria-label="Main sidebar" id="mainSidebar">
     <div class="profile-pic" title="Profile picture"></div>
     <div class="name">Liam Dunbar</div>
 
@@ -98,6 +142,10 @@
     <div style="margin-top:auto;text-align:center;width:100%"><div class="muted">Made with patience. — Ethan Winters</div></div>
   </aside>
 
+  <!-- off-canvas sidebar (small screens) - reuses same content node via clone for simplicity -->
+  <aside class="sidebar offcanvas" id="offcanvasSidebar" style="display:none;" aria-hidden="true"></aside>
+
+  <!-- CONTENT -->
   <main class="content-area" role="main">
     <div class="card" role="article" aria-live="polite">
       <div class="frames">
@@ -106,16 +154,14 @@
         <section id="info" class="frame show" tabindex="0" aria-labelledby="infoTitle">
           <h1 id="infoTitle" class="section-title">Information</h1>
           <p class="lead fade-in">Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia. He has a calm but introspective presence. He speaks Indonesian and English with a preference for a UK accent, and he's currently learning German. His heart is drawn to Austria and Germany - places he dreams of living in someday, hoping to find peace within himself and a sense of belonging he's been searching for.</p>
-          <p class="fade-in" style="margin-top:10px">Fahlan Aditya is a quiet soul who carries many storms inside.He grew up being told to silence his emotions, but deep down he feels everything - maybe too much. His past carved wounds that never fully healed, leaving him torn between hating and yearning for connection. He calls himself "a boy made of water and soil," because he knows he's fragile, yet real - not something that can be programmed or undone. Though life has been cruel, Fahlan has a kind of beauty in him that doesn't fade: his empathy. He sees pain in others even when no one else notices. He's protective of the broken, the lonely, the ones forgotten by the world - because he knows exactly how it feels. He often says he'd rather see a poor, hurt person smile than watch a happy, rich one show off. That's how his heart works: raw, human, protective.</p>
+          <p class="fade-in" style="margin-top:10px">Fahlan Aditya is a quiet soul who carries many storms inside. He grew up being told to silence his emotions, but deep down he feels everything - maybe too much. His past carved wounds that never fully healed, leaving him torn between hating and yearning for connection. He calls himself "a boy made of water and soil," because he knows he's fragile, yet real - not something that can be programmed or undone. Though life has been cruel, Fahlan has a kind of beauty in him that doesn't fade: his empathy. He sees pain in others even when no one else notices. He's protective of the broken, the lonely, the ones forgotten by the world - because he knows exactly how it feels. He often says he'd rather see a poor, hurt person smile than watch a happy, rich one show off. That's how his heart works: raw, human, protective.</p>
         </section>
 
-        <!-- WOUNDS (fixed structure) -->
+        <!-- WOUNDS -->
         <section id="wounds" class="frame" tabindex="0" aria-labelledby="woundsTitle">
           <h1 id="woundsTitle" class="section-title">Wounds that never heal</h1>
 
-          <!-- 2-column grid of conditions -->
-          <div class="fade-in" style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px">
-
+          <div class="fade-in grid-2" id="woundsGrid">
             <div>
               <h3>Social Anxiety</h3>
               <p class="muted">noun</p>
@@ -152,7 +198,6 @@
               <p class="lead">A pattern of emotional instability, impulsive behavior, distorted self-image, and unstable relationships. People with BPD traits may struggle with fear of abandonment and intense mood swings.</p>
             </div>
 
-            <!-- Extra items continue in the same grid -->
             <div>
               <h3>Executive Dysfunction</h3>
               <p class="muted">noun</p>
@@ -170,12 +215,10 @@
               <p class="muted">noun</p>
               <p class="lead">A long-term, painful feeling of being isolated, disconnected, or different from others, even when not physically alone. It's often linked to feeling unseen, misunderstood, or unwanted.</p>
             </div>
-
           </div>
-          <!-- end grid -->
 
-          <!-- Your closing / emotional message: centered, after the grid -->
-          <div class="fade-in" style="margin-top:40px;text-align:center;line-height:1.7;">
+          <!-- closing message -->
+          <div class="fade-in" style="margin-top:36px;text-align:center;line-height:1.7;">
             <p class="lead">
               You can use this as a weapon to hurt me, judge me, and turn it against me.
               Or you can choose to understand what I carry, show kindness,
@@ -221,90 +264,171 @@
 </div>
 
 <script>
-  // Loader
-  (function(){
-    const progressEl = document.getElementById('progress');
-    const loader = document.getElementById('loader');
-    const app = document.getElementById('app');
-    let pct = 0;
-    const timer = setInterval(()=> { pct = Math.min(95, pct + Math.round(Math.random()*6)); progressEl.textContent = pct + '%'; }, 120);
+/* Loader */
+(function(){
+  const progressEl = document.getElementById('progress');
+  const loader = document.getElementById('loader');
+  const app = document.getElementById('app');
+  let pct = 0;
+  const timer = setInterval(()=> { pct = Math.min(95, pct + Math.round(Math.random()*6)); progressEl.textContent = pct + '%'; }, 120);
 
-    function finishLoad(){
-      clearInterval(timer);
-      progressEl.textContent = '100%';
-      setTimeout(()=> {
-        loader.style.transition = 'opacity .35s ease';
-        loader.style.opacity = '0';
-        setTimeout(()=> loader.remove(), 420);
-        app.style.opacity = '1';
-        app.style.transform = 'none';
-        app.setAttribute('aria-hidden','false');
-        initFrames(); // measure and lock card height after assets are loaded
-      }, 200);
-    }
+  function finishLoad(){
+    clearInterval(timer);
+    progressEl.textContent = '100%';
+    setTimeout(()=> {
+      loader.style.transition = 'opacity .35s ease';
+      loader.style.opacity = '0';
+      setTimeout(()=> loader.remove(), 420);
+      app.style.opacity = '1';
+      app.style.transform = 'none';
+      app.setAttribute('aria-hidden','false');
+      initFrames();
+    }, 200);
+  }
 
-    window.addEventListener('load', finishLoad);
-    setTimeout(()=> { if(document.getElementById('loader')) finishLoad(); }, 3500);
-  })();
+  window.addEventListener('load', finishLoad);
+  setTimeout(()=> { if(document.getElementById('loader')) finishLoad(); }, 3500);
+})();
 
-  // Frame switching + measure heights to prevent shifting
-  (function(){
-    const buttons = Array.from(document.querySelectorAll('.btn'));
-    const frames = Array.from(document.querySelectorAll('.frame'));
-    const card = document.querySelector('.card');
-    const contentArea = document.querySelector('.content-area');
+/* Frame switching + responsive behavior */
+(function(){
+  const buttons = Array.from(document.querySelectorAll('.btn'));
+  const frames = Array.from(document.querySelectorAll('.frame'));
+  const card = document.querySelector('.card');
+  const contentArea = document.querySelector('.content-area');
+  let lockedMinHeight = false;
 
-    // compute tallest frame and set card min-height so layout doesn't jump
-    window.initFrames = function(){
+  // compute tallest frame (desktop) and set card min-height to avoid jumping
+  window.initFrames = function(){
+    // only lock on desktop widths
+    if(window.innerWidth > 900){
       let max = 0;
       frames.forEach(f => {
+        // temporarily show to measure accurately
+        f.classList.add('show');
         const h = f.scrollHeight;
         if(h > max) max = h;
+        f.classList.remove('show');
       });
       if(max > 0) {
         card.style.minHeight = (max + 24) + 'px';
+        lockedMinHeight = true;
       }
+      // show initial
       showFrame('info', {focus:false});
-    };
+    } else {
+      // on small screens keep natural flow
+      card.style.minHeight = '';
+      lockedMinHeight = false;
+      frames.forEach(f => f.classList.remove('show'));
+      document.getElementById('info').classList.add('show');
+    }
+  };
 
-    function showFrame(id, opts = {focus:true}){
+  function showFrame(id, opts = {focus:true}){
+    // Desktop: use overlapping frames (show/hide)
+    if(window.innerWidth > 900){
       frames.forEach(f=>{
         const is = (f.id === id);
         f.classList.toggle('show', is);
         f.setAttribute('aria-hidden', is ? 'false' : 'true');
       });
-      buttons.forEach(b => b.classList.toggle('active', b.dataset.target === id));
-
-      if(contentArea) contentArea.scrollTop = 0;
-      window.scrollTo({top:0, left:0});
-      if(document.activeElement && document.activeElement.tagName === 'BUTTON') document.activeElement.blur();
-      if(opts.focus){
-        const active = document.getElementById(id);
-        if(active) active.focus({preventScroll:true});
-      }
+    } else {
+      // Mobile: only keep selected frame visible (natural flow)
+      frames.forEach(f => {
+        f.classList.toggle('show', f.id === id);
+        f.setAttribute('aria-hidden', f.id === id ? 'false' : 'true');
+      });
+      // ensure grid uses single column on small
+      const grid = document.getElementById('woundsGrid');
+      if(grid) grid.classList.add('grid-1');
     }
 
-    buttons.forEach(btn=>{
-      btn.addEventListener('click', (e)=>{
-        e.preventDefault();
-        const target = btn.dataset.target;
-        showFrame(target, {focus:true});
-        setTimeout(()=> btn.blur(), 50);
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+
+    if(contentArea) contentArea.scrollTop = 0;
+    window.scrollTo({top:0,left:0});
+    if(document.activeElement && document.activeElement.tagName === 'BUTTON') document.activeElement.blur();
+    if(opts.focus){
+      const active = document.getElementById(id);
+      if(active) active.focus({preventScroll:true});
+    }
+  }
+
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const target = btn.dataset.target;
+      showFrame(target, {focus:true});
+      setTimeout(()=> btn.blur(), 50);
+    });
+  });
+
+  window.addEventListener('keydown', e=>{
+    if(e.key === '1') showFrame('info');
+    if(e.key === '2') showFrame('wounds');
+    if(e.key === '3') showFrame('music');
+    if(e.key === '4') showFrame('show');
+  });
+
+  window.addEventListener('resize', () => { initFrames(); });
+
+  // initial call on load event is handled by loader -> initFrames()
+  window.showFrame = showFrame;
+})();
+
+/* Off-canvas sidebar for small screens */
+(function(){
+  const hamburger = document.getElementById('hamburger');
+  const off = document.getElementById('offcanvasSidebar');
+  const desktop = document.getElementById('mainSidebar');
+
+  // clone desktop sidebar content to offcanvas (so buttons behave the same)
+  function buildOffcanvas(){
+    off.innerHTML = desktop.innerHTML;
+    off.style.display = 'none';
+    // attach listeners to buttons inside offcanvas
+    const offButtons = off.querySelectorAll('.btn');
+    offButtons.forEach(b => {
+      b.addEventListener('click', ()=> {
+        // simulate main button click to keep state
+        const target = b.dataset.target;
+        const mainBtn = document.querySelector('.btn[data-target="'+target+'"]');
+        if(mainBtn) mainBtn.click();
+        closeOffcanvas();
       });
     });
+  }
+  buildOffcanvas();
 
-    window.addEventListener('keydown', e=>{
-      if(e.key === '1') showFrame('info');
-      if(e.key === '2') showFrame('wounds');
-      if(e.key === '3') showFrame('music');
-      if(e.key === '4') showFrame('show');
+  function openOffcanvas(){
+    off.style.display = 'block';
+    off.classList.add('offcanvas');
+    off.setAttribute('aria-hidden','false');
+    // darken background for clarity (simple approach)
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOffcanvas(){
+    off.style.display = 'none';
+    off.classList.remove('offcanvas');
+    off.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+
+  if(hamburger){
+    hamburger.addEventListener('click', ()=>{
+      if(off.style.display === 'block') closeOffcanvas(); else openOffcanvas();
     });
+  }
 
-    window.addEventListener('resize', () => { initFrames(); });
-    window.addEventListener('load', () => { setTimeout(initFrames, 120); });
-
-    window.showFrame = showFrame;
-  })();
+  // close on outside click
+  document.addEventListener('click', (e)=>{
+    if(window.innerWidth <= 900 && off.style.display === 'block'){
+      const within = e.composedPath().includes(off) || e.composedPath().includes(hamburger);
+      if(!within) closeOffcanvas();
+    }
+  });
+})();
 </script>
 
 </body>
