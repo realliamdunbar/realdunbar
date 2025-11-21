@@ -3,39 +3,45 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Profile — Liam Dunbar</title>
+<title>Liam Dunbar — profile</title>
 
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
-  /* reset */
+  /* Reset */
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%;font-family:"Montserrat",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;background:#2b0a0a;color:#fff}
-  /* Use the files you uploaded (server will convert /mnt/data/... to URLs) */
+  html,body{height:100%;font-family:"Montserrat",system-ui,Segoe UI,Roboto,Arial;background:#260808;color:#fff}
   :root{
+    /* === For GitHub Pages: use relative filenames placed in same folder as index.html === */
+    --bg-url: url('bg.jpg');
+    --profile-url: url('profilepic.jpg');
+
+    /* === If you're previewing inside this environment (like my preview), uncomment these instead:
     --bg-url: url('/mnt/data/bg.jpg');
     --profile-url: url('/mnt/data/profilepic.jpg');
+    ===
+    Make sure only the correct paths are active for the environment you're using.
+    */
     --accent: rgba(170,20,20,0.95);
   }
 
-  /* loader */
-  #loader{
-    position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;
-    background:linear-gradient(180deg,#250606,#0f0404);z-index:9999;
-  }
+  /* Loader */
+  #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:linear-gradient(180deg,#250606,#0f0404);z-index:9999}
   #loader .ring{width:60px;height:60px;border-radius:50%;border:6px solid rgba(255,255,255,0.06);border-top-color:rgba(255,255,255,0.95);animation:spin 1s linear infinite}
   #loader .txt{font-family:"Baloo 2",cursive;font-size:15px}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* app wrapper */
-  #app{opacity:0;transform:translateY(6px);transition:opacity .5s ease,transform .5s ease;min-height:100vh;display:flex;align-items:flex-start}
-  .bg{position:fixed;inset:0;z-index:0;background-image:var(--bg-url);background-size:cover;background-position:center;filter:saturate(.7) blur(.6px) contrast(.9);opacity:.98}
+  /* App wrapper */
+  #app{opacity:0;transform:translateY(6px);transition:opacity .45s ease,transform .45s ease;min-height:100vh;display:flex;align-items:flex-start}
+  .bg{position:fixed;inset:0;z-index:0;background-image:var(--bg-url);background-size:cover;background-position:center;filter:saturate(.72) blur(.6px) contrast(.9);opacity:.98}
   .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,0,0,0.35), rgba(20,0,0,0.6));mix-blend-mode:multiply}
 
-  /* sidebar */
+  /* Sidebar */
   .sidebar{
-    width:300px;min-width:240px;margin:24px;padding:22px;border-radius:18px;background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.45));
-    box-shadow:0 10px 40px rgba(0,0,0,0.6);z-index:2;backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:18px;align-items:center;
+    width:300px;min-width:240px;margin:24px;padding:22px;border-radius:18px;
+    background:linear-gradient(180deg, rgba(0,0,0,0.56), rgba(0,0,0,0.42));
+    box-shadow:0 10px 40px rgba(0,0,0,0.6);z-index:2;backdrop-filter: blur(6px);display:flex;flex-direction:column;gap:18px;align-items:center;
   }
   .profile-pic{width:190px;height:190px;border-radius:14px;background-image:var(--profile-url);background-size:cover;background-position:center;border:6px solid rgba(0,0,0,0.28);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
   .name{width:100%;text-align:center;font-family:"Baloo 2",cursive;font-size:26px;padding:12px;border-radius:12px;background:linear-gradient(90deg,var(--accent),rgba(120,10,10,0.9));box-shadow:0 6px 18px rgba(0,0,0,0.6)}
@@ -45,28 +51,31 @@
   .btn:hover{transform:translateY(-3px);background:rgba(0,0,0,0.36)}
   .btn.active{background:linear-gradient(90deg,var(--accent),rgba(130,10,10,0.9));box-shadow:0 8px 20px rgba(140,10,10,0.28)}
 
-  /* main content area */
-  .content-area{flex:1;margin:24px;padding:22px 34px;overflow:auto;z-index:1;display:flex;align-items:flex-start}
-  /* removed extra top accents, reduced vertical padding so content sits higher */
-  .card{width:100%;background:linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.10));border-radius:12px;padding:20px 26px;box-shadow:0 20px 60px rgba(0,0,0,0.55)}
+  /* Main content area - top aligned so no big empty center space */
+  .content-area{flex:1;margin:24px;padding:18px 34px 40px 34px;overflow:auto;z-index:1;display:flex;align-items:flex-start}
+  .card{width:100%;background:linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.08));border-radius:12px;padding:18px 22px;box-shadow:0 20px 60px rgba(0,0,0,0.55)}
   h1.section-title{font-family:"Baloo 2",cursive;font-size:32px;margin-bottom:12px}
   p.lead{line-height:1.6;color:rgba(255,255,255,0.92);font-size:15.5px}
 
-  /* frames */
-  .frames{display:block;margin-top:6px}
-  .frame{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 30px rgba(7,7,7,0.6);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .45s cubic-bezier(.2,.9,.25,1),transform .45s cubic-bezier(.2,.9,.25,1)}
+  /* Frames: no extra top margin, and we'll ensure frame container grows to content */
+  .frames{display:block;margin-top:0}
+  .frame{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 30px rgba(7,7,7,0.6);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .38s cubic-bezier(.2,.9,.25,1),transform .38s cubic-bezier(.2,.9,.25,1)}
   .frame.show{opacity:1;transform:none;pointer-events:auto}
-  .frame .fade-in{opacity:0;transform:translateY(6px);animation:fi .45s ease forwards}
+  .frame .fade-in{opacity:0;transform:translateY(6px);animation:fi .42s ease forwards}
   .frame.show .fade-in{animation-delay:.06s}
   @keyframes fi{to{opacity:1;transform:none}}
 
-  /* responsive */
+  /* Remove big bottom blank space by not forcing card to be too tall */
+  .card{min-height:0}
+
+  /* Make sure there is consistent spacing between frames if stacked */
+  .frame + .frame{margin-top:12px}
+
   @media (max-width:900px){
     .sidebar{position:fixed;left:12px;top:12px;width:240px}
-    .content-area{margin-left:0;padding:16px}
+    .content-area{margin-left:0;padding:12px}
   }
 
-  /* minor helpers */
   .muted{color:rgba(255,255,255,0.6);font-size:13px;margin-top:12px}
   code{background:rgba(255,255,255,0.03);padding:4px 6px;border-radius:6px}
 </style>
@@ -80,7 +89,6 @@
   <div id="progress" style="font-family:monospace;margin-top:6px;opacity:.95">0%</div>
 </div>
 
-<!-- App -->
 <div id="app" aria-hidden="true">
   <div class="bg" role="img" aria-label="Decorative background"></div>
 
@@ -96,29 +104,25 @@
       <button class="btn" data-target="show">Show</button>
     </nav>
 
-    <div style="margin-top:auto;text-align:center;width:100%">
-      <div class="muted">Made with patience. — Dad</div>
-    </div>
+    <div style="margin-top:auto;text-align:center;width:100%"><div class="muted">Made with patience. — Dad</div></div>
   </aside>
 
   <!-- Content -->
   <main class="content-area" role="main">
     <div class="card" role="article" aria-live="polite">
       <div class="frames">
-        <!-- Information -->
+        <!-- Info -->
         <section id="info" class="frame show" tabindex="0" aria-labelledby="infoTitle">
           <h1 id="infoTitle" class="section-title">Information</h1>
           <p class="lead fade-in">
             Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia.
             He has a calm but introspective presence. He speaks Indonesian and English with a preference for a UK accent, and he's currently learning German.
           </p>
-          <p class="fade-in" style="margin-top:10px">
-            He carries many storms inside. Though life has been cruel, he is protective of the lonely and the broken: raw, human, and real.
-          </p>
+          <p class="fade-in" style="margin-top:10px">He carries many storms inside. Though life has been cruel, he is protective of the lonely and the broken: raw, human, real.</p>
         </section>
 
         <!-- Wounds -->
-        <section id="wounds" class="frame" tabindex="0" aria-labelledby="woundsTitle" style="margin-top:12px">
+        <section id="wounds" class="frame" tabindex="0" aria-labelledby="woundsTitle">
           <h1 id="woundsTitle" class="section-title">Wounds that never heal</h1>
           <div class="fade-in" style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px">
             <div>
@@ -157,7 +161,7 @@
         </section>
 
         <!-- Music -->
-        <section id="music" class="frame" tabindex="0" aria-labelledby="musicTitle" style="margin-top:12px">
+        <section id="music" class="frame" tabindex="0" aria-labelledby="musicTitle">
           <h1 id="musicTitle" class="section-title">Music</h1>
           <div class="fade-in">
             <p class="lead">Here are songs that resonate — a small playlist (titles only):</p>
@@ -172,11 +176,11 @@
         </section>
 
         <!-- Show -->
-        <section id="show" class="frame" tabindex="0" aria-labelledby="showTitle" style="margin-top:12px">
+        <section id="show" class="frame" tabindex="0" aria-labelledby="showTitle">
           <h1 id="showTitle" class="section-title">Show</h1>
           <div class="fade-in">
-            <p class="lead">Use this area for extra content — gallery, socials, or longer biography.</p>
-            <p class="muted">Tip: place images in the same folder and reference them like <code>images/pic1.jpg</code>.</p>
+            <p class="lead">Use this area for gallery, social links, longer biography, etc.</p>
+            <p class="muted">Put images in same folder and reference them like <code>images/pic.jpg</code>.</p>
           </div>
         </section>
 
@@ -186,65 +190,58 @@
 </div><!-- app -->
 
 <script>
-  // Loader simulation
+  /* Loader (simple simulated progress) */
   (function(){
     const progressEl = document.getElementById('progress');
     const loader = document.getElementById('loader');
     const app = document.getElementById('app');
     let pct = 0;
-    const timer = setInterval(()=> {
-      pct = Math.min(95, pct + Math.round(Math.random()*6));
-      progressEl.textContent = pct + '%';
-    }, 120);
+    const timer = setInterval(()=> { pct = Math.min(95, pct + Math.round(Math.random()*6)); progressEl.textContent = pct + '%'; }, 120);
 
-    window.addEventListener('load', ()=> {
+    function finishLoad(){
       clearInterval(timer);
       progressEl.textContent = '100%';
       setTimeout(()=> {
-        loader.style.transition = 'opacity .45s ease';
+        loader.style.transition = 'opacity .35s ease';
         loader.style.opacity = '0';
-        setTimeout(()=> loader.remove(), 480);
+        setTimeout(()=> loader.remove(), 420);
         app.style.opacity = '1';
         app.style.transform = 'none';
         app.setAttribute('aria-hidden','false');
-        // Ensure first frame is visible after loader
         showFrame('info');
-      }, 250);
-    });
+      }, 200);
+    }
 
-    setTimeout(()=> {
-      if(document.getElementById('loader')){
-        loader.style.opacity='0';
-        setTimeout(()=> loader.remove(),380);
-        app.style.opacity='1';app.style.transform='none';
-        showFrame('info');
-      }
-    },3800);
+    window.addEventListener('load', finishLoad);
+    setTimeout(()=> { if(document.getElementById('loader')) finishLoad(); }, 3500);
   })();
 
-  // Navigation logic
+  /* Frame switching and scroll-to-top to remove empty space */
   (function(){
     const buttons = Array.from(document.querySelectorAll('.btn'));
     const frames = Array.from(document.querySelectorAll('.frame'));
+    const contentArea = document.querySelector('.content-area');
 
     function showFrame(id){
       frames.forEach(f=>{
-        f.classList.toggle('show', f.id === id);
-        // set aria-hidden for offscreen frames
-        f.setAttribute('aria-hidden', f.id === id ? 'false' : 'true');
+        const is = (f.id === id);
+        f.classList.toggle('show', is);
+        f.setAttribute('aria-hidden', is ? 'false' : 'true');
       });
-      buttons.forEach(b=> b.classList.toggle('active', b.dataset.target === id));
-      // scroll content area to top when switching
-      const content = document.querySelector('.content-area');
-      if(content) content.scrollTop = 6;
+      buttons.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+
+      // scroll to top of content area so the newly-shown frame isn't hidden below fold
+      if(contentArea) contentArea.scrollTop = 0;
+
+      // focus the frame for keyboard users
+      const active = document.getElementById(id);
+      if(active) active.focus({preventScroll:true});
     }
 
-    buttons.forEach(btn=>{
-      btn.addEventListener('click', ()=> showFrame(btn.dataset.target));
-    });
+    buttons.forEach(btn => btn.addEventListener('click', () => showFrame(btn.dataset.target)));
 
     // keyboard shortcuts 1-4
-    window.addEventListener('keydown', e=>{
+    window.addEventListener('keydown', (e)=>{
       if(e.key === '1') showFrame('info');
       if(e.key === '2') showFrame('wounds');
       if(e.key === '3') showFrame('music');
@@ -252,8 +249,7 @@
     });
 
     // initial
-    function init(){ showFrame('info') }
-    if(document.readyState === 'complete') init(); else window.addEventListener('load', init);
+    if(document.readyState === 'complete') showFrame('info'); else window.addEventListener('load', ()=>showFrame('info'));
   })();
 </script>
 
