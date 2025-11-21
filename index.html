@@ -3,223 +3,91 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Profile — Liam Dunbar (demo)</title>
+<title>Profile — Liam Dunbar</title>
 
-<!-- Custom font(s) to get the rounded/decorative look -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
-  /* Basic resets */
+  /* reset */
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{
-    font-family:"Montserrat",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-    background: #340707;
-    color:#fff;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    overflow:hidden;
-  }
-
-  /* ---------- Using uploaded files as image sources ----------
-     The background and profile image use the local paths you provided.
-     The server/tool that serves this page will transform those local paths
-     into URLs. If you name your own files bg.jpg / profilepic.jpg, update the URLs below.
-  -----------------------------------------------------------------*/
+  html,body{height:100%;font-family:"Montserrat",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;background:#2b0a0a;color:#fff}
+  /* Use the files you uploaded (server will convert /mnt/data/... to URLs) */
   :root{
-    --bg-url: url('/mnt/data/Screenshot 2025-11-21 225427.png'); /* <- background image file path (server will convert) */
-    --profile-url: url('/mnt/data/Screenshot 2025-11-21 225356.png'); /* <- profile image file path (server will convert) */
+    --bg-url: url('/mnt/data/bg.jpg');
+    --profile-url: url('/mnt/data/profilepic.jpg');
     --accent: rgba(170,20,20,0.95);
-    --glass: rgba(14,9,9,0.55);
   }
 
-  /* Loading overlay (covers the whole page until loaded) */
-  #loader {
-    position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(180deg,#250606, #0f0404);
-    z-index:9999;color:#fff;
-    flex-direction:column;gap:18px;
+  /* loader */
+  #loader{
+    position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;
+    background:linear-gradient(180deg,#250606,#0f0404);z-index:9999;
   }
-  #loader .ring{
-    width:72px;height:72px;border-radius:50%;
-    border:6px solid rgba(255,255,255,0.08);
-    border-top-color:rgba(255,255,255,0.9);
-    animation:spin 1s linear infinite;
-  }
-  #loader .txt{font-family:"Baloo 2",cursive;font-size:16px;opacity:.95}
+  #loader .ring{width:60px;height:60px;border-radius:50%;border:6px solid rgba(255,255,255,0.06);border-top-color:rgba(255,255,255,0.95);animation:spin 1s linear infinite}
+  #loader .txt{font-family:"Baloo 2",cursive;font-size:15px}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* page fade-in after loader */
-  #app{
-    opacity:0;
-    transform: translateY(6px);
-    transition:opacity .6s ease, transform .6s ease;
-    height:100vh; width:100vw;
-    display:flex;
-  }
+  /* app wrapper */
+  #app{opacity:0;transform:translateY(6px);transition:opacity .5s ease,transform .5s ease;min-height:100vh;display:flex;align-items:flex-start}
+  .bg{position:fixed;inset:0;z-index:0;background-image:var(--bg-url);background-size:cover;background-position:center;filter:saturate(.7) blur(.6px) contrast(.9);opacity:.98}
+  .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,0,0,0.35), rgba(20,0,0,0.6));mix-blend-mode:multiply}
 
-  /* background layer with subtle patterns & blur */
-  .bg{
-    position:fixed;inset:0;z-index:0;
-    background-image: var(--bg-url);
-    background-size:cover;
-    background-position:center;
-    filter: saturate(.7) blur(0.8px) contrast(.9);
-    opacity:.95;
-  }
-  .bg::after{
-    content:"";
-    position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(10,0,0,0.35), rgba(20,0,0,0.6));
-    mix-blend-mode:multiply;
-  }
-
-  /* layout */
+  /* sidebar */
   .sidebar{
-    width:320px;
-    min-width:260px;
-    background: linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.45));
-    margin:28px;
-    padding:22px;
-    border-radius:20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-    z-index:2;
-    display:flex;flex-direction:column;gap:18px;
-    align-items:center;
-    backdrop-filter: blur(6px) saturate(.9);
+    width:300px;min-width:240px;margin:24px;padding:22px;border-radius:18px;background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.45));
+    box-shadow:0 10px 40px rgba(0,0,0,0.6);z-index:2;backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:18px;align-items:center;
   }
+  .profile-pic{width:190px;height:190px;border-radius:14px;background-image:var(--profile-url);background-size:cover;background-position:center;border:6px solid rgba(0,0,0,0.28);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+  .name{width:100%;text-align:center;font-family:"Baloo 2",cursive;font-size:26px;padding:12px;border-radius:12px;background:linear-gradient(90deg,var(--accent),rgba(120,10,10,0.9));box-shadow:0 6px 18px rgba(0,0,0,0.6)}
 
-  .profile-pic{
-    width:210px;height:210px;border-radius:16px;
-    background-image: var(--profile-url);
-    background-size:cover;background-position:center;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-    border:6px solid rgba(0,0,0,0.3);
-  }
+  .nav{width:100%;display:flex;flex-direction:column;gap:12px}
+  .btn{padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.28);border:1px solid rgba(255,255,255,0.03);color:#fff;text-align:left;font-weight:600;cursor:pointer;transition:transform .12s,background .15s}
+  .btn:hover{transform:translateY(-3px);background:rgba(0,0,0,0.36)}
+  .btn.active{background:linear-gradient(90deg,var(--accent),rgba(130,10,10,0.9));box-shadow:0 8px 20px rgba(140,10,10,0.28)}
 
-  .name{
-    width:100%;
-    text-align:center;
-    font-family:"Baloo 2",cursive;
-    font-size:28px;
-    letter-spacing:1px;
-    padding:10px 12px;
-    background: linear-gradient(90deg, rgba(170,20,20,0.95), rgba(120,10,10,0.9));
-    border-radius:12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-  }
+  /* main content area */
+  .content-area{flex:1;margin:24px;padding:22px 34px;overflow:auto;z-index:1;display:flex;align-items:flex-start}
+  /* removed extra top accents, reduced vertical padding so content sits higher */
+  .card{width:100%;background:linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.10));border-radius:12px;padding:20px 26px;box-shadow:0 20px 60px rgba(0,0,0,0.55)}
+  h1.section-title{font-family:"Baloo 2",cursive;font-size:32px;margin-bottom:12px}
+  p.lead{line-height:1.6;color:rgba(255,255,255,0.92);font-size:15.5px}
 
-  .nav{
-    width:100%;
-    display:flex;flex-direction:column;gap:12px;
-    align-items:stretch;
-  }
-  .btn{
-    padding:14px 18px;
-    border-radius:12px;
-    background: rgba(0,0,0,0.28);
-    border:1px solid rgba(255,255,255,0.03);
-    color:#fff;
-    font-weight:600;
-    cursor:pointer;
-    transition:transform .12s ease, background .18s ease, box-shadow .12s ease;
-    text-align:left;
-    font-size:15px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.45);
-  }
-  .btn:hover{ transform:translateY(-3px); background: rgba(0,0,0,0.38) }
-  .btn.active{
-    background: linear-gradient(90deg, rgba(180,30,30,0.95), rgba(130,10,10,0.9));
-    box-shadow: 0 10px 28px rgba(140,10,10,0.35);
-  }
+  /* frames */
+  .frames{display:block;margin-top:6px}
+  .frame{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 30px rgba(7,7,7,0.6);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .45s cubic-bezier(.2,.9,.25,1),transform .45s cubic-bezier(.2,.9,.25,1)}
+  .frame.show{opacity:1;transform:none;pointer-events:auto}
+  .frame .fade-in{opacity:0;transform:translateY(6px);animation:fi .45s ease forwards}
+  .frame.show .fade-in{animation-delay:.06s}
+  @keyframes fi{to{opacity:1;transform:none}}
 
-  /* right content area */
-  .content-wrap{
-    flex:1; margin:28px 28px 28px 0; overflow:auto; z-index:1; padding:36px 46px;
-    border-radius:12px; position:relative;
-    display:flex;align-items:flex-start;
-  }
-
-  .card{
-    width:100%;
-    background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.12));
-    border-radius:12px;
-    padding:28px 34px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  }
-
-  h1.section-title{
-    font-family:"Baloo 2",cursive;
-    font-size:34px;
-    margin-bottom:18px;
-    letter-spacing:.4px;
-  }
-  p.lead{line-height:1.6;color:rgba(255,255,255,0.9);font-size:15.5px}
-
-  /* content frames */
-  .frames{
-    display:grid;
-    grid-template-columns: 1fr;
-    gap:18px;
-    margin-top:10px;
-  }
-
-  .frame{
-    padding:18px;
-    border-radius:10px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    box-shadow: 0 8px 30px rgba(7,7,7,0.6);
-    opacity:0; transform: translateY(10px) scale(.995);
-    pointer-events:none;
-    transition: opacity .45s cubic-bezier(.2,.9,.25,1), transform .45s cubic-bezier(.2,.9,.25,1);
-  }
-  .frame.show{
-    opacity:1; transform: translateY(0) scale(1);
-    pointer-events:auto;
-  }
-
-  /* small responsive tweaks */
+  /* responsive */
   @media (max-width:900px){
-    .sidebar{position:fixed;left:12px;top:12px;z-index:4; width:240px}
-    .content-wrap{margin-left:0;padding:20px 16px 80px 16px}
+    .sidebar{position:fixed;left:12px;top:12px;width:240px}
+    .content-area{margin-left:0;padding:16px}
   }
 
-  /* little accent header in content */
-  .accent{
-    display:inline-block;padding:6px 12px;border-radius:10px;
-    background: linear-gradient(90deg, rgba(170,20,20,0.95), rgba(120,10,10,0.9));
-    font-weight:700;font-size:13px;margin-bottom:10px;
-  }
-
-  /* subtle fade-in for text blocks inside frame */
-  .frame .fade-in{
-    opacity:0;transform:translateY(6px);
-    animation:fi .45s ease forwards;
-  }
-  .frame.show .fade-in{ animation-delay:0.08s }
-  @keyframes fi{ to{opacity:1;transform:none} }
-
-  /* small helper for footer note */
-  .muted{ color: rgba(255,255,255,0.6); font-size:13px; margin-top:12px}
+  /* minor helpers */
+  .muted{color:rgba(255,255,255,0.6);font-size:13px;margin-top:12px}
+  code{background:rgba(255,255,255,0.03);padding:4px 6px;border-radius:6px}
 </style>
 </head>
 <body>
 
-<!-- LOADING SCREEN -->
+<!-- Loader -->
 <div id="loader">
   <div class="ring" aria-hidden="true"></div>
   <div class="txt">Preparing your page…</div>
-  <div id="progress" style="font-family:monospace;margin-top:8px;opacity:.9">0%</div>
+  <div id="progress" style="font-family:monospace;margin-top:6px;opacity:.95">0%</div>
 </div>
 
-<!-- APP -->
+<!-- App -->
 <div id="app" aria-hidden="true">
   <div class="bg" role="img" aria-label="Decorative background"></div>
 
-  <!-- SIDEBAR -->
+  <!-- Sidebar -->
   <aside class="sidebar" role="navigation" aria-label="Main sidebar">
     <div class="profile-pic" title="Profile picture"></div>
-    <div class="name" id="fullname">Liam Dunbar</div>
+    <div class="name">Liam Dunbar</div>
 
     <nav class="nav" aria-label="Profile sections">
       <button class="btn active" data-target="info">Information</button>
@@ -233,11 +101,9 @@
     </div>
   </aside>
 
-  <!-- CONTENT -->
-  <main class="content-wrap" role="main">
+  <!-- Content -->
+  <main class="content-area" role="main">
     <div class="card" role="article" aria-live="polite">
-      <div class="accent">Information</div>
-
       <div class="frames">
         <!-- Information -->
         <section id="info" class="frame show" tabindex="0" aria-labelledby="infoTitle">
@@ -246,13 +112,13 @@
             Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia.
             He has a calm but introspective presence. He speaks Indonesian and English with a preference for a UK accent, and he's currently learning German.
           </p>
-          <p class="fade-in" style="margin-top:12px">
+          <p class="fade-in" style="margin-top:10px">
             He carries many storms inside. Though life has been cruel, he is protective of the lonely and the broken: raw, human, and real.
           </p>
         </section>
 
         <!-- Wounds -->
-        <section id="wounds" class="frame" tabindex="0" aria-labelledby="woundsTitle">
+        <section id="wounds" class="frame" tabindex="0" aria-labelledby="woundsTitle" style="margin-top:12px">
           <h1 id="woundsTitle" class="section-title">Wounds that never heal</h1>
           <div class="fade-in" style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px">
             <div>
@@ -274,7 +140,7 @@
             <div>
               <h3>Complex PTSD (C-PTSD)</h3>
               <p class="muted">noun</p>
-              <p class="lead">A mental health condition that can develop after chronic trauma and may cause difficulties with relationships and emotion regulation.</p>
+              <p class="lead">A condition that can develop after chronic trauma and cause difficulties with relationships and emotion regulation.</p>
             </div>
 
             <div>
@@ -285,13 +151,13 @@
             <div>
               <h3>Borderline Personality Traits (BPD)</h3>
               <p class="muted">noun</p>
-              <p class="lead">Emotional instability, impulsive behavior, distorted self-image and fear of abandonment.</p>
+              <p class="lead">Emotional instability, impulsivity, distorted self-image, and fear of abandonment.</p>
             </div>
           </div>
         </section>
 
         <!-- Music -->
-        <section id="music" class="frame" tabindex="0" aria-labelledby="musicTitle">
+        <section id="music" class="frame" tabindex="0" aria-labelledby="musicTitle" style="margin-top:12px">
           <h1 id="musicTitle" class="section-title">Music</h1>
           <div class="fade-in">
             <p class="lead">Here are songs that resonate — a small playlist (titles only):</p>
@@ -302,98 +168,92 @@
               <li>Somewhere I Belong — Linkin Park</li>
               <li>Unwell — Matchbox Twenty</li>
             </ul>
-            <p class="muted">You can replace this with audio players or embedded playlists when you want.</p>
           </div>
         </section>
 
         <!-- Show -->
-        <section id="show" class="frame" tabindex="0" aria-labelledby="showTitle">
+        <section id="show" class="frame" tabindex="0" aria-labelledby="showTitle" style="margin-top:12px">
           <h1 id="showTitle" class="section-title">Show</h1>
           <div class="fade-in">
-            <p class="lead">Use this area to display any extra content, like a gallery, social links, or a longer biography. It can be turned into a fullscreen panel or modal if you prefer.</p>
-            <p class="muted">Tip: put images in the same folder and reference them. Example: <code>images/pic1.jpg</code>.</p>
+            <p class="lead">Use this area for extra content — gallery, socials, or longer biography.</p>
+            <p class="muted">Tip: place images in the same folder and reference them like <code>images/pic1.jpg</code>.</p>
           </div>
         </section>
 
       </div><!-- frames -->
     </div><!-- card -->
-  </main><!-- content-wrap -->
+  </main><!-- content-area -->
 </div><!-- app -->
 
 <script>
-  // Simple loader progress simulation until window 'load'
+  // Loader simulation
   (function(){
     const progressEl = document.getElementById('progress');
     const loader = document.getElementById('loader');
     const app = document.getElementById('app');
     let pct = 0;
-    // small progress tick while loading
     const timer = setInterval(()=> {
       pct = Math.min(95, pct + Math.round(Math.random()*6));
       progressEl.textContent = pct + '%';
     }, 120);
 
-    // when everything finishes loading, finalize
     window.addEventListener('load', ()=> {
       clearInterval(timer);
       progressEl.textContent = '100%';
-      // small delay so user sees 100%
       setTimeout(()=> {
         loader.style.transition = 'opacity .45s ease';
         loader.style.opacity = '0';
         setTimeout(()=> loader.remove(), 480);
-        // show app
         app.style.opacity = '1';
         app.style.transform = 'none';
         app.setAttribute('aria-hidden','false');
-      }, 350);
+        // Ensure first frame is visible after loader
+        showFrame('info');
+      }, 250);
     });
-    // fallback: remove loader after 3s if load never fires
+
     setTimeout(()=> {
       if(document.getElementById('loader')){
-        loader.style.opacity = '0';
-        setTimeout(()=> loader.remove(), 380);
-        app.style.opacity = '1'; app.style.transform = 'none';
+        loader.style.opacity='0';
+        setTimeout(()=> loader.remove(),380);
+        app.style.opacity='1';app.style.transform='none';
+        showFrame('info');
       }
-    }, 3800);
+    },3800);
   })();
 
-  // Navigation and frame switching
+  // Navigation logic
   (function(){
     const buttons = Array.from(document.querySelectorAll('.btn'));
     const frames = Array.from(document.querySelectorAll('.frame'));
 
     function showFrame(id){
       frames.forEach(f=>{
-        if(f.id === id){ f.classList.add('show'); }
-        else { f.classList.remove('show'); }
+        f.classList.toggle('show', f.id === id);
+        // set aria-hidden for offscreen frames
+        f.setAttribute('aria-hidden', f.id === id ? 'false' : 'true');
       });
-      buttons.forEach(b=>{
-        b.classList.toggle('active', b.dataset.target === id);
-      });
-      // set aria-live text for screen readers (optional)
-      const active = document.getElementById(id);
-      if(active) active.setAttribute('aria-hidden','false');
+      buttons.forEach(b=> b.classList.toggle('active', b.dataset.target === id));
+      // scroll content area to top when switching
+      const content = document.querySelector('.content-area');
+      if(content) content.scrollTop = 6;
     }
 
-    // click handling
     buttons.forEach(btn=>{
-      btn.addEventListener('click', ()=> {
-        const target = btn.dataset.target;
-        showFrame(target);
-      });
+      btn.addEventListener('click', ()=> showFrame(btn.dataset.target));
     });
 
-    // keyboard: 1-4 quick switch
-    window.addEventListener('keydown', (e)=>{
+    // keyboard shortcuts 1-4
+    window.addEventListener('keydown', e=>{
       if(e.key === '1') showFrame('info');
       if(e.key === '2') showFrame('wounds');
       if(e.key === '3') showFrame('music');
       if(e.key === '4') showFrame('show');
     });
 
-    // initial show
-    showFrame('info');
+    // initial
+    function init(){ showFrame('info') }
+    if(document.readyState === 'complete') init(); else window.addEventListener('load', init);
   })();
 </script>
 
