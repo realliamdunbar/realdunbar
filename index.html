@@ -67,8 +67,15 @@
             background: rgba(0, 0, 0, 0.4);
         }
 
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .tab-content {
             display: none;
+            animation: fadeIn 0.6s ease;
         }
 
         h1 {
@@ -118,20 +125,17 @@
             <p>
                 Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia.
                 He has a calm but introspective presence. He speaks Indonesian and English with a preference
-                for a UK accent, and he’s currently learning German. His heart is drawn to Austria and Germany —
-                places he dreams of living in someday.
+                for a UK accent, and he’s currently learning German.
             </p>
             <br>
             <p>
-                Fahlan Aditya is a quiet soul with many storms inside. He grew up being told to silence his emotions,
-                but deep down he feels everything — maybe too much. His past carved wounds that never fully healed.
+                Fahlan Aditya is a quiet soul with many storms inside. His past carved wounds that never fully healed.
                 He calls himself “a boy made of water and soil,” fragile yet undeniably real.
             </p>
             <br>
             <p>
-                Though life has been cruel, Fahlan has a beauty in him that doesn’t fade: his empathy.
-                He sees pain in others even when no one else notices. He protects the broken, the lonely,
-                the forgotten. That’s how his heart works: raw, human, protective.
+                Though life has been cruel, Fahlan’s empathy remains. He sees pain in others, protects the broken,
+                and finds beauty in raw humanity.
             </p>
         </div>
 
@@ -140,34 +144,34 @@
             <h1>Wounds That Never Heal</h1>
 
             <h2>Social Anxiety</h2>
-            <p>An anxiety disorder characterized by excessive fear of social situations.</p>
+            <p>Excessive fear of social situations.</p>
 
             <h2>Depression</h2>
-            <p>A mental illness causing long-term sadness and difficulty living normally.</p>
+            <p>Long-term sadness and emotional numbness.</p>
 
             <h2>Intermittent Explosive Disorder (IED)</h2>
-            <p>Sudden, intense outbursts of anger disproportionate to the situation.</p>
+            <p>Sudden, intense anger outbursts.</p>
 
             <h2>Complex PTSD (CPTSD)</h2>
-            <p>Develops after long-term trauma, causing emotional pain and impulsive behavior.</p>
+            <p>Emotional pain caused by long-term trauma.</p>
 
             <h2>Autism Spectrum Disorder</h2>
-            <p>A developmental condition affecting communication, interaction, and sensory processing.</p>
+            <p>Challenges in communication and sensory processing.</p>
 
             <h2>Borderline Personality Traits (BPD)</h2>
-            <p>Emotional instability, impulsive behavior, fear of abandonment, and intense mood swings.</p>
+            <p>Instability in emotions, relationships, and identity.</p>
         </div>
 
         <!-- MUSIC -->
         <div id="music" class="tab-content">
             <h1>Music</h1>
-            <p>You can add music lists, playlists, or descriptions here.</p>
+            <p>Add playlists, favorite artists, or your own music here.</p>
         </div>
 
         <!-- SHOW -->
         <div id="show" class="tab-content">
             <h1>Show</h1>
-            <p>This section can show anything you want — videos, quotes, images, etc.</p>
+            <p>Anything you want to display — photos, quotes, videos, etc.</p>
         </div>
 
     </section>
@@ -175,10 +179,20 @@
 
 <script>
     function showTab(id) {
+        // Hide all tabs
         document.querySelectorAll(".tab-content").forEach(div => {
             div.style.display = "none";
         });
-        document.getElementById(id).style.display = "block";
+
+        // Show chosen tab + reset animation trigger
+        const tab = document.getElementById(id);
+        tab.style.display = "block";
+        tab.style.animation = "none";
+
+        // Small timeout to restart animation
+        setTimeout(() => {
+            tab.style.animation = "fadeIn 0.6s ease";
+        }, 10);
     }
 
     // Default tab
