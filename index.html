@@ -1,65 +1,89 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Liam Dunbar — profile</title>
 
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
+<!--
+  IMPORTANT:
+  - For GitHub Pages: put `index.html`, `bg.jpg`, and `profilepic.jpg` in the SAME folder.
+    The CSS below tries `bg.jpg` and `profilepic.jpg` first (relative), then falls back
+    to the uploaded preview paths so you can see images in this environment.
+  - Filenames are case-sensitive.
+-->
+
 <style>
-  /* RESET */
+  /* Reset & base */
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;font-family:"Montserrat",system-ui,Segoe UI,Roboto,Arial;background:#260808;color:#fff}
   :root{
-    /* PREVIEW PATHS (in this environment). For GitHub Pages replace both with 'bg.jpg' and 'profilepic.jpg' */
-    --bg-url: url('/mnt/data/e69cf869-b076-4711-a86e-a4c22ab5c7a9.png');
-    --profile-url: url('/mnt/data/Screenshot 2025-11-21 225356.png');
+    /* Primary (GitHub Pages / production) */
+    --bg-url-primary: url('bg.jpg');
+    --profile-url-primary: url('profilepic.jpg');
+
+    /* Fallback (preview environment) - do not rely on this for production */
+    --bg-url-fallback: url('/mnt/data/e69cf869-b076-4711-a86e-a4c22ab5c7a9.png');
+    --profile-url-fallback: url('/mnt/data/Screenshot 2025-11-21 225356.png');
+
     --accent: rgba(170,20,20,0.95);
     --card-bg: linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.08));
   }
 
-  /* LOADER */
+  /* Loader */
   #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:linear-gradient(180deg,#250606,#0f0404);z-index:9999}
   #loader .ring{width:56px;height:56px;border-radius:50%;border:6px solid rgba(255,255,255,0.06);border-top-color:rgba(255,255,255,0.95);animation:spin 1s linear infinite}
   #loader .txt{font-family:"Baloo 2",cursive;font-size:14px}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* APP LAYOUT */
+  /* App layout */
   #app{opacity:0;transform:translateY(6px);transition:opacity .45s ease,transform .45s ease;min-height:100vh;display:flex;align-items:flex-start}
-  .bg{position:fixed;inset:0;z-index:0;background-image:var(--bg-url);background-size:cover;background-position:center;filter:saturate(.72) blur(.6px) contrast(.9);opacity:.98}
+
+  /* Background: try relative file first (production), then fallback path for preview */
+  .bg{
+    position:fixed;inset:0;z-index:0;
+    background-image: var(--bg-url-primary), var(--bg-url-fallback);
+    background-size:cover;background-position:center;
+    filter:saturate(.72) blur(.6px) contrast(.9);opacity:.98;
+  }
   .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,0,0,0.35), rgba(20,0,0,0.6));mix-blend-mode:multiply}
 
-  /* SIDEBAR / TOPBAR */
+  /* Sidebar / topbar */
   .sidebar{
     width:300px;min-width:240px;margin:24px;padding:22px;border-radius:18px;
     background:linear-gradient(180deg, rgba(0,0,0,0.56), rgba(0,0,0,0.42));
     box-shadow:0 10px 40px rgba(0,0,0,0.6);z-index:3;backdrop-filter: blur(6px);display:flex;flex-direction:column;gap:18px;align-items:center;
   }
-  .profile-pic{width:190px;height:190px;border-radius:14px;background-image:var(--profile-url);background-size:cover;background-position:center;border:6px solid rgba(0,0,0,0.28);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+  .profile-pic{
+    width:190px;height:190px;border-radius:14px;
+    background-image: var(--profile-url-primary), var(--profile-url-fallback);
+    background-size:cover;background-position:center;
+    border:6px solid rgba(0,0,0,0.28);box-shadow:0 8px 30px rgba(0,0,0,0.6)
+  }
   .name{width:100%;text-align:center;font-family:"Baloo 2",cursive;font-size:26px;padding:12px;border-radius:12px;background:linear-gradient(90deg,var(--accent),rgba(120,10,10,0.9));box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+
   .nav{width:100%;display:flex;flex-direction:column;gap:12px}
   .btn{padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.28);border:1px solid rgba(255,255,255,0.03);color:#fff;text-align:left;font-weight:600;cursor:pointer;transition:transform .12s,background .15s}
   .btn:hover{transform:translateY(-3px);background:rgba(0,0,0,0.36)}
   .btn.active{background:linear-gradient(90deg,var(--accent),rgba(130,10,10,0.9));box-shadow:0 8px 20px rgba(140,10,10,0.28)}
 
-  /* topbar for small screens (hidden on desktop) */
-  .topbar{
-    display:none;
-    position:fixed;left:0;right:0;top:0;height:64px;padding:8px 12px;background:linear-gradient(180deg, rgba(0,0,0,0.62), rgba(0,0,0,0.32));z-index:6;align-items:center;gap:12px;
-  }
+  /* Topbar for small screens */
+  .topbar{display:none;position:fixed;left:0;right:0;top:0;height:64px;padding:8px 12px;background:linear-gradient(180deg, rgba(0,0,0,0.62), rgba(0,0,0,0.32));z-index:6;align-items:center;gap:12px}
   .topbar .hamburger{width:44px;height:44px;border-radius:10px;background:rgba(0,0,0,0.32);display:flex;align-items:center;justify-content:center;cursor:pointer}
   .topbar .title{font-family:"Baloo 2",cursive;font-size:18px;letter-spacing:.3px}
   .sidebar.offcanvas{position:fixed;left:12px;top:76px;width:calc(100% - 24px);max-width:400px;margin:0;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5));box-shadow:0 30px 80px rgba(0,0,0,0.7);transform-origin:top;animation:slideIn .18s ease both}
   @keyframes slideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 
-  /* CONTENT */
+  /* Content */
   .content-area{flex:1;margin:24px;padding:18px 34px 40px 34px;overflow:auto;z-index:1;display:flex;align-items:flex-start}
   .card{width:100%;background:var(--card-bg);border-radius:12px;padding:18px 22px;box-shadow:0 20px 60px rgba(0,0,0,0.55);min-height:0}
   h1.section-title{font-family:"Baloo 2",cursive;font-size:32px;margin-bottom:12px}
   p.lead{line-height:1.6;color:rgba(255,255,255,0.92);font-size:15.5px}
 
-  /* FRAMES */
+  /* Frames */
   .frames{display:block;position:relative;margin-top:0}
   .frame{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 30px rgba(7,7,7,0.6);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .38s cubic-bezier(.2,.9,.25,1),transform .38s cubic-bezier(.2,.9,.25,1);position:absolute;left:0;right:0;top:0}
   .frame.show{opacity:1;transform:none;pointer-events:auto;position:relative}
@@ -69,26 +93,22 @@
   @keyframes fi{to{opacity:1;transform:none}}
   .frame + .frame{margin-top:12px}
 
-  /* GRID responsive */
+  /* Grid utilities */
   .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
   .grid-1{display:grid;grid-template-columns:1fr;gap:14px}
 
-  /* UTILS */
   .muted{color:rgba(255,255,255,0.6);font-size:13px;margin-top:12px}
   code{background:rgba(255,255,255,0.03);padding:4px 6px;border-radius:6px}
 
-  /* BREAKPOINTS: tablet and phone adjustments */
+  /* Responsive breakpoints */
   @media (max-width:900px){
     .sidebar{display:none}
     .topbar{display:flex}
     .content-area{margin-top:80px;margin-left:12px;margin-right:12px;padding:12px}
-    /* small cards slightly larger fonts for readability */
     h1.section-title{font-size:28px}
     p.lead{font-size:15px}
-    /* frames: allow normal flow (no absolute) so content stacks naturally */
     .frame{position:relative;opacity:1;transform:none;pointer-events:auto}
     .frame:not(.show){display:none}
-    /* make grid single column on narrow screens */
     .grid-2{grid-template-columns:1fr}
     .card{padding:14px}
     .profile-pic{width:110px;height:110px}
@@ -108,14 +128,14 @@
 </head>
 <body>
 
-<!-- LOADER -->
+<!-- Loader -->
 <div id="loader">
   <div class="ring" aria-hidden="true"></div>
   <div class="txt">Preparing your page…</div>
   <div id="progress" style="font-family:monospace;margin-top:6px;opacity:.95">0%</div>
 </div>
 
-<!-- TOPBAR for small screens -->
+<!-- Topbar for small screens -->
 <header class="topbar" aria-hidden="true">
   <div class="hamburger" id="hamburger" title="Open menu" aria-label="Open menu" role="button">
     <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="2" rx="1" fill="white" opacity="0.95"/><rect y="6" width="20" height="2" rx="1" fill="white" opacity="0.9"/><rect y="12" width="20" height="2" rx="1" fill="white" opacity="0.85"/></svg>
@@ -123,11 +143,11 @@
   <div class="title">Liam Dunbar</div>
 </header>
 
-<!-- APP -->
+<!-- App -->
 <div id="app" aria-hidden="true">
   <div class="bg" role="img" aria-label="Decorative background"></div>
 
-  <!-- SIDEBAR (desktop) -->
+  <!-- Desktop sidebar -->
   <aside class="sidebar" role="navigation" aria-label="Main sidebar" id="mainSidebar">
     <div class="profile-pic" title="Profile picture"></div>
     <div class="name">Liam Dunbar</div>
@@ -142,10 +162,10 @@
     <div style="margin-top:auto;text-align:center;width:100%"><div class="muted">Made with patience. — Ethan Winters</div></div>
   </aside>
 
-  <!-- off-canvas sidebar (small screens) - reuses same content node via clone for simplicity -->
+  <!-- Off-canvas sidebar for small screens (cloned content) -->
   <aside class="sidebar offcanvas" id="offcanvasSidebar" style="display:none;" aria-hidden="true"></aside>
 
-  <!-- CONTENT -->
+  <!-- Main content -->
   <main class="content-area" role="main">
     <div class="card" role="article" aria-live="polite">
       <div class="frames">
@@ -298,14 +318,11 @@
   const contentArea = document.querySelector('.content-area');
   let lockedMinHeight = false;
 
-  // compute tallest frame (desktop) and set card min-height to avoid jumping
   window.initFrames = function(){
-    // only lock on desktop widths
     if(window.innerWidth > 900){
       let max = 0;
       frames.forEach(f => {
-        // temporarily show to measure accurately
-        f.classList.add('show');
+        f.classList.add('show'); // show temporarily for measurement
         const h = f.scrollHeight;
         if(h > max) max = h;
         f.classList.remove('show');
@@ -314,10 +331,8 @@
         card.style.minHeight = (max + 24) + 'px';
         lockedMinHeight = true;
       }
-      // show initial
       showFrame('info', {focus:false});
     } else {
-      // on small screens keep natural flow
       card.style.minHeight = '';
       lockedMinHeight = false;
       frames.forEach(f => f.classList.remove('show'));
@@ -326,7 +341,6 @@
   };
 
   function showFrame(id, opts = {focus:true}){
-    // Desktop: use overlapping frames (show/hide)
     if(window.innerWidth > 900){
       frames.forEach(f=>{
         const is = (f.id === id);
@@ -334,18 +348,15 @@
         f.setAttribute('aria-hidden', is ? 'false' : 'true');
       });
     } else {
-      // Mobile: only keep selected frame visible (natural flow)
       frames.forEach(f => {
         f.classList.toggle('show', f.id === id);
         f.setAttribute('aria-hidden', f.id === id ? 'false' : 'true');
       });
-      // ensure grid uses single column on small
       const grid = document.getElementById('woundsGrid');
       if(grid) grid.classList.add('grid-1');
     }
 
     buttons.forEach(b => b.classList.toggle('active', b.dataset.target === id));
-
     if(contentArea) contentArea.scrollTop = 0;
     window.scrollTo({top:0,left:0});
     if(document.activeElement && document.activeElement.tagName === 'BUTTON') document.activeElement.blur();
@@ -358,7 +369,7 @@
   buttons.forEach(btn=>{
     btn.addEventListener('click', (e)=>{
       e.preventDefault();
-      const target = btn.dataset.target;
+      const target = btn.dataset-target || btn.dataset.target;
       showFrame(target, {focus:true});
       setTimeout(()=> btn.blur(), 50);
     });
@@ -373,7 +384,6 @@
 
   window.addEventListener('resize', () => { initFrames(); });
 
-  // initial call on load event is handled by loader -> initFrames()
   window.showFrame = showFrame;
 })();
 
@@ -383,15 +393,12 @@
   const off = document.getElementById('offcanvasSidebar');
   const desktop = document.getElementById('mainSidebar');
 
-  // clone desktop sidebar content to offcanvas (so buttons behave the same)
   function buildOffcanvas(){
     off.innerHTML = desktop.innerHTML;
     off.style.display = 'none';
-    // attach listeners to buttons inside offcanvas
     const offButtons = off.querySelectorAll('.btn');
     offButtons.forEach(b => {
       b.addEventListener('click', ()=> {
-        // simulate main button click to keep state
         const target = b.dataset.target;
         const mainBtn = document.querySelector('.btn[data-target="'+target+'"]');
         if(mainBtn) mainBtn.click();
@@ -401,19 +408,8 @@
   }
   buildOffcanvas();
 
-  function openOffcanvas(){
-    off.style.display = 'block';
-    off.classList.add('offcanvas');
-    off.setAttribute('aria-hidden','false');
-    // darken background for clarity (simple approach)
-    document.body.style.overflow = 'hidden';
-  }
-  function closeOffcanvas(){
-    off.style.display = 'none';
-    off.classList.remove('offcanvas');
-    off.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-  }
+  function openOffcanvas(){ off.style.display = 'block'; off.classList.add('offcanvas'); off.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
+  function closeOffcanvas(){ off.style.display = 'none'; off.classList.remove('offcanvas'); off.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
 
   if(hamburger){
     hamburger.addEventListener('click', ()=>{
@@ -421,7 +417,6 @@
     });
   }
 
-  // close on outside click
   document.addEventListener('click', (e)=>{
     if(window.innerWidth <= 900 && off.style.display === 'block'){
       const within = e.composedPath().includes(off) || e.composedPath().includes(hamburger);
