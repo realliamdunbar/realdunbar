@@ -57,7 +57,6 @@
     padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.28);
     border:1px solid rgba(255,255,255,0.03);color:#fff;text-align:left;font-weight:600;cursor:pointer;
     transition:transform .12s,background .15s;
-    /* prevent accidental text selection when clicking */
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
     outline:none;
   }
@@ -98,6 +97,7 @@
   .show-hero{display:flex;justify-content:center;margin:6px 0 12px}
   .show-hero .pill{
     background:rgba(80,20,20,0.95);padding:18px 34px;border-radius:34px;font-family:"Baloo 2",cursive;font-size:28px;box-shadow:0 10px 30px rgba(0,0,0,0.5);max-width:1100px;text-align:center;width:100%;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
   }
   .show-subtitle{margin-top:8px;text-align:center;color:rgba(255,255,255,0.9);font-size:18px}
 
@@ -111,9 +111,7 @@
   .show-buttons .large-btn.reject{background:rgba(0,0,0,0.85)}
   .social-list{max-width:700px;margin:22px auto;padding:8px 0 0 0;color:#fff;font-size:18px}
   .social-list a{display:block;padding:10px 0;color:#fff;text-decoration:none}
-  .social-container{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
-  .social-left{flex:1;min-width:200px}
-  .social-right{flex:2;min-width:220px}
+  .social-card{background:rgba(0,0,0,0.6);padding:16px;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.5);max-width:900px;margin:18px auto}
 
   /* rejection animation + toast */
   @keyframes shakeX {
@@ -133,6 +131,9 @@
   }
   .reject-toast.show{opacity:1;transform:none}
 
+  /* remove focus outline but keep keyboard focus visible (soft) */
+  .large-btn:focus, .btn:focus { box-shadow:0 0 0 4px rgba(255,255,255,0.03) inset; outline:none; }
+
   /* Responsive breakpoints */
   @media (max-width:900px){
     .sidebar{display:none}
@@ -148,6 +149,7 @@
     .name{font-size:18px;padding:8px}
     .show-buttons .large-btn{min-width:200px;max-width:100%}
     .show-hero .pill{font-size:20px;padding:12px 18px;border-radius:20px}
+    .social-card{margin:12px auto}
   }
 
   @media (max-width:520px){
@@ -326,38 +328,19 @@
                 My vision yearns for a finished, polished shape.
               </button>
             </div>
-
-            <!-- small caption area (to mimic screenshot layout) -->
-            <div style="margin-top:18px;display:flex;justify-content:center;">
-              <div style="width:760px;background:rgba(0,0,0,0.35);padding:18px;border-radius:12px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-                <div style="color:rgba(255,255,255,0.95);font-size:18px">The weight of his truth is already settled upon my spirit.</div>
-              </div>
-            </div>
           </div>
 
           <!-- alternate show state (screenshot2) - hidden until button1 clicked -->
           <div id="showSocial" class="fade-in" style="display:none;margin-top:12px">
-            <div class="social-container">
-              <div class="social-left">
-                <div style="font-size:18px;margin-bottom:8px;color:rgba(255,255,255,0.92)">Instagram</div>
-                <div style="font-size:18px;margin-bottom:8px;color:rgba(255,255,255,0.92)">WhatsApp</div>
-                <div style="font-size:18px;margin-bottom:8px;color:rgba(255,255,255,0.92)">Telegram</div>
-                <div style="font-size:18px;margin-bottom:8px;color:rgba(255,255,255,0.92)">Snapchat</div>
-                <div style="font-size:18px;margin-bottom:8px;color:rgba(255,255,255,0.92)">Twitter</div>
-              </div>
-
-              <div class="social-right" style="padding-left:18px">
-                <div style="background:rgba(0,0,0,0.6);padding:16px;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.5)">
-                  <p style="font-size:18px;color:rgba(255,255,255,0.95);margin-bottom:10px">Release the anchor. Steer him from the sheltered harbor, and name every storm and beacon that waits on the wild ocean of the living world.</p>
-                  <nav class="social-list" aria-label="Social links">
-                    <a href="https://example.com/instagram" target="_blank" rel="noopener noreferrer">Instagram — placeholder link</a>
-                    <a href="https://example.com/whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp — placeholder link</a>
-                    <a href="https://example.com/telegram" target="_blank" rel="noopener noreferrer">Telegram — placeholder link</a>
-                    <a href="https://example.com/snapchat" target="_blank" rel="noopener noreferrer">Snapchat — placeholder link</a>
-                    <a href="https://example.com/twitter" target="_blank" rel="noopener noreferrer">Twitter — placeholder link</a>
-                  </nav>
-                </div>
-              </div>
+            <div class="social-card">
+              <p style="font-size:18px;color:rgba(255,255,255,0.95);margin-bottom:14px">Release the anchor. Steer him from the sheltered harbor, and name every storm and beacon that waits on the wild ocean of the living world.</p>
+              <nav class="social-list" aria-label="Social links">
+                <a href="https://example.com/instagram" target="_blank" rel="noopener noreferrer">Instagram — placeholder link</a>
+                <a href="https://example.com/whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp — placeholder link</a>
+                <a href="https://example.com/telegram" target="_blank" rel="noopener noreferrer">Telegram — placeholder link</a>
+                <a href="https://example.com/snapchat" target="_blank" rel="noopener noreferrer">Snapchat — placeholder link</a>
+                <a href="https://example.com/twitter" target="_blank" rel="noopener noreferrer">Twitter — placeholder link</a>
+              </nav>
             </div>
           </div>
 
@@ -518,7 +501,6 @@
   const toast = document.getElementById('rejectToast');
 
   function clearSelection(){
-    // remove any blue text selection that might have happened
     const sel = window.getSelection ? window.getSelection() : null;
     if(sel && sel.removeAllRanges) sel.removeAllRanges();
     try{ document.activeElement && document.activeElement.blur(); }catch(e){}
@@ -527,43 +509,40 @@
   if(btn1){
     btn1.addEventListener('click', ()=>{
       clearSelection();
-      // show social state (screenshot 2)
       showState.style.display = 'none';
       showSocial.style.display = 'block';
       btn1.setAttribute('aria-pressed','true');
       if(btn2) btn2.setAttribute('aria-pressed','false');
+      // scroll to top of content area so the card is visible
+      const contentArea = document.querySelector('.content-area');
+      if(contentArea) contentArea.scrollTop = 0;
+      window.scrollTo({top:0,left:0});
     });
   }
 
   if(btn2){
     btn2.addEventListener('click', ()=>{
       clearSelection();
-      // shake the reject button
       btn2.classList.add('reject-animate');
       btn2.setAttribute('aria-pressed','true');
 
-      // show a small toast message (custom rejection message). We'll reuse the element created in DOM.
       if(toast){
         toast.textContent = "Rejection — not this time.";
         toast.style.display = 'block';
-        // force reflow then show class
         void toast.offsetWidth;
         toast.classList.add('show');
-        // hide after 1800ms
         setTimeout(()=> {
           toast.classList.remove('show');
           setTimeout(()=> toast.style.display = 'none', 260);
         }, 1800);
       }
 
-      // remove animation class after it finishes
       setTimeout(()=> {
         btn2.classList.remove('reject-animate');
         btn2.setAttribute('aria-pressed','false');
       }, 520);
     });
 
-    // prevent focus/selection via keyboard or mouse hold
     btn2.addEventListener('mousedown', (e)=> { e.preventDefault(); });
     btn2.addEventListener('mouseup', (e)=> { e.preventDefault(); });
   }
