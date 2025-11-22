@@ -53,7 +53,14 @@
   .name{width:100%;text-align:center;font-family:"Baloo 2",cursive;font-size:26px;padding:12px;border-radius:12px;background:linear-gradient(90deg,var(--accent),rgba(120,10,10,0.9));box-shadow:0 6px 18px rgba(0,0,0,0.6)}
 
   .nav{width:100%;display:flex;flex-direction:column;gap:12px}
-  .btn{padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.28);border:1px solid rgba(255,255,255,0.03);color:#fff;text-align:left;font-weight:600;cursor:pointer;transition:transform .12s,background .15s}
+  .btn{
+    padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.28);
+    border:1px solid rgba(255,255,255,0.03);color:#fff;text-align:left;font-weight:600;cursor:pointer;
+    transition:transform .12s,background .15s;
+    /* prevent accidental text selection when clicking */
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
+    outline:none;
+  }
   .btn:hover{transform:translateY(-3px);background:rgba(0,0,0,0.36)}
   .btn.active{background:linear-gradient(90deg,var(--accent),rgba(130,10,10,0.9));box-shadow:0 8px 20px rgba(140,10,10,0.28)}
 
@@ -96,7 +103,9 @@
 
   .show-buttons{display:flex;gap:18px;justify-content:center;margin-top:18px;flex-wrap:wrap}
   .show-buttons .large-btn{
-    padding:18px 26px;border-radius:10px;min-width:380px;max-width:65%;background:rgba(255,255,255,0.06);border:6px solid rgba(0,0,0,0.4);color:#fff;font-size:18px;text-align:center;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,0.4)
+    padding:18px 26px;border-radius:10px;min-width:380px;max-width:65%;background:rgba(255,255,255,0.06);border:6px solid rgba(0,0,0,0.4);color:#fff;font-size:18px;text-align:center;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,0.4);
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
+    outline:none;
   }
   .show-buttons .large-btn.primary{background:rgba(115,20,20,0.95);border-color:rgba(90,10,10,0.9)}
   .show-buttons .large-btn.reject{background:rgba(0,0,0,0.85)}
@@ -105,6 +114,24 @@
   .social-container{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
   .social-left{flex:1;min-width:200px}
   .social-right{flex:2;min-width:220px}
+
+  /* rejection animation + toast */
+  @keyframes shakeX {
+    0%{transform:translateX(0)}
+    20%{transform:translateX(-8px)}
+    40%{transform:translateX(6px)}
+    60%{transform:translateX(-4px)}
+    80%{transform:translateX(2px)}
+    100%{transform:none}
+  }
+  .reject-animate{
+    animation:shakeX .42s cubic-bezier(.36,.07,.19,.97);
+  }
+  .reject-toast{
+    position:fixed;right:22px;top:86px;background:rgba(25,10,10,0.95);color:#fff;padding:12px 16px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.6);z-index:1200;opacity:0;transform:translateY(-8px);transition:opacity .25s,transform .25s;
+    font-weight:600;
+  }
+  .reject-toast.show{opacity:1;transform:none}
 
   /* Responsive breakpoints */
   @media (max-width:900px){
@@ -131,6 +158,7 @@
     .card{padding:12px;border-radius:10px}
     h1.section-title{font-size:22px}
     p.lead{font-size:14px;line-height:1.7}
+    .reject-toast{top:68px;right:12px}
   }
 </style>
 </head>
@@ -340,6 +368,9 @@
   </main>
 </div>
 
+<!-- rejection toast placeholder (created once by JS) -->
+<div id="rejectToast" class="reject-toast" style="display:none">Choice rejected.</div>
+
 <script>
 /* Loader */
 (function(){
@@ -478,19 +509,27 @@
   });
 })();
 
-/* --- Show section interactivity --- */
+/* --- Show section interactivity: Button1 reveals social links, Button2 rejects with animation + toast --- */
 (function(){
   const btn1 = document.getElementById('showBtn1');
   const btn2 = document.getElementById('showBtn2');
   const showState = document.getElementById('showState');
   const showSocial = document.getElementById('showSocial');
+  const toast = document.getElementById('rejectToast');
+
+  function clearSelection(){
+    // remove any blue text selection that might have happened
+    const sel = window.getSelection ? window.getSelection() : null;
+    if(sel && sel.removeAllRanges) sel.removeAllRanges();
+    try{ document.activeElement && document.activeElement.blur(); }catch(e){}
+  }
 
   if(btn1){
     btn1.addEventListener('click', ()=>{
+      clearSelection();
       // show social state (screenshot 2)
       showState.style.display = 'none';
       showSocial.style.display = 'block';
-      // update aria-pressed
       btn1.setAttribute('aria-pressed','true');
       if(btn2) btn2.setAttribute('aria-pressed','false');
     });
@@ -498,11 +537,35 @@
 
   if(btn2){
     btn2.addEventListener('click', ()=>{
-      // rejection: do nothing visible (you asked rejection). We'll briefly flash an active state then revert.
-      btn2.classList.add('active-temp');
+      clearSelection();
+      // shake the reject button
+      btn2.classList.add('reject-animate');
       btn2.setAttribute('aria-pressed','true');
-      setTimeout(()=> { btn2.setAttribute('aria-pressed','false'); btn2.classList.remove('active-temp'); }, 420);
+
+      // show a small toast message (custom rejection message). We'll reuse the element created in DOM.
+      if(toast){
+        toast.textContent = "Rejection — not this time.";
+        toast.style.display = 'block';
+        // force reflow then show class
+        void toast.offsetWidth;
+        toast.classList.add('show');
+        // hide after 1800ms
+        setTimeout(()=> {
+          toast.classList.remove('show');
+          setTimeout(()=> toast.style.display = 'none', 260);
+        }, 1800);
+      }
+
+      // remove animation class after it finishes
+      setTimeout(()=> {
+        btn2.classList.remove('reject-animate');
+        btn2.setAttribute('aria-pressed','false');
+      }, 520);
     });
+
+    // prevent focus/selection via keyboard or mouse hold
+    btn2.addEventListener('mousedown', (e)=> { e.preventDefault(); });
+    btn2.addEventListener('mouseup', (e)=> { e.preventDefault(); });
   }
 })();
 </script>
