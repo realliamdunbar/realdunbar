@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Now Playing — Test</title>
+  <style>
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;background:#020617;color:#f8fafc}
+    .center{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;padding:20px}
+    .btn{background:#fff;color:#020617;border-radius:999px;padding:12px 20px;font-weight:700;border:0;box-shadow:0 6px 20px rgba(0,0,0,.6)}
+    .err{color:#ffd2d2;background:rgba(255,0,0,.08);padding:10px;border-radius:8px;border:1px solid rgba(255,0,0,.12)}
+    .ok{color:#d1fae5;background:rgba(34,197,94,.06);padding:10px;border-radius:8px;border:1px solid rgba(34,197,94,.12)}
+    small{color:#94a3b8}
+  </style>
+</head>
+<body>
+  <div class="center">
+    <div style="display:flex;align-items:center;gap:12px">
+      <img src="Avatar.jpg" alt="cover" style="width:64px;height:64px;border-radius:8px;object-fit:cover;box-shadow:0 8px 20px rgba(0,0,0,.6)">
+      <div>
+        <div style="font-weight:700">You'll Be In My Heart — Phil Collins</div>
+        <small>Test player</small>
+      </div>
+    </div>
+
+    <button id="playBtn" class="btn">Play / Pause</button>
+
+    <div id="status" class="err" style="display:none"></div>
+    <div id="ok" class="ok" style="display:none">Audio loaded and ready.</div>
+
+    <div style="margin-top:8px">
+      <small>Make sure your file is named <strong>song.mp3</strong> and is in the same folder as this HTML.</small>
+    </div>
+  </div>
+
+  <!-- simplified audio tag; name must match the file in the folder -->
+  <audio id="audio" src="song.mp3" preload="metadata"></audio>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const btn = document.getElementById('playBtn');
+    const status = document.getElementById('status');
+    const ok = document.getElementById('ok');
+
+    // show file metadata if available
+    audio.addEventListener('loadedmetadata', () => {
+      ok.style.display = 'block';
+      status.style.display = 'none';
+    });
+
+    // handle play promise for modern browsers
+    async function tryToggle() {
+      try {
+        if (audio.paused) {
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            await playPromise;
+          }
+          btn.textContent = '⏸ Pause';
+        } else {
+          audio.pause();
+          btn.textContent = '▶ Play';
+        }
+      } catch (err) {
+        // common errors: file not found, CORS, autoplay blocked, decoding error
+        console.error('Play error:', err);
+        status.style.display = 'block';
+        status.textContent = 'Cannot play audio: ' + (err && err.message ? err.message : String(err));
+        ok.style.display = 'none';
+        // additional friendly hint
+        status.innerHTML += '\\nHint: rename the mp3 to "song.mp3" and place it in the same folder as this HTML.';
+      }
+    }
+
+    btn.addEventListener('click', tryToggle);
+
+    // helpful extra: if audio fails to load at all
+    audio.addEventListener('error', (e) => {
+      console.error('Audio element error', e);
+      status.style.display = 'block';
+      let code = audio.error && audio.error.code ? audio.error.code : 'unknown';
+      status.textContent = 'Audio load error (code ' + code + '). Check file name and path.';
+      ok.style.display = 'none';
+    });
+
+    // show current time for debugging (optional)
+    audio.addEventListener('timeupdate', () => {
+      // (not displayed) but useful if you want to log
+    });
+  </script>
+</body>
+</html>
