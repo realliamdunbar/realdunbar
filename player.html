@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>You'll Be In My Heart · Liam Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-dark: #020617;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --accent: #f97316;
+      --accent-soft: rgba(249, 115, 22, 0.18);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      width: 100vw;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      color: var(--text-main);
+      background: var(--bg-dark);
+      overflow: hidden;
+    }
+
+    /* Background with blur */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(248, 113, 113, 0.4), transparent),
+        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.4), transparent),
+        #020617;
+      z-index: -2;
+    }
+
+    .bg-layer::before {
+      content: "";
+      position: absolute;
+      inset: -20px;
+      background: url("Avatar.jpg") center center / cover no-repeat;
+      filter: blur(24px) brightness(0.35);
+      opacity: 0.9;
+      mix-blend-mode: screen;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.4), transparent);
+      z-index: -1;
+    }
+
+    /* Layout */
+
+    .app {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 960px;
+      background: var(--card-bg);
+      border-radius: 32px;
+      padding: 20px 18px;
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(22px) saturate(140%);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    @media (min-width: 800px) {
+      .card {
+        padding: 24px 26px;
+        flex-direction: row;
+        gap: 24px;
+      }
+    }
+
+    /* Left: artwork + controls */
+
+    .left {
+      flex: 0 0 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+
+    @media (max-width: 799px) {
+      .left {
+        flex: none;
+      }
+    }
+
+    .artwork-wrap {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 1 / 1;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #020617;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    }
+
+    .artwork-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .track-meta {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 6px;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin-top: 2px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .subtitle span + span::before {
+      content: "•";
+      padding: 0 6px;
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    /* Controls */
+
+    .controls {
+      width: 100%;
+      max-width: 320px;
+      margin-top: 10px;
+    }
+
+    .buttons-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .btn-main {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: #f9fafb;
+      color: #020617;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.9);
+      font-size: 20px;
+    }
+
+    .btn-main:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.9);
+    }
+
+    .btn-small {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--text-muted);
+      padding: 6px 10px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .time-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .seek-bar {
+      position: relative;
+      width: 100%;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(30, 41, 59, 0.9);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .seek-fill {
+      position: absolute;
+      inset: 0;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #f97316);
+      border-radius: 999px;
+    }
+
+    .seek-thumb {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #f9fafb;
+      box-shadow: 0 0 0 4px rgba(249, 250, 251, 0.18);
+    }
+
+    /* Right: lyrics */
+
+    .right {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 520px;
+    }
+
+    .lyrics-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .lyrics-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .lyrics-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .lyrics-panel {
+      flex: 1;
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      padding: 12px 14px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    .lyrics-line {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      padding: 4px 2px;
+      line-height: 1.6;
+      transition: color 0.25s ease, transform 0.25s ease;
+      white-space: pre-wrap;
+    }
+
+    .lyrics-line.active {
+      color: #fefce8;
+      transform: scale(1.03);
+    }
+
+    .lyrics-line.active strong {
+      color: #fefce8;
+    }
+
+    .lyrics-line span.time {
+      display: none;
+      font-size: 0.7rem;
+      opacity: 0.6;
+      margin-right: 6px;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Scrollbar */
+
+    .lyrics-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+    .lyrics-panel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .lyrics-panel::-webkit-scrollbar-thumb {
+      background: rgba(75, 85, 99, 0.8);
+      border-radius: 999px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="bg-layer"></div>
+  <div class="overlay"></div>
+
+  <div class="app">
+    <div class="card">
+      <!-- LEFT: Artwork + controls -->
+      <div class="left">
+        <div class="artwork-wrap">
+          <img src="Avatar.jpg" alt="Cover Art" />
+        </div>
+
+        <div class="track-meta">
+          <div class="badge">
+            <span class="badge-dot"></span>
+            Now Playing · Ethan & Liam
+          </div>
+          <div class="title">You'll Be In My Heart</div>
+          <div class="subtitle">
+            <span>Phil Collins</span>
+            <span>Disney Summer Songs</span>
+            <span>Soundtrack Version</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="buttons-row">
+            <button class="btn-main" id="playPauseBtn" aria-label="Play">
+              ▶
+            </button>
+            <button class="btn-small" disabled>
+              LIVE LYRICS ON
+            </button>
+          </div>
+
+          <div class="time-row">
+            <span id="currentTime">0:00</span>
+            <span id="duration">4:18</span>
+          </div>
+          <div class="seek-bar" id="seekBar">
+            <div class="seek-fill" id="seekFill"></div>
+            <div class="seek-thumb" id="seekThumb" style="left:0%;"></div>
+          </div>
+
+          <div class="hint">
+            Click the bar to seek · Space / Enter = Play / Pause
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Lyrics -->
+      <div class="right">
+        <div class="lyrics-header">
+          <div class="lyrics-title">Live lyrics</div>
+          <div class="lyrics-subtitle">
+            Synced to: You'll Be In My Heart · Phil Collins
+          </div>
+        </div>
+        <div class="lyrics-panel" id="lyricsPanel">
+          <!-- Lyrics will be injected here -->
+        </div>
+        <div class="hint">
+          The highlighted line is where you are right now.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio element -->
+  <audio
+    id="audio"
+    src="You'll Be In My Heart - Phil Collins.mp3"
+    preload="metadata"
+  ></audio>
+
+  <script>
+    const audio = document.getElementById("audio");
+    const playPauseBtn = document.getElementById("playPauseBtn");
+    const currentTimeEl = document.getElementById("currentTime");
+    const durationEl = document.getElementById("duration");
+    const seekBar = document.getElementById("seekBar");
+    const seekFill = document.getElementById("seekFill");
+    const seekThumb = document.getElementById("seekThumb");
+    const lyricsPanel = document.getElementById("lyricsPanel");
+
+    // Time in seconds + text (from your LRC)
+    const LYRICS = [
+      { t: 10.59, text: "Come stop your crying, it will be alright" },
+      { t: 15.56, text: "Just take my hand, hold it tight" },
+      { t: 20.52, text: "I will protect you from all around you" },
+      { t: 25.49, text: "I will be here, don't you cry" },
+
+      { t: 30.50, text: "For one so small, you seem so strong" },
+      { t: 35.43, text: "My arms will hold you, keep you safe and warm" },
+      { t: 40.44, text: "This bond between us can't be broken" },
+      { t: 45.30, text: "I will be here, don't you cry" },
+
+      { t: 49.73, text: "'Cause you'll be in my heart" },
+      { t: 54.66, text: "Yes, you'll be in my heart" },
+      { t: 59.65, text: "From this day on, now and forevermore" },
+      { t: 70.01, text: "You'll be in my heart" },
+      { t: 74.61, text: "No matter what they say" },
+      { t: 79.47, text: "You'll be here in my heart, always" },
+
+      { t: 92.66, text: "Why can't they understand the way we feel?" },
+      { t: 97.42, text: "They just don't trust what they can't explain" },
+      { t: 102.43, text: "I know we're different, but deep inside us" },
+      { t: 107.41, text: "We're not that different at all" },
+
+      { t: 111.72, text: "And you'll be in my heart" },
+      { t: 116.76, text: "Yes, you'll be in my heart" },
+      { t: 121.66, text: "From this day on, now and forevermore" },
+
+      { t: 131.69, text: "Don't listen to them" },
+      { t: 134.34, text: "'Cause what do they know?" },
+      { t: 136.69, text: "We need each other, to have, to hold" },
+      { t: 141.59, text: "They'll see in time, I know" },
+
+      { t: 151.47, text: "When destiny calls you" },
+      { t: 154.10, text: "You must be strong" },
+      { t: 156.52, text: "I may not be with you, but you got to hold on" },
+      { t: 161.50, text: "They'll see in time, I know" },
+      { t: 168.97, text: "We'll show them together" },
+
+      { t: 171.37, text: "'Cause you'll be in my heart" },
+      { t: 175.95, text: "Believe me, you'll be in my heart" },
+      { t: 180.57, text: "I'll be there from this day on, now and forevermore" },
+
+      { t: 191.05, text: "Ooh, you'll be in my heart" },
+      { t: 196.55, text: "No matter what they say" },
+      { t: 201.34, text: "You'll be here in my heart" },
+      { t: 206.37, text: "Always, always" },
+
+      { t: 216.05, text: "I'll be with you" },
+      { t: 221.11, text: "I'll be there for you always" },
+      { t: 225.07, text: "Always and always" },
+
+      { t: 230.56, text: "Just look over your shoulder" },
+      { t: 235.51, text: "Just look over your shoulder" },
+      { t: 240.52, text: "Just look over your shoulder" },
+      { t: 244.01, text: "I'll be there, always" }
+    ];
+
+    // Build lyrics DOM
+    let lyricNodes = [];
+
+    function buildLyrics() {
+      lyricsPanel.innerHTML = "";
+      lyricNodes = LYRICS.map((line, idx) => {
+        const div = document.createElement("div");
+        div.className = "lyrics-line";
+        div.dataset.index = idx;
+        div.textContent = line.text;
+        lyricsPanel.appendChild(div);
+        return div;
+      });
+    }
+
+    buildLyrics();
+
+    // Helpers
+
+    function formatTime(sec) {
+      if (isNaN(sec) || sec < 0) sec = 0;
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2, "0")}`;
+    }
+
+    function setPlayState(isPlaying) {
+      if (isPlaying) {
+        playPauseBtn.textContent = "⏸";
+        playPauseBtn.setAttribute("aria-label", "Pause");
+      } else {
+        playPauseBtn.textContent = "▶";
+        playPauseBtn.setAttribute("aria-label", "Play");
+      }
+    }
+
+    // Play/pause
+    playPauseBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener("play", () => setPlayState(true));
+    audio.addEventListener("pause", () => setPlayState(false));
+    audio.addEventListener("ended", () => {
+      setPlayState(false);
+    });
+
+    // Time update + seek bar + lyrics sync
+    audio.addEventListener("timeupdate", () => {
+      const current = audio.currentTime || 0;
+      const dur = audio.duration || 0;
+
+      currentTimeEl.textContent = formatTime(current);
+      if (!isNaN(dur) && dur > 0) {
+        durationEl.textContent = formatTime(dur);
+        const pct = (current / dur) * 100;
+        seekFill.style.width = pct + "%";
+        seekThumb.style.left = pct + "%";
+      }
+
+      updateActiveLyric(current);
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+      if (!isNaN(audio.duration)) {
+        durationEl.textContent = formatTime(audio.duration);
+      }
+    });
+
+    function updateActiveLyric(currentTime) {
+      let idx = -1;
+      for (let i = 0; i < LYRICS.length; i++) {
+        const thisTime = LYRICS[i].t;
+        const nextTime = i < LYRICS.length - 1 ? LYRICS[i + 1].t : Infinity;
+        if (currentTime >= thisTime && currentTime < nextTime) {
+          idx = i;
+          break;
+        }
+      }
+
+      lyricNodes.forEach((node, i) => {
+        if (i === idx) {
+          if (!node.classList.contains("active")) {
+            node.classList.add("active");
+            // Scroll into view, but not all the way to top
+            const rect = node.getBoundingClientRect();
+            const containerRect = lyricsPanel.getBoundingClientRect();
+            const offset = rect.top - containerRect.top - containerRect.height / 3;
+            lyricsPanel.scrollTop += offset;
+          }
+        } else {
+          node.classList.remove("active");
+        }
+      });
+    }
+
+    // Seek by click
+    seekBar.addEventListener("click", (e) => {
+      const rect = seekBar.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const pct = Math.min(Math.max(x / rect.width, 0), 1);
+      if (!isNaN(audio.duration)) {
+        audio.currentTime = pct * audio.duration;
+      }
+    });
+
+    // Keyboard: Space / Enter to play/pause
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space" || e.code === "Enter") {
+        e.preventDefault();
+        if (audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
