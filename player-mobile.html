@@ -1,91 +1,511 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Now Playing — Test</title>
+  <meta charset="UTF-8" />
+  <title>You'll Be In My Heart · Now Playing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;background:#020617;color:#f8fafc}
-    .center{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;padding:20px}
-    .btn{background:#fff;color:#020617;border-radius:999px;padding:12px 20px;font-weight:700;border:0;box-shadow:0 6px 20px rgba(0,0,0,.6)}
-    .err{color:#ffd2d2;background:rgba(255,0,0,.08);padding:10px;border-radius:8px;border:1px solid rgba(255,0,0,.12)}
-    .ok{color:#d1fae5;background:rgba(34,197,94,.06);padding:10px;border-radius:8px;border:1px solid rgba(34,197,94,.12)}
-    small{color:#94a3b8}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --text-main: #f9fafb;
+      --text-muted: #d1d5db;
+      --text-faded: #9ca3af;
+      --accent: #fbbf24;
+      --accent-soft: rgba(251, 191, 36, 0.25);
+    }
+
+    body {
+      height: 100vh;
+      width: 100vw;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        system-ui, sans-serif;
+      background: #020617;
+      color: var(--text-main);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Blurred background from Avatar.jpg */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: #020617;
+      z-index: -2;
+    }
+
+    .bg::before {
+      content: "";
+      position: absolute;
+      inset: -30px;
+      background: url("Avatar.jpg") center center / cover no-repeat;
+      filter: blur(30px) brightness(0.4);
+      opacity: 0.9;
+    }
+
+    .bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(0, 0, 0, 0.5), transparent),
+        linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.2));
+      mix-blend-mode: multiply;
+    }
+
+    /* Layout */
+    .screen {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      padding: 16px 18px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Top bar */
+    .top-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 4px;
+    }
+
+    .artwork-mini {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(15, 23, 42, 0.8);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+      flex-shrink: 0;
+    }
+
+    .artwork-mini img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .track-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .track-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-artist {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(209, 213, 219, 0.4);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* Center lyrics */
+    .lyrics-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 0 4px;
+    }
+
+    .lyric-line {
+      width: 100%;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .lyric-prev,
+    .lyric-next {
+      font-size: 1.05rem;
+      color: var(--text-faded);
+      opacity: 0.55;
+    }
+
+    .lyric-current {
+      font-size: 1.6rem;
+      color: var(--text-main);
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Progress + controls bottom */
+
+    .bottom-area {
+      padding-top: 4px;
+    }
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      padding: 0 2px;
+    }
+
+    .progress {
+      position: relative;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .progress-fill {
+      position: absolute;
+      inset: 0;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #fbbf24);
+      border-radius: inherit;
+    }
+
+    .controls-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      margin-bottom: 12px;
+    }
+
+    .ctrl-btn {
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ctrl-main {
+      width: 58px;
+      height: 58px;
+      border-radius: 999px;
+      background: #f9fafb;
+      color: #020617;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.9);
+      font-size: 24px;
+    }
+
+    .ctrl-main:active {
+      transform: scale(0.97);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9);
+    }
+
+    .bottom-meta {
+      display: flex;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      opacity: 0.9;
+    }
+
+    .bottom-meta span {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    @media (min-width: 768px) {
+      .lyrics-area {
+        padding-inline: 24px;
+      }
+      .lyric-current {
+        font-size: 2rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="center">
-    <div style="display:flex;align-items:center;gap:12px">
-      <img src="Avatar.jpg" alt="cover" style="width:64px;height:64px;border-radius:8px;object-fit:cover;box-shadow:0 8px 20px rgba(0,0,0,.6)">
-      <div>
-        <div style="font-weight:700">You'll Be In My Heart — Phil Collins</div>
-        <small>Test player</small>
+  <div class="bg"></div>
+
+  <div class="screen">
+    <!-- TOP -->
+    <div class="top-row">
+      <div class="artwork-mini">
+        <img src="Avatar.jpg" alt="Cover Art" />
       </div>
+      <div class="track-info">
+        <div class="track-title">You'll Be In My Heart</div>
+        <div class="track-artist">Phil Collins</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="pill">Ethan • Live Lyrics</div>
     </div>
 
-    <button id="playBtn" class="btn">Play / Pause</button>
+    <!-- CENTER LYRICS -->
+    <div class="lyrics-area">
+      <div class="lyric-line lyric-prev" id="lyricPrev">&nbsp;</div>
+      <div class="lyric-line lyric-current" id="lyricCurrent">
+        &nbsp;
+      </div>
+      <div class="lyric-line lyric-next" id="lyricNext">&nbsp;</div>
+    </div>
 
-    <div id="status" class="err" style="display:none"></div>
-    <div id="ok" class="ok" style="display:none">Audio loaded and ready.</div>
+    <!-- BOTTOM CONTROLS -->
+    <div class="bottom-area">
+      <div class="time-row">
+        <span id="timeCurrent">0:00</span>
+        <span id="timeDuration">4:18</span>
+      </div>
+      <div class="progress" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
 
-    <div style="margin-top:8px">
-      <small>Make sure your file is named <strong>song.mp3</strong> and is in the same folder as this HTML.</small>
+      <div class="controls-row">
+        <button class="ctrl-btn" id="btnPrev" aria-label="Previous line">
+          ‹‹
+        </button>
+        <button class="ctrl-btn ctrl-main" id="btnPlay" aria-label="Play">
+          ▶
+        </button>
+        <button class="ctrl-btn" id="btnNext" aria-label="Next line">
+          ››
+        </button>
+      </div>
+
+      <div class="bottom-meta">
+        <span>You'll be here in my heart, always.</span>
+      </div>
     </div>
   </div>
 
-  <!-- simplified audio tag; name must match the file in the folder -->
-  <audio id="audio" src="song.mp3" preload="metadata"></audio>
+  <audio
+    id="audio"
+    src="You'll Be In My Heart - Phil Collins.mp3"
+    preload="metadata"
+  ></audio>
 
   <script>
-    const audio = document.getElementById('audio');
-    const btn = document.getElementById('playBtn');
-    const status = document.getElementById('status');
-    const ok = document.getElementById('ok');
+    const audio = document.getElementById("audio");
+    const btnPlay = document.getElementById("btnPlay");
+    const btnPrev = document.getElementById("btnPrev");
+    const btnNext = document.getElementById("btnNext");
+    const timeCurrent = document.getElementById("timeCurrent");
+    const timeDuration = document.getElementById("timeDuration");
+    const progressBar = document.getElementById("progressBar");
+    const progressFill = document.getElementById("progressFill");
 
-    // show file metadata if available
-    audio.addEventListener('loadedmetadata', () => {
-      ok.style.display = 'block';
-      status.style.display = 'none';
-    });
+    const lyricPrev = document.getElementById("lyricPrev");
+    const lyricCurrent = document.getElementById("lyricCurrent");
+    const lyricNext = document.getElementById("lyricNext");
 
-    // handle play promise for modern browsers
-    async function tryToggle() {
-      try {
-        if (audio.paused) {
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            await playPromise;
-          }
-          btn.textContent = '⏸ Pause';
-        } else {
-          audio.pause();
-          btn.textContent = '▶ Play';
-        }
-      } catch (err) {
-        // common errors: file not found, CORS, autoplay blocked, decoding error
-        console.error('Play error:', err);
-        status.style.display = 'block';
-        status.textContent = 'Cannot play audio: ' + (err && err.message ? err.message : String(err));
-        ok.style.display = 'none';
-        // additional friendly hint
-        status.innerHTML += '\\nHint: rename the mp3 to "song.mp3" and place it in the same folder as this HTML.';
-      }
+    // lyrics (seconds + text)
+    const LYRICS = [
+      { t: 10.59, text: "Come stop your crying, it will be alright" },
+      { t: 15.56, text: "Just take my hand, hold it tight" },
+      { t: 20.52, text: "I will protect you from all around you" },
+      { t: 25.49, text: "I will be here, don't you cry" },
+
+      { t: 30.50, text: "For one so small, you seem so strong" },
+      { t: 35.43, text: "My arms will hold you, keep you safe and warm" },
+      { t: 40.44, text: "This bond between us can't be broken" },
+      { t: 45.30, text: "I will be here, don't you cry" },
+
+      { t: 49.73, text: "'Cause you'll be in my heart" },
+      { t: 54.66, text: "Yes, you'll be in my heart" },
+      {
+        t: 59.65,
+        text: "From this day on, now and forevermore"
+      },
+      { t: 70.01, text: "You'll be in my heart" },
+      { t: 74.61, text: "No matter what they say" },
+      {
+        t: 79.47,
+        text: "You'll be here in my heart, always"
+      },
+
+      {
+        t: 92.66,
+        text: "Why can't they understand the way we feel?"
+      },
+      {
+        t: 97.42,
+        text: "They just don't trust what they can't explain"
+      },
+      {
+        t: 102.43,
+        text: "I know we're different, but deep inside us"
+      },
+      { t: 107.41, text: "We're not that different at all" },
+
+      { t: 111.72, text: "And you'll be in my heart" },
+      { t: 116.76, text: "Yes, you'll be in my heart" },
+      {
+        t: 121.66,
+        text: "From this day on, now and forevermore"
+      },
+
+      { t: 131.69, text: "Don't listen to them" },
+      { t: 134.34, text: "'Cause what do they know?" },
+      {
+        t: 136.69,
+        text: "We need each other, to have, to hold"
+      },
+      { t: 141.59, text: "They'll see in time, I know" },
+
+      { t: 151.47, text: "When destiny calls you" },
+      { t: 154.10, text: "You must be strong" },
+      {
+        t: 156.52,
+        text: "I may not be with you, but you got to hold on"
+      },
+      { t: 161.50, text: "They'll see in time, I know" },
+      { t: 168.97, text: "We'll show them together" },
+
+      {
+        t: 171.37,
+        text: "'Cause you'll be in my heart"
+      },
+      {
+        t: 175.95,
+        text: "Believe me, you'll be in my heart"
+      },
+      {
+        t: 180.57,
+        text: "I'll be there from this day on, now and forevermore"
+      },
+
+      { t: 191.05, text: "Ooh, you'll be in my heart" },
+      { t: 196.55, text: "No matter what they say" },
+      { t: 201.34, text: "You'll be here in my heart" },
+      { t: 206.37, text: "Always, always" },
+
+      { t: 216.05, text: "I'll be with you" },
+      { t: 221.11, text: "I'll be there for you always" },
+      { t: 225.07, text: "Always and always" },
+
+      { t: 230.56, text: "Just look over your shoulder" },
+      { t: 235.51, text: "Just look over your shoulder" },
+      { t: 240.52, text: "Just look over your shoulder" },
+      { t: 244.01, text: "I'll be there, always" }
+    ];
+
+    let activeIndex = -1;
+
+    function format(sec) {
+      if (isNaN(sec) || sec < 0) sec = 0;
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2, "0")}`;
     }
 
-    btn.addEventListener('click', tryToggle);
+    function setPlayVisual(isPlaying) {
+      btnPlay.textContent = isPlaying ? "⏸" : "▶";
+    }
 
-    // helpful extra: if audio fails to load at all
-    audio.addEventListener('error', (e) => {
-      console.error('Audio element error', e);
-      status.style.display = 'block';
-      let code = audio.error && audio.error.code ? audio.error.code : 'unknown';
-      status.textContent = 'Audio load error (code ' + code + '). Check file name and path.';
-      ok.style.display = 'none';
+    audio.addEventListener("loadedmetadata", () => {
+      if (!isNaN(audio.duration)) {
+        timeDuration.textContent = format(audio.duration);
+      }
     });
 
-    // show current time for debugging (optional)
-    audio.addEventListener('timeupdate', () => {
-      // (not displayed) but useful if you want to log
+    btnPlay.addEventListener("click", () => {
+      if (audio.paused) audio.play();
+      else audio.pause();
+    });
+
+    audio.addEventListener("play", () => setPlayVisual(true));
+    audio.addEventListener("pause", () => setPlayVisual(false));
+    audio.addEventListener("ended", () => setPlayVisual(false));
+
+    audio.addEventListener("timeupdate", () => {
+      const cur = audio.currentTime || 0;
+      const dur = audio.duration || 0;
+      timeCurrent.textContent = format(cur);
+      if (!isNaN(dur) && dur > 0) {
+        const pct = (cur / dur) * 100;
+        progressFill.style.width = pct + "%";
+      }
+      syncLyrics(cur);
+    });
+
+    function syncLyrics(currentTime) {
+      let idx = activeIndex;
+      for (let i = 0; i < LYRICS.length; i++) {
+        const t = LYRICS[i].t;
+        const next = i < LYRICS.length - 1 ? LYRICS[i + 1].t : Infinity;
+        if (currentTime >= t && currentTime < next) {
+          idx = i;
+          break;
+        }
+      }
+      if (idx === activeIndex) return;
+      activeIndex = idx;
+
+      if (idx < 0) {
+        lyricPrev.textContent = "";
+        lyricCurrent.textContent = "";
+        lyricNext.textContent = "";
+        return;
+      }
+
+      lyricCurrent.textContent = LYRICS[idx].text || "";
+      lyricPrev.textContent = idx > 0 ? LYRICS[idx - 1].text : "";
+      lyricNext.textContent =
+        idx < LYRICS.length - 1 ? LYRICS[idx + 1].text : "";
+    }
+
+    // Simple seeking on tap
+    progressBar.addEventListener("click", (e) => {
+      const rect = progressBar.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const pct = Math.min(Math.max(x / rect.width, 0), 1);
+      if (!isNaN(audio.duration)) {
+        audio.currentTime = pct * audio.duration;
+      }
+    });
+
+    // Prev / Next buttons jump by one lyric line
+    function jump(delta) {
+      if (LYRICS.length === 0) return;
+      if (activeIndex < 0) activeIndex = 0;
+      let idx = activeIndex + delta;
+      if (idx < 0) idx = 0;
+      if (idx >= LYRICS.length) idx = LYRICS.length - 1;
+      audio.currentTime = LYRICS[idx].t + 0.05;
+      syncLyrics(audio.currentTime);
+    }
+
+    btnPrev.addEventListener("click", () => jump(-1));
+    btnNext.addEventListener("click", () => jump(1));
+
+    // Space / Enter play–pause
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space" || e.code === "Enter") {
+        e.preventDefault();
+        if (audio.paused) audio.play();
+        else audio.pause();
+      }
     });
   </script>
 </body>
