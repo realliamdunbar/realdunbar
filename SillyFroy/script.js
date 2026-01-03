@@ -17,7 +17,7 @@ btn.addEventListener('click', () => {
     }, 50);
 
     setInterval(flashColors, 400);
-    setInterval(spawnGhost, 600); // Spawn slightly faster for more chaos
+    setInterval(spawnGhost, 600); 
 });
 
 function flashColors() {
