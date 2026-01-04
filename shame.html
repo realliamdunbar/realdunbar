@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misunderstood</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap'); /* Supports IPA */
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+            background: url('bg.jpg') no-repeat center center/cover;
+            position: relative;
+            font-family: 'Noto Sans', sans-serif;
+            color: white;
+        }
+      
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); 
+            backdrop-filter: blur(5px); 
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            max-width: 800px;
+            padding: 20px;
+            z-index: 1;
+            text-shadow: 0 0 8px white, 0 0 12px white;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 0.3em;
+        }
+
+        .phonetic {
+            font-style: italic;
+            margin-bottom: 1em;
+        }
+
+        p {
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>shame</h1>
+        <div class="phonetic">/ʃeɪm/</div>
+        <p>
+            A learned inner verdict that convinces a person their existence is the mistake.
+It is the quiet belief that something essential about oneself is defective, excessive, or unwanted — not because of a single action, but because of who they are when seen.
+Shame teaches a person to monitor themselves constantly, to shrink before being rejected, to apologize before being accused. It speaks in self-corrections and silences, persuading them that safety comes from disappearing, not from being understood.
+        </p>
+    </div>
+</body>
+</html>
