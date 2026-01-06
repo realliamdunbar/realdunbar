@@ -34,24 +34,29 @@ const lrcData = `
 const music = document.getElementById('music');
 const startBtn = document.getElementById('startBtn');
 const wrapper = document.getElementById('lyrics-wrapper');
+const viewport = document.getElementById('lyrics-viewport');
+const overlay = document.getElementById('overlay');
 
 let lyrics = [];
 
 function parseLRC(text) {
     const lines = text.trim().split('\n');
-    return lines.map(line => {
+    const parsed = [];
+    lines.forEach(line => {
         const match = line.match(/\[(\d+):(\d+\.\d+)\](.+)/);
         if (match) {
-            return {
+            parsed.push({
                 time: parseInt(match[1]) * 60 + parseFloat(match[2]),
                 text: match[3].trim()
-            };
+            });
         }
-    }).filter(Boolean);
+    });
+    return parsed;
 }
 
-function init() {
+function initLyrics() {
     lyrics = parseLRC(lrcData);
+    wrapper.innerHTML = ''; // Clear existing
     lyrics.forEach((l, i) => {
         const el = document.createElement('div');
         el.className = 'lyric-line';
@@ -62,16 +67,18 @@ function init() {
 }
 
 startBtn.addEventListener('click', () => {
-    document.getElementById('overlay').classList.add('hidden');
-    document.getElementById('lyrics-viewport').classList.remove('hidden');
-    init();
-    music.play();
+    console.log("Button clicked, starting music...");
+    overlay.classList.add('hidden');
+    viewport.classList.remove('hidden');
+    initLyrics();
+    
+    music.play().catch(e => console.error("Music play failed:", e));
 });
 
 music.addEventListener('timeupdate', () => {
-    const time = music.currentTime;
+    const curTime = music.currentTime;
     const index = lyrics.findIndex((l, i) => 
-        time >= l.time && (!lyrics[i + 1] || time < lyrics[i + 1].time)
+        curTime >= l.time && (!lyrics[i + 1] || curTime < lyrics[i + 1].time)
     );
 
     if (index !== -1) {
@@ -79,14 +86,12 @@ music.addEventListener('timeupdate', () => {
         lines.forEach(line => line.classList.remove('active'));
         
         const activeLine = document.getElementById(`line-${index}`);
-        activeLine.classList.add('active');
-
-        // Center the active line
-        const viewportHeight = window.innerHeight;
-        const lineOffset = activeLine.offsetTop;
-        const lineWeight = activeLine.offsetHeight;
-        const scrollAmount = lineOffset - (viewportHeight / 2) + (lineWeight / 2);
-        
-        wrapper.style.transform = `translateY(-${scrollAmount}px)`;
+        if (activeLine) {
+            activeLine.classList.add('active');
+            
+            // Calculate center scroll
+            const offset = activeLine.offsetTop - (window.innerHeight / 2);
+            wrapper.style.transform = `translateY(-${offset}px)`;
+        }
     }
 });
