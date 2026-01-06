@@ -5,7 +5,7 @@ body, html {
     background-color: #000;
 }
 
-/* Background Layers */
+/* Background Logic */
 .bg-container {
     position: fixed; inset: 0; z-index: 1;
 }
@@ -22,36 +22,45 @@ body, html {
     -webkit-backdrop-filter: blur(20px);
 }
 
-/* Lyrics Container - Fixed in Middle */
+/* Static Central Lyrics Container */
 #lyrics-viewport {
     position: fixed;
     inset: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; /* Puts it exactly in the middle */
     z-index: 10;
-    padding: 20px;
+    padding: 30px;
+    pointer-events: none;
+}
+
+#lyrics-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .lyric-line {
-    display: none; /* Hide all lyrics by default */
-    font-size: 2.8rem;
+    display: none; /* Hides every line by default */
+    font-size: 2.5rem;
     font-weight: 900;
     color: #ffffff;
     text-align: center;
     line-height: 1.2;
     text-transform: uppercase;
-    /* Neon Glow Effect */
+    /* Neon Instagram Effect */
     text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
-    animation: fadeIn 0.3s ease-out;
+    transition: opacity 0.2s ease;
 }
 
-/* Only the active line gets shown */
+/* Show ONLY the active line */
 .lyric-line.active {
-    display: block;
+    display: block; 
+    animation: zoomIn 0.2s ease-out;
 }
 
-@keyframes fadeIn {
+@keyframes zoomIn {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
 }
