@@ -1,4 +1,4 @@
-const lrcText = `
+const lrcData = `
 [00:14.04]It's not true
 [00:19.54]Tell me I've been lied to
 [00:26.57]Crying isn't like you, ooh
@@ -33,73 +33,60 @@ const lrcText = `
 
 const music = document.getElementById('music');
 const startBtn = document.getElementById('startBtn');
-const overlay = document.getElementById('overlay');
-const container = document.getElementById('lyrics-container');
 const wrapper = document.getElementById('lyrics-wrapper');
 
-let lyricsData = [];
+let lyrics = [];
 
-// Parse the LRC string
-function parseLRC(lrc) {
-    const lines = lrc.split('\n');
-    const result = [];
-    const timeReg = /\[(\d{2}):(\d{2})\.(\d{2})\]/;
-
-    lines.forEach(line => {
-        const match = timeReg.exec(line);
+function parseLRC(text) {
+    const lines = text.trim().split('\n');
+    return lines.map(line => {
+        const match = line.match(/\[(\d+):(\d+\.\d+)\](.+)/);
         if (match) {
-            const minutes = parseInt(match[1]);
-            const seconds = parseInt(match[2]);
-            const ms = parseInt(match[3]);
-            const time = minutes * 60 + seconds + ms / 100;
-            const text = line.replace(timeReg, '').trim();
-            if (text) result.push({ time, text });
+            return {
+                time: parseInt(match[1]) * 60 + parseFloat(match[2]),
+                text: match[3].trim()
+            };
         }
-    });
-    return result;
+    }).filter(Boolean);
 }
 
-// Build the HTML for lyrics
-function buildLyrics() {
-    lyricsData = parseLRC(lrcText);
-    lyricsData.forEach((data, index) => {
-        const div = document.createElement('div');
-        div.classList.add('lyric-line');
-        div.setAttribute('id', `line-${index}`);
-        div.textContent = data.text;
-        wrapper.appendChild(div);
+function init() {
+    lyrics = parseLRC(lrcData);
+    lyrics.forEach((l, i) => {
+        const el = document.createElement('div');
+        el.className = 'lyric-line';
+        el.textContent = l.text;
+        el.id = `line-${i}`;
+        wrapper.appendChild(el);
     });
 }
 
 startBtn.addEventListener('click', () => {
-    overlay.classList.add('hidden');
-    container.classList.remove('hidden');
-    buildLyrics();
+    document.getElementById('overlay').classList.add('hidden');
+    document.getElementById('lyrics-viewport').classList.remove('hidden');
+    init();
     music.play();
 });
 
-// Track music time to update lyrics
 music.addEventListener('timeupdate', () => {
-    const currentTime = music.currentTime;
-    
-    for (let i = 0; i < lyricsData.length; i++) {
-        if (currentTime >= lyricsData[i].time && (!lyricsData[i+1] || currentTime < lyricsData[i+1].time)) {
-            updateActiveLine(i);
-            break;
-        }
+    const time = music.currentTime;
+    const index = lyrics.findIndex((l, i) => 
+        time >= l.time && (!lyrics[i + 1] || time < lyrics[i + 1].time)
+    );
+
+    if (index !== -1) {
+        const lines = document.querySelectorAll('.lyric-line');
+        lines.forEach(line => line.classList.remove('active'));
+        
+        const activeLine = document.getElementById(`line-${index}`);
+        activeLine.classList.add('active');
+
+        // Center the active line
+        const viewportHeight = window.innerHeight;
+        const lineOffset = activeLine.offsetTop;
+        const lineWeight = activeLine.offsetHeight;
+        const scrollAmount = lineOffset - (viewportHeight / 2) + (lineWeight / 2);
+        
+        wrapper.style.transform = `translateY(-${scrollAmount}px)`;
     }
 });
-
-function updateActiveLine(index) {
-    const lines = document.querySelectorAll('.lyric-line');
-    lines.forEach(line => line.classList.remove('active'));
-    
-    const activeLine = document.getElementById(`line-${index}`);
-    if (activeLine) {
-        activeLine.classList.add('active');
-        
-        // Auto-scroll logic like Apple Music
-        const offset = activeLine.offsetTop - (window.innerHeight / 2.5);
-        wrapper.style.transform = `translateY(-${offset}px)`;
-    }
-}
