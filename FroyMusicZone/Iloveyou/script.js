@@ -31,61 +31,58 @@ const lrcData = `
 [04:37.04]Ooh, ooh
 `;
 
-window.onload = function() {
-    const music = document.getElementById('music');
-    const startBtn = document.getElementById('startBtn');
-    const wrapper = document.getElementById('lyrics-wrapper');
-    const viewport = document.getElementById('lyrics-viewport');
-    const overlay = document.getElementById('overlay');
+const music = document.getElementById('music');
+const startBtn = document.getElementById('startBtn');
+const wrapper = document.getElementById('lyrics-wrapper');
 
-    let lyrics = [];
+let lyrics = [];
 
-    function parseLRC(text) {
-        const lines = text.trim().split('\n');
-        return lines.map(line => {
-            const match = line.match(/\[(\d+):(\d+\.\d+)\](.+)/);
-            if (match) {
-                return {
-                    time: parseInt(match[1]) * 60 + parseFloat(match[2]),
-                    text: match[3].trim()
-                };
-            }
-        }).filter(Boolean);
-    }
-
-    function init() {
-        lyrics = parseLRC(lrcData);
-        wrapper.innerHTML = '';
-        lyrics.forEach((l, i) => {
-            const div = document.createElement('div');
-            div.className = 'lyric-line';
-            div.id = `line-${i}`;
-            div.textContent = l.text;
-            wrapper.appendChild(div);
-        });
-    }
-
-    startBtn.addEventListener('click', () => {
-        overlay.classList.add('hidden');
-        viewport.classList.remove('hidden');
-        init();
-        music.play();
-    });
-
-    music.addEventListener('timeupdate', () => {
-        const curTime = music.currentTime;
-        const index = lyrics.findIndex((l, i) => 
-            curTime >= l.time && (!lyrics[i+1] || curTime < lyrics[i+1].time)
-        );
-
-        if (index !== -1) {
-            document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
-            const activeLine = document.getElementById(`line-${index}`);
-            if (activeLine) {
-                activeLine.classList.add('active');
-                const offset = activeLine.offsetTop - (window.innerHeight / 2);
-                wrapper.style.transform = `translateY(-${offset}px)`;
-            }
+function parseLRC(text) {
+    const lines = text.trim().split('\n');
+    return lines.map(line => {
+        const match = line.match(/\[(\d+):(\d+\.\d+)\](.+)/);
+        if (match) {
+            return {
+                time: parseInt(match[1]) * 60 + parseFloat(match[2]),
+                text: match[3].trim()
+            };
         }
+    }).filter(Boolean);
+}
+
+function init() {
+    lyrics = parseLRC(lrcData);
+    wrapper.innerHTML = '';
+    lyrics.forEach((l, i) => {
+        const div = document.createElement('div');
+        div.className = 'lyric-line';
+        div.id = `line-${i}`;
+        div.textContent = l.text;
+        wrapper.appendChild(div);
     });
-};
+}
+
+startBtn.addEventListener('click', () => {
+    document.getElementById('overlay').classList.add('hidden');
+    document.getElementById('lyrics-viewport').classList.remove('hidden');
+    init();
+    music.play();
+});
+
+music.addEventListener('timeupdate', () => {
+    const curTime = music.currentTime;
+    // Find the lyric that should be playing now
+    const index = lyrics.findIndex((l, i) => 
+        curTime >= l.time && (!lyrics[i+1] || curTime < lyrics[i+1].time)
+    );
+
+    if (index !== -1) {
+        // Hide all lines
+        document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
+        // Show only the current line
+        const activeLine = document.getElementById(`line-${index}`);
+        if (activeLine) {
+            activeLine.classList.add('active');
+        }
+    }
+});
