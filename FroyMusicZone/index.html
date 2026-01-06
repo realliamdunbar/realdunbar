@@ -6,21 +6,22 @@
     <title>Billie Eilish - i love you</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body onclick="unmute()">
 
-    <div class="background-container">
+    <div class="container">
         <div class="bg-image"></div>
+        
         <div class="bg-blur"></div>
+
+        <div class="lyrics-wrapper">
+            <h1 id="active-lyric"></h1>
+        </div>
     </div>
 
-    <div class="lyrics-wrapper">
-        <div id="lyrics-container"></div>
-    </div>
-
-    <div class="controls">
-        <audio id="audio" src="bmusic.mp3" controls></audio>
-    </div>
+    <audio id="audio" src="bmusic.mp3" autoplay muted loop></audio>
+    <div id="unmute-hint">Tap to Unmute</div>
 
     <script src="script.js"></script>
 </body>
 </html>
+
