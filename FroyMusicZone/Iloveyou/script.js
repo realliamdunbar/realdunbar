@@ -71,18 +71,21 @@ startBtn.addEventListener('click', () => {
 
 music.addEventListener('timeupdate', () => {
     const curTime = music.currentTime;
-    // Find the lyric that should be playing now
     const index = lyrics.findIndex((l, i) => 
-        curTime >= l.time && (!lyrics[i+1] || curTime < lyrics[i+1].time)
+        curTime >= l.time && (!lyrics[i + 1] || curTime < lyrics[i + 1].time)
     );
 
     if (index !== -1) {
-        // Hide all lines
-        document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
-        // Show only the current line
+        const allLines = document.querySelectorAll('.lyric-line');
         const activeLine = document.getElementById(`line-${index}`);
-        if (activeLine) {
+        
+        // If this line isn't already the one showing
+        if (activeLine && !activeLine.classList.contains('active')) {
+            allLines.forEach(l => l.classList.remove('active'));
             activeLine.classList.add('active');
         }
+    } else {
+        // Hide all if no lyric matches (silence)
+        document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
     }
 });
