@@ -89,3 +89,4 @@ music.addEventListener('timeupdate', () => {
         document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
     }
 });
+
