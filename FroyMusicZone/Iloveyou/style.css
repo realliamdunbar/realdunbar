@@ -1,0 +1,66 @@
+body, html {
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background-color: #000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Background & Blur */
+.bg-image {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-size: cover; background-position: center;
+    z-index: -2;
+}
+
+.bg-blur {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px); /* The Blur Layer */
+    -webkit-backdrop-filter: blur(20px);
+    z-index: -1;
+}
+
+/* Neon Button */
+#overlay {
+    position: fixed; inset: 0;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 100;
+}
+
+#startBtn {
+    padding: 20px 45px; font-size: 24px; font-weight: bold;
+    cursor: pointer; border-radius: 15px;
+    border: 4px solid #ff0000; background: #a020f0; color: #fff;
+    box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000;
+    text-transform: uppercase; letter-spacing: 2px;
+}
+
+/* Lyrics Styling */
+#lyrics-container {
+    height: 100vh; width: 100%;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: left; padding: 0 40px; box-sizing: border-box;
+}
+
+#lyrics-wrapper {
+    transition: transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.lyric-line {
+    font-size: 2.2rem; font-weight: 700;
+    color: rgba(255, 255, 255, 0.3); /* Unfocused color */
+    margin: 30px 0; transition: all 0.4s ease;
+    filter: blur(2px);
+}
+
+.lyric-line.active {
+    color: #ffffff;
+    filter: blur(0px);
+    /* Neon Glow Effect */
+    text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
+    transform: scale(1.05);
+}
+
+.hidden { display: none !important; }
