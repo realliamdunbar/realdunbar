@@ -1,6 +1,7 @@
 const audio = document.getElementById('audio');
-const container = document.getElementById('lyrics-container');
+const lyricDisplay = document.getElementById('active-lyric');
 
+// Your LRC Data
 const lrcData = `
 [00:14.04]It's not true
 [00:19.54]Tell me I've been lied to
@@ -33,50 +34,38 @@ const lrcData = `
 `;
 
 const lyrics = [];
+const lines = lrcData.trim().split('\n');
+const timeReg = /\[(\d{2}):(\d{2})\.(\d{2})\]/;
 
-function parseLRC() {
-    const lines = lrcData.split('\n');
-    const timeReg = /\[(\d{2}):(\d{2})\.(\d{2})\]/;
-    
-    lines.forEach(line => {
-        const match = timeReg.exec(line);
-        if (match) {
-            const minutes = parseInt(match[1]);
-            const seconds = parseInt(match[2]);
-            const ms = parseInt(match[3]);
-            const time = minutes * 60 + seconds + ms / 100;
-            const text = line.replace(timeReg, '').trim();
-            if (text) lyrics.push({ time, text });
-        }
-    });
-
-    lyrics.forEach((item, index) => {
-        const p = document.createElement('p');
-        p.innerText = item.text;
-        p.classList.add('lyric-line');
-        p.setAttribute('id', `line-${index}`);
-        container.appendChild(p);
-    });
-}
-
-audio.addEventListener('timeupdate', () => {
-    const currentTime = audio.currentTime;
-    
-    for (let i = 0; i < lyrics.length; i++) {
-        if (currentTime >= lyrics[i].time && (!lyrics[i+1] || currentTime < lyrics[i+1].time)) {
-            const activeLine = document.getElementById(`line-${i}`);
-            
-            document.querySelectorAll('.lyric-line').forEach(el => el.classList.remove('active'));
-            
-            if (activeLine) {
-                activeLine.classList.add('active');
-              
-                const offset = activeLine.offsetTop - (window.innerHeight / 2);
-                container.style.transform = `translateY(-${offset}px)`;
-            }
-            break;
-        }
+lines.forEach(line => {
+    const match = timeReg.exec(line);
+    if (match) {
+        const time = parseInt(match[1]) * 60 + parseInt(match[2]) + parseInt(match[3]) / 100;
+        const text = line.replace(timeReg, '').trim();
+        lyrics.push({ time, text });
     }
 });
 
-parseLRC();
+audio.addEventListener('timeupdate', () => {
+    const currentTime = audio.currentTime;
+    let currentLine = "";
+
+    for (let i = 0; i < lyrics.length; i++) {
+        if (currentTime >= lyrics[i].time) {
+            currentLine = lyrics[i].text;
+        }
+    }
+
+    if (lyricDisplay.innerText !== currentLine) {
+        lyricDisplay.style.opacity = 0;
+        setTimeout(() => {
+            lyricDisplay.innerText = currentLine;
+            lyricDisplay.style.opacity = 1;
+        }, 150);
+    }
+});
+
+function unmute() {
+    audio.muted = false;
+    document.getElementById('unmute-hint').style.display = 'none';
+}
