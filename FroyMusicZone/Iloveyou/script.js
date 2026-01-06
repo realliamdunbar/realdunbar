@@ -41,55 +41,47 @@ let lyrics = [];
 
 function parseLRC(text) {
     const lines = text.trim().split('\n');
-    const parsed = [];
-    lines.forEach(line => {
+    return lines.map(line => {
         const match = line.match(/\[(\d+):(\d+\.\d+)\](.+)/);
         if (match) {
-            parsed.push({
+            return {
                 time: parseInt(match[1]) * 60 + parseFloat(match[2]),
                 text: match[3].trim()
-            });
+            };
         }
-    });
-    return parsed;
+    }).filter(Boolean);
 }
 
-function initLyrics() {
+function init() {
     lyrics = parseLRC(lrcData);
-    wrapper.innerHTML = ''; // Clear existing
+    wrapper.innerHTML = '';
     lyrics.forEach((l, i) => {
-        const el = document.createElement('div');
-        el.className = 'lyric-line';
-        el.textContent = l.text;
-        el.id = `line-${i}`;
-        wrapper.appendChild(el);
+        const div = document.createElement('div');
+        div.className = 'lyric-line';
+        div.id = `line-${i}`;
+        div.textContent = l.text;
+        wrapper.appendChild(div);
     });
 }
 
 startBtn.addEventListener('click', () => {
-    console.log("Button clicked, starting music...");
     overlay.classList.add('hidden');
     viewport.classList.remove('hidden');
-    initLyrics();
-    
-    music.play().catch(e => console.error("Music play failed:", e));
+    init();
+    music.play();
 });
 
 music.addEventListener('timeupdate', () => {
     const curTime = music.currentTime;
     const index = lyrics.findIndex((l, i) => 
-        curTime >= l.time && (!lyrics[i + 1] || curTime < lyrics[i + 1].time)
+        curTime >= l.time && (!lyrics[i+1] || curTime < lyrics[i+1].time)
     );
 
     if (index !== -1) {
-        const lines = document.querySelectorAll('.lyric-line');
-        lines.forEach(line => line.classList.remove('active'));
-        
+        document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
         const activeLine = document.getElementById(`line-${index}`);
         if (activeLine) {
             activeLine.classList.add('active');
-            
-            // Calculate center scroll
             const offset = activeLine.offsetTop - (window.innerHeight / 2);
             wrapper.style.transform = `translateY(-${offset}px)`;
         }
