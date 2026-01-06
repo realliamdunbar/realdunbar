@@ -2,7 +2,7 @@ body, html {
     margin: 0; padding: 0;
     width: 100%; height: 100%;
     overflow: hidden;
-    background-color: #1a1a1a; /* Dark gray fallback */
+    background-color: #000;
     font-family: sans-serif;
 }
 
@@ -12,6 +12,7 @@ body, html {
 
 .bg-image {
     position: absolute; inset: 0;
+    /* Relative path: looks in the same folder as the CSS */
     background-image: url('bg.jpg');
     background-repeat: no-repeat;
     background-position: center;
@@ -21,8 +22,8 @@ body, html {
 .bg-blur {
     position: absolute; inset: 0;
     background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
 }
 
 #overlay {
@@ -41,28 +42,30 @@ body, html {
 #lyrics-viewport {
     position: relative;
     height: 100vh; width: 100%;
-    z-index: 10; /* Above background */
+    z-index: 10;
     display: flex; justify-content: center; align-items: center;
 }
 
 #lyrics-wrapper {
     width: 90%;
     text-align: center;
-    transition: transform 0.8s ease;
+    transition: transform 0.7s ease-in-out;
 }
 
 .lyric-line {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: bold;
-    margin: 40px 0;
-    color: rgba(255, 255, 255, 0.2);
+    margin: 50px 0;
+    color: rgba(255, 255, 255, 0.1); /* Faded like Apple Music */
     transition: all 0.5s ease;
+    filter: blur(2px);
 }
 
 .lyric-line.active {
     color: #ffffff;
     transform: scale(1.1);
-    text-shadow: 0 0 15px #fff;
+    filter: blur(0px);
+    text-shadow: 0 0 15px rgba(255,255,255,0.6);
 }
 
 .hidden { display: none !important; }
