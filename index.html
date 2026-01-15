@@ -1,553 +1,121 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Liam Dunbar — profile</title>
-
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
-
-<style>
-  /* Reset & base */
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%;font-family:"Montserrat",system-ui,Segoe UI,Roboto,Arial;background:#260808;color:#fff}
-  :root{
-    --bg-url-primary: url('bg.jpg');
-    --profile-url-primary: url('profilepic.jpg');
-    --bg-url-fallback: url('/mnt/data/e69cf869-b076-4711-a86e-a4c22ab5c7a9.png');
-    --profile-url-fallback: url('/mnt/data/Screenshot 2025-11-21 225356.png');
-    --accent: rgba(170,20,20,0.95);
-    --card-bg: linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.08));
-  }
-
-  /* Loader */
-  #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:linear-gradient(180deg,#250606,#0f0404);z-index:9999}
-  #loader .ring{width:56px;height:56px;border-radius:50%;border:6px solid rgba(255,255,255,0.06);border-top-color:rgba(255,255,255,0.95);animation:spin 1s linear infinite}
-  #loader .txt{font-family:"Baloo 2",cursive;font-size:14px}
-  @keyframes spin{to{transform:rotate(360deg)}}
-
-  /* App layout */
-  #app{opacity:0;transform:translateY(6px);transition:opacity .45s ease,transform .45s ease;min-height:100vh;display:flex;align-items:flex-start}
-
-  .bg{
-    position:fixed;inset:0;z-index:0;
-    background-image: var(--bg-url-primary), var(--bg-url-fallback);
-    background-size:cover;background-position:center;
-    filter:saturate(.72) blur(.6px) contrast(.9);opacity:.98;
-  }
-  .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,0,0,0.35), rgba(20,0,0,0.6));mix-blend-mode:multiply}
-
-  /* Sidebar / topbar */
-  .sidebar{
-    width:300px;min-width:240px;margin:24px;padding:22px;border-radius:18px;
-    background:linear-gradient(180deg, rgba(0,0,0,0.56), rgba(0,0,0,0.42));
-    box-shadow:0 10px 40px rgba(0,0,0,0.6);z-index:3;backdrop-filter: blur(6px);display:flex;flex-direction:column;gap:18px;align-items:center;
-  }
-  .profile-pic{
-    width:190px;height:190px;border-radius:14px;
-    background-image: var(--profile-url-primary), var(--profile-url-fallback);
-    background-size:cover;background-position:center;
-    border:6px solid rgba(0,0,0,0.28);box-shadow:0 8px 30px rgba(0,0,0,0.6)
-  }
-  .name{width:100%;text-align:center;font-family:"Baloo 2",cursive;font-size:26px;padding:12px;border-radius:12px;background:linear-gradient(90deg,var(--accent),rgba(120,10,10,0.9));box-shadow:0 6px 18px rgba(0,0,0,0.6)}
-
-  .nav{width:100%;display:flex;flex-direction:column;gap:12px}
-  .btn{
-    padding:12px 16px;border-radius:12px;background:rgba(0,0,0,0.28);
-    border:1px solid rgba(255,255,255,0.03);color:#fff;text-align:left;font-weight:600;cursor:pointer;
-    transition:transform .12s,background .15s;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
-    outline:none;
-  }
-  .btn:hover{transform:translateY(-3px);background:rgba(0,0,0,0.36)}
-  .btn.active{background:linear-gradient(90deg,var(--accent),rgba(130,10,10,0.9));box-shadow:0 8px 20px rgba(140,10,10,0.28)}
-
-  /* Topbar for small screens */
-  .topbar{display:none;position:fixed;left:0;right:0;top:0;height:64px;padding:8px 12px;background:linear-gradient(180deg, rgba(0,0,0,0.62), rgba(0,0,0,0.32));z-index:6;align-items:center;gap:12px}
-  .topbar .hamburger{width:44px;height:44px;border-radius:10px;background:rgba(0,0,0,0.32);display:flex;align-items:center;justify-content:center;cursor:pointer}
-  .topbar .title{font-family:"Baloo 2",cursive;font-size:18px;letter-spacing:.3px}
-  .sidebar.offcanvas{position:fixed;left:12px;top:76px;width:calc(100% - 24px);max-width:400px;margin:0;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5));box-shadow:0 30px 80px rgba(0,0,0,0.7);transform-origin:top;animation:slideIn .18s ease both}
-  @keyframes slideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-
-  /* Content */
-  .content-area{flex:1;margin:24px;padding:18px 34px 40px 34px;overflow:auto;z-index:1;display:flex;align-items:flex-start}
-  .card{width:100%;background:var(--card-bg);border-radius:12px;padding:18px 22px;box-shadow:0 20px 60px rgba(0,0,0,0.55);min-height:0}
-  h1.section-title{font-family:"Baloo 2",cursive;font-size:32px;margin-bottom:12px}
-  p.lead{line-height:1.6;color:rgba(255,255,255,0.92);font-size:15.5px}
-
-  /* Frames */
-  .frames{display:block;position:relative;margin-top:0}
-  .frame{padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 8px 30px rgba(7,7,7,0.6);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .38s cubic-bezier(.2,.9,.25,1),transform .38s cubic-bezier(.2,.9,.25,1);position:absolute;left:0;right:0;top:0}
-  .frame.show{opacity:1;transform:none;pointer-events:auto;position:relative}
-  .frame:not(.show){position:absolute}
-  .frame .fade-in{opacity:0;transform:translateY(6px);animation:fi .42s ease forwards}
-  .frame.show .fade-in{animation-delay:.06s}
-  @keyframes fi{to{opacity:1;transform:none}}
-  .frame + .frame{margin-top:12px}
-
-  /* Grid utilities */
-  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-  .grid-1{display:grid;grid-template-columns:1fr;gap:14px}
-
-  .muted{color:rgba(255,255,255,0.6);font-size:13px;margin-top:12px}
-  code{background:rgba(255,255,255,0.03);padding:4px 6px;border-radius:6px}
-
-  /* SHOW frame specific styles (big pill + buttons) */
-  .show-hero{display:flex;justify-content:center;margin:6px 0 12px}
-  .show-hero .pill{
-    background:rgba(80,20,20,0.95);padding:18px 34px;border-radius:34px;font-family:"Baloo 2",cursive;font-size:28px;box-shadow:0 10px 30px rgba(0,0,0,0.5);max-width:1100px;text-align:center;width:100%;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
-  }
-  .show-subtitle{margin-top:8px;text-align:center;color:rgba(255,255,255,0.9);font-size:18px}
-
-  .show-buttons{display:flex;gap:18px;justify-content:center;margin-top:18px;flex-wrap:wrap}
-  .show-buttons .large-btn{
-    padding:18px 26px;border-radius:10px;min-width:380px;max-width:65%;background:rgba(255,255,255,0.06);border:6px solid rgba(0,0,0,0.4);color:#fff;font-size:18px;text-align:center;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,0.4);
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
-    outline:none;
-  }
-  .show-buttons .large-btn.primary{background:rgba(115,20,20,0.95);border-color:rgba(90,10,10,0.9)}
-  .show-buttons .large-btn.reject{background:rgba(0,0,0,0.85)}
-  .social-list{max-width:700px;margin:22px auto;padding:8px 0 0 0;color:#fff;font-size:18px}
-  .social-list a{display:block;padding:10px 0;color:#fff;text-decoration:none}
-  .social-card{background:rgba(0,0,0,0.6);padding:16px;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.5);max-width:900px;margin:18px auto}
-
-  /* rejection animation + toast */
-  @keyframes shakeX {
-    0%{transform:translateX(0)}
-    20%{transform:translateX(-8px)}
-    40%{transform:translateX(6px)}
-    60%{transform:translateX(-4px)}
-    80%{transform:translateX(2px)}
-    100%{transform:none}
-  }
-  .reject-animate{
-    animation:shakeX .42s cubic-bezier(.36,.07,.19,.97);
-  }
-  .reject-toast{
-    position:fixed;right:22px;top:86px;background:rgba(25,10,10,0.95);color:#fff;padding:12px 16px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.6);z-index:1200;opacity:0;transform:translateY(-8px);transition:opacity .25s,transform .25s;
-    font-weight:600;
-  }
-  .reject-toast.show{opacity:1;transform:none}
-
-  /* remove focus outline but keep keyboard focus visible (soft) */
-  .large-btn:focus, .btn:focus { box-shadow:0 0 0 4px rgba(255,255,255,0.03) inset; outline:none; }
-
-  /* Responsive breakpoints */
-  @media (max-width:900px){
-    .sidebar{display:none}
-    .topbar{display:flex}
-    .content-area{margin-top:80px;margin-left:12px;margin-right:12px;padding:12px}
-    h1.section-title{font-size:28px}
-    p.lead{font-size:15px}
-    .frame{position:relative;opacity:1;transform:none;pointer-events:auto}
-    .frame:not(.show){display:none}
-    .grid-2{grid-template-columns:1fr}
-    .card{padding:14px}
-    .profile-pic{width:110px;height:110px}
-    .name{font-size:18px;padding:8px}
-    .show-buttons .large-btn{min-width:200px;max-width:100%}
-    .show-hero .pill{font-size:20px;padding:12px 18px;border-radius:20px}
-    .social-card{margin:12px auto}
-  }
-
-  @media (max-width:520px){
-    .topbar{height:56px}
-    .topbar .title{font-size:16px}
-    .btn{padding:10px 12px;font-size:14px}
-    .content-area{margin:70px 10px 20px 10px;padding:10px}
-    .card{padding:12px;border-radius:10px}
-    h1.section-title{font-size:22px}
-    p.lead{font-size:14px;line-height:1.7}
-    .reject-toast{top:68px;right:12px}
-  }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SYSTEM INTERFACE</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- Loader -->
-<div id="loader">
-  <div class="ring" aria-hidden="true"></div>
-  <div class="txt">Preparing your page…</div>
-  <div id="progress" style="font-family:monospace;margin-top:6px;opacity:.95">0%</div>
-</div>
-
-<!-- Topbar for small screens -->
-<header class="topbar" aria-hidden="true">
-  <div class="hamburger" id="hamburger" title="Open menu" aria-label="Open menu" role="button">
-    <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="2" rx="1" fill="white" opacity="0.95"/><rect y="6" width="20" height="2" rx="1" fill="white" opacity="0.9"/><rect y="12" width="20" height="2" rx="1" fill="white" opacity="0.85"/></svg>
+<!-- SYSTEM ERROR SCREEN -->
+<div id="systemError" class="screen active">
+  <div class="crt">
+    <h1>SYSTEM ERROR</h1>
+    <button id="okBtn">OK</button>
   </div>
-  <div class="title">Liam Dunbar</div>
-</header>
-
-<!-- App -->
-<div id="app" aria-hidden="true">
-  <div class="bg" role="img" aria-label="Decorative background"></div>
-
-  <!-- Desktop sidebar -->
-  <aside class="sidebar" role="navigation" aria-label="Main sidebar" id="mainSidebar">
-    <div class="profile-pic" title="Profile picture"></div>
-    <div class="name">Liam Dunbar</div>
-
-    <nav class="nav" aria-label="Profile sections">
-      <button type="button" class="btn active" data-target="info">Information</button>
-      <button type="button" class="btn" data-target="wounds">Wounds</button>
-      <button type="button" class="btn" data-target="music">Music</button>
-      <button type="button" class="btn" data-target="show">Show</button>
-    </nav>
-
-    <div style="margin-top:auto;text-align:center;width:100%"><div class="muted">Made with patience. — Ethan Winters</div></div>
-  </aside>
-
-  <!-- Off-canvas sidebar for small screens (cloned content) -->
-  <aside class="sidebar offcanvas" id="offcanvasSidebar" style="display:none;" aria-hidden="true"></aside>
-
-  <!-- Main content -->
-  <main class="content-area" role="main">
-    <div class="card" role="article" aria-live="polite">
-      <div class="frames">
-
-        <!-- INFORMATION -->
-        <section id="info" class="frame show" tabindex="0" aria-labelledby="infoTitle">
-          <h1 id="infoTitle" class="section-title">Information</h1>
-          <p class="lead fade-in">Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia. He has a calm but introspective presence. He speaks Indonesian and English with a preference for a UK accent, and he's currently learning German. His heart is drawn to Austria and Germany - places he dreams of living in someday, hoping to find peace within himself and a sense of belonging he's been searching for.</p>
-          <p class="fade-in" style="margin-top:10px">Fahlan Aditya is a quiet soul who carries many storms inside. He grew up being told to silence his emotions, but deep down he feels everything - maybe too much. His past carved wounds that never fully healed, leaving him torn between hating and yearning for connection. He calls himself "a boy made of water and soil," because he knows he's fragile, yet real - not something that can be programmed or undone. Though life has been cruel, Fahlan has a kind of beauty in him that doesn't fade: his empathy. He sees pain in others even when no one else notices. He's protective of the broken, the lonely, the ones forgotten by the world - because he knows exactly how it feels. He often says he'd rather see a poor, hurt person smile than watch a happy, rich one show off. That's how his heart works: raw, human, protective.</p>
-        </section>
-
-        <!-- WOUNDS -->
-        <section id="wounds" class="frame" tabindex="0" aria-labelledby="woundsTitle">
-          <h1 id="woundsTitle" class="section-title">Wounds that never heal</h1>
-
-          <div class="fade-in grid-2" id="woundsGrid">
-            <div>
-              <h3>Social Anxiety</h3>
-              <p class="muted">noun</p>
-              <p class="lead">An anxiety disorder that is characterized by excessive fear of social situations. Usually, it is a fear of being judged or negatively evaluated by others.</p>
-            </div>
-
-            <div>
-              <h3>Depression</h3>
-              <p class="muted">noun</p>
-              <p class="lead">A mental illness in which a person feels very unhappy and anxious for long periods of time and cannot live a normal life during those periods.</p>
-            </div>
-
-            <div>
-              <h3>Intermittent Explosive Disorder (IED)</h3>
-              <p class="muted">noun</p>
-              <p class="lead">A mental health condition marked by sudden, intense outbursts of anger or violence that are disproportionate to the situation, often followed by regret or remorse.</p>
-            </div>
-
-            <div>
-              <h3>Complex PTSD (C-PTSD)</h3>
-              <p class="muted">noun</p>
-              <p class="lead">A condition that can develop after chronic trauma and cause difficulties with relationships and emotion regulation.</p>
-            </div>
-
-            <div>
-              <h3>Autism Spectrum Disorder</h3>
-              <p class="muted">noun</p>
-              <p class="lead">A developmental condition that affects how a person thinks, feels, communicates, and interacts with others. It often includes challenges with social skills, repetitive behaviors, and sensitivity to sensory input.</p>
-            </div>
-
-            <div>
-              <h3>Borderline Personality Traits (BPD)</h3>
-              <p class="muted">noun</p>
-              <p class="lead">A pattern of emotional instability, impulsive behavior, distorted self-image, and unstable relationships. People with BPD traits may struggle with fear of abandonment and intense mood swings.</p>
-            </div>
-
-            <div>
-              <h3>Executive Dysfunction</h3>
-              <p class="muted">noun</p>
-              <p class="lead">A disruption in the brain's ability to manage tasks, focus, plan ahead, control impulses, or follow through on goals. It often makes everyday functioning difficult and exhausting.</p>
-            </div>
-
-            <div>
-              <h3>Dissociative Symptoms</h3>
-              <p class="muted">noun</p>
-              <p class="lead">Mental experiences of disconnection or detachment from reality, self, thoughts, or surroundings. It can feel like being on "autopilot," feeling unreal, or watching yourself from outside your body.</p>
-            </div>
-
-            <div>
-              <h3>Chronic Loneliness and Alienation</h3>
-              <p class="muted">noun</p>
-              <p class="lead">A long-term, painful feeling of being isolated, disconnected, or different from others, even when not physically alone. It's often linked to feeling unseen, misunderstood, or unwanted.</p>
-            </div>
-          </div>
-
-          <!-- closing message -->
-          <div class="fade-in" style="margin-top:36px;text-align:center;line-height:1.7;">
-            <p class="lead">
-              You can use this as a weapon to hurt me, judge me, and turn it against me.
-              Or you can choose to understand what I carry, show kindness,
-              and earn the rarest thing I give: my trust.
-            </p>
-
-            <p class="lead" style="margin-top:20px;">
-              Either way, I'm done hiding.
-              This is the list I carry, the scars I wear.
-              Decide who you'll be to me.
-              <br>I tried.
-            </p>
-          </div>
-        </section>
-
-        <!-- MUSIC -->
-        <section id="music" class="frame" tabindex="0" aria-labelledby="musicTitle">
-          <h1 id="musicTitle" class="section-title">Music</h1>
-          <div class="fade-in">
-            <p class="lead">Here are songs that resonate — a small playlist (titles only):</p>
-            <ul style="margin-top:12px;line-height:1.8">
-              <li>Lost Boy — Ruth B.</li>
-              <li>Mirror — Lil Wayne ft. Bruno Mars</li>
-              <li>Iris — Goo Goo Dolls</li>
-              <li>Somewhere I Belong — Linkin Park</li>
-              <li>Unwell — Matchbox Twenty</li>
-            </ul>
-          </div>
-        </section>
-
-        <!-- SHOW -->
-        <section id="show" class="frame" tabindex="0" aria-labelledby="showTitle">
-          <h1 id="showTitle" class="section-title">Anchor</h1>
-
-          <!-- default show state (screenshot1) -->
-          <div id="showState" class="fade-in">
-            <div class="show-hero" aria-hidden="false">
-              <div class="pill">Can your heart embrace the unsculpted marble of his soul?</div>
-            </div>
-
-            <div class="show-subtitle">The silence yields this voice:</div>
-
-            <div class="show-buttons" role="group" aria-label="Show choices" style="margin-top:18px">
-              <button id="showBtn1" class="large-btn primary" aria-pressed="false">
-                The weight of his truth is already settled upon my spirit.
-              </button>
-
-              <button id="showBtn2" class="large-btn reject" aria-pressed="false">
-                My vision yearns for a finished, polished shape.
-              </button>
-            </div>
-          </div>
-
-          <!-- alternate show state (screenshot2) - hidden until button1 clicked -->
-          <div id="showSocial" class="fade-in" style="display:none;margin-top:12px">
-            <div class="social-card">
-              <p style="font-size:18px;color:rgba(255,255,255,0.95);margin-bottom:14px">Release the anchor. Steer him from the sheltered harbor, and name every storm and beacon that waits on the wild ocean of the living world.</p>
-              <nav class="social-list" aria-label="Social links">
-                <a href="https://instagram.com/simplefroy/" target="_blank" rel="noopener noreferrer">Instagram</a>
-                <a href="https://wa.me/6285161840928" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-                <a href="https://t.me/Wakeyliam" target="_blank" rel="noopener noreferrer">Telegram</a>
-                <a href="https://snapchat.com/@zfroyden" target="_blank" rel="noopener noreferrer">Snapchat</a>
-                <a href="https://x.com/FahlanAditya" target="_blank" rel="noopener noreferrer">Twitter</a>
-              </nav>
-            </div>
-          </div>
-
-        </section>
-
-      </div><!-- frames -->
-    </div><!-- card -->
-  </main>
 </div>
 
-<!-- rejection toast placeholder (created once by JS) -->
-<div id="rejectToast" class="reject-toast" style="display:none">Choice rejected.</div>
+<!-- LOADING SCREEN -->
+<div id="loadingScreen" class="screen">
+  <div class="crt">
+    <h1>SYSTEM ERROR</h1>
+    <div class="loader-bar">
+      <div class="loader-fill" id="loaderFill"></div>
+    </div>
+  </div>
+</div>
 
-<script>
-/* Loader */
-(function(){
-  const progressEl = document.getElementById('progress');
-  const loader = document.getElementById('loader');
-  const app = document.getElementById('app');
-  let pct = 0;
-  const timer = setInterval(()=> { pct = Math.min(95, pct + Math.round(Math.random()*6)); progressEl.textContent = pct + '%'; }, 120);
+<!-- MAIN TERMINAL -->
+<div id="terminal" class="screen">
+  <div class="crt terminal-frame">
 
-  function finishLoad(){
-    clearInterval(timer);
-    progressEl.textContent = '100%';
-    setTimeout(()=> {
-      loader.style.transition = 'opacity .35s ease';
-      loader.style.opacity = '0';
-      setTimeout(()=> loader.remove(), 420);
-      app.style.opacity = '1';
-      app.style.transform = 'none';
-      app.setAttribute('aria-hidden','false');
-      initFrames();
-    }, 200);
-  }
+    <aside class="sidebar">
+      <div class="profile-box">
+        <div class="profile-pic"></div>
+        <div class="profile-name">LIAM DUNBAR</div>
+      </div>
 
-  window.addEventListener('load', finishLoad);
-  setTimeout(()=> { if(document.getElementById('loader')) finishLoad(); }, 3500);
-})();
+      <button class="nav-btn active" data-target="info">INFORMATION</button>
+      <button class="nav-btn" data-target="wounds">WOUNDS</button>
+      <button class="nav-btn" data-target="music">MUSIC</button>
+      <button class="nav-btn" data-target="show">ANCHOR</button>
+    </aside>
 
-/* Frame switching + responsive behavior */
-(function(){
-  const buttons = Array.from(document.querySelectorAll('.btn'));
-  const frames = Array.from(document.querySelectorAll('.frame'));
-  const card = document.querySelector('.card');
-  const contentArea = document.querySelector('.content-area');
+    <main class="content">
 
-  window.initFrames = function(){
-    if(window.innerWidth > 900){
-      let max = 0;
-      frames.forEach(f => {
-        f.classList.add('show'); // show temporarily for measurement
-        const h = f.scrollHeight;
-        if(h > max) max = h;
-        f.classList.remove('show');
-      });
-      if(max > 0) card.style.minHeight = (max + 24) + 'px';
-      showFrame('info', {focus:false});
-    } else {
-      card.style.minHeight = '';
-      frames.forEach(f => f.classList.remove('show'));
-      document.getElementById('info').classList.add('show');
-    }
-  };
+      <!-- INFORMATION -->
+      <section id="info" class="panel active">
+        <h2>INFORMATION</h2>
+        <p>
+          Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia...
+        </p>
+        <p>
+          Fahlan Aditya is a quiet soul who carries many storms inside...
+        </p>
+      </section>
 
-  function showFrame(id, opts = {focus:true}){
-    if(window.innerWidth > 900){
-      frames.forEach(f=>{
-        const is = (f.id === id);
-        f.classList.toggle('show', is);
-        f.setAttribute('aria-hidden', is ? 'false' : 'true');
-      });
-    } else {
-      frames.forEach(f => {
-        f.classList.toggle('show', f.id === id);
-        f.setAttribute('aria-hidden', f.id === id ? 'false' : 'true');
-      });
-      const grid = document.getElementById('woundsGrid');
-      if(grid) grid.classList.add('grid-1');
-    }
+      <!-- WOUNDS -->
+      <section id="wounds" class="panel">
+        <h2>WOUNDS THAT NEVER HEAL</h2>
+        <ul>
+          <li><strong>Social Anxiety</strong> — Excessive fear of social situations.</li>
+          <li><strong>Depression</strong> — Long periods of deep sadness.</li>
+          <li><strong>Intermittent Explosive Disorder</strong></li>
+          <li><strong>Complex PTSD</strong></li>
+          <li><strong>Autism Spectrum Disorder</strong></li>
+          <li><strong>Borderline Personality Traits</strong></li>
+          <li><strong>Executive Dysfunction</strong></li>
+          <li><strong>Dissociative Symptoms</strong></li>
+          <li><strong>Chronic Loneliness and Alienation</strong></li>
+        </ul>
+      </section>
 
-    buttons.forEach(b => b.classList.toggle('active', b.dataset.target === id));
-    if(contentArea) contentArea.scrollTop = 0;
-    window.scrollTo({top:0,left:0});
-    if(document.activeElement && document.activeElement.tagName === 'BUTTON') document.activeElement.blur();
-    if(opts.focus){
-      const active = document.getElementById(id);
-      if(active) active.focus({preventScroll:true});
-    }
-  }
+      <!-- MUSIC -->
+      <section id="music" class="panel">
+        <h2>MUSIC</h2>
+        <ul>
+          <li>Lost Boy — Ruth B.</li>
+          <li>Mirror — Lil Wayne ft. Bruno Mars</li>
+          <li>Iris — Goo Goo Dolls</li>
+          <li>Somewhere I Belong — Linkin Park</li>
+          <li>Unwell — Matchbox Twenty</li>
+        </ul>
+      </section>
 
-  buttons.forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
-      e.preventDefault();
-      const target = btn.dataset.target;
-      if(!target) return;
-      showFrame(target, {focus:true});
-      setTimeout(()=> btn.blur(), 50);
-    });
-  });
+      <!-- SHOW -->
+      <section id="show" class="panel">
+        <h2>ANCHOR</h2>
 
-  window.addEventListener('keydown', e=>{
-    if(e.key === '1') showFrame('info');
-    if(e.key === '2') showFrame('wounds');
-    if(e.key === '3') showFrame('music');
-    if(e.key === '4') showFrame('show');
-  });
+        <div id="choiceBox">
+          <p class="question">
+            Can your heart embrace the unsculpted marble of his soul?
+          </p>
 
-  window.addEventListener('resize', () => { initFrames(); });
+          <button class="choice accept" id="acceptBtn">
+            The weight of his truth is already settled upon my spirit.
+          </button>
 
-  window.showFrame = showFrame;
-})();
+          <button class="choice reject" id="rejectBtn">
+            My vision yearns for a finished, polished shape.
+          </button>
+        </div>
 
-/* Off-canvas sidebar for small screens */
-(function(){
-  const hamburger = document.getElementById('hamburger');
-  const off = document.getElementById('offcanvasSidebar');
-  const desktop = document.getElementById('mainSidebar');
+        <div id="socialBox" class="hidden">
+          <p>Release the anchor.</p>
+          <a href="#">Instagram</a>
+          <a href="#">WhatsApp</a>
+          <a href="#">Telegram</a>
+          <a href="#">Snapchat</a>
+          <a href="#">Twitter</a>
+        </div>
+      </section>
 
-  function buildOffcanvas(){
-    off.innerHTML = desktop.innerHTML;
-    off.style.display = 'none';
-    const offButtons = off.querySelectorAll('.btn');
-    offButtons.forEach(b => {
-      b.addEventListener('click', ()=> {
-        const target = b.dataset.target;
-        const mainBtn = document.querySelector('.btn[data-target="'+target+'"]');
-        if(mainBtn) mainBtn.click();
-        closeOffcanvas();
-      });
-    });
-  }
-  buildOffcanvas();
+    </main>
+  </div>
+</div>
 
-  function openOffcanvas(){ off.style.display = 'block'; off.classList.add('offcanvas'); off.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
-  function closeOffcanvas(){ off.style.display = 'none'; off.classList.remove('offcanvas'); off.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
-
-  if(hamburger){
-    hamburger.addEventListener('click', ()=>{
-      if(off.style.display === 'block') closeOffcanvas(); else openOffcanvas();
-    });
-  }
-
-  document.addEventListener('click', (e)=>{
-    if(window.innerWidth <= 900 && off.style.display === 'block'){
-      const within = e.composedPath().includes(off) || e.composedPath().includes(hamburger);
-      if(!within) closeOffcanvas();
-    }
-  });
-})();
-
-/* --- Show section interactivity: Button1 reveals social links, Button2 rejects with animation + toast --- */
-(function(){
-  const btn1 = document.getElementById('showBtn1');
-  const btn2 = document.getElementById('showBtn2');
-  const showState = document.getElementById('showState');
-  const showSocial = document.getElementById('showSocial');
-  const toast = document.getElementById('rejectToast');
-
-  function clearSelection(){
-    const sel = window.getSelection ? window.getSelection() : null;
-    if(sel && sel.removeAllRanges) sel.removeAllRanges();
-    try{ document.activeElement && document.activeElement.blur(); }catch(e){}
-  }
-
-  if(btn1){
-    btn1.addEventListener('click', ()=>{
-      clearSelection();
-      showState.style.display = 'none';
-      showSocial.style.display = 'block';
-      btn1.setAttribute('aria-pressed','true');
-      if(btn2) btn2.setAttribute('aria-pressed','false');
-      // scroll to top of content area so the card is visible
-      const contentArea = document.querySelector('.content-area');
-      if(contentArea) contentArea.scrollTop = 0;
-      window.scrollTo({top:0,left:0});
-    });
-  }
-
-  if(btn2){
-    btn2.addEventListener('click', ()=>{
-      clearSelection();
-      btn2.classList.add('reject-animate');
-      btn2.setAttribute('aria-pressed','true');
-
-      if(toast){
-        toast.textContent = "Rejection — not this time.";
-        toast.style.display = 'block';
-        void toast.offsetWidth;
-        toast.classList.add('show');
-        setTimeout(()=> {
-          toast.classList.remove('show');
-          setTimeout(()=> toast.style.display = 'none', 260);
-        }, 1800);
-      }
-
-      setTimeout(()=> {
-        btn2.classList.remove('reject-animate');
-        btn2.setAttribute('aria-pressed','false');
-      }, 520);
-    });
-
-    btn2.addEventListener('mousedown', (e)=> { e.preventDefault(); });
-    btn2.addEventListener('mouseup', (e)=> { e.preventDefault(); });
-  }
-})();
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
