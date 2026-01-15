@@ -1,120 +1,68 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SYSTEM INTERFACE</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SYSTEM TERMINAL</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-<!-- SYSTEM ERROR SCREEN -->
-<div id="systemError" class="screen active">
+<!-- STATE 1: ERROR -->
+<section id="state-error" class="state active">
   <div class="crt">
-    <h1>SYSTEM ERROR</h1>
-    <button id="okBtn">OK</button>
-  </div>
-</div>
-
-<!-- LOADING SCREEN -->
-<div id="loadingScreen" class="screen">
-  <div class="crt">
-    <h1>SYSTEM ERROR</h1>
-    <div class="loader-bar">
-      <div class="loader-fill" id="loaderFill"></div>
+    <div class="center">
+      <div class="error-text">SYSTEM ERROR</div>
+      <button id="btn-ok">OK</button>
     </div>
   </div>
-</div>
+</section>
 
-<!-- MAIN TERMINAL -->
-<div id="terminal" class="screen">
-  <div class="crt terminal-frame">
-
-    <aside class="sidebar">
-      <div class="profile-box">
-        <div class="profile-pic"></div>
-        <div class="profile-name">LIAM DUNBAR</div>
+<!-- STATE 2: LOADING -->
+<section id="state-loading" class="state">
+  <div class="crt">
+    <div class="center">
+      <div class="error-text">SYSTEM ERROR</div>
+      <div class="loading-bar">
+        <div class="loading-fill" id="loadingFill"></div>
       </div>
-
-      <button class="nav-btn active" data-target="info">INFORMATION</button>
-      <button class="nav-btn" data-target="wounds">WOUNDS</button>
-      <button class="nav-btn" data-target="music">MUSIC</button>
-      <button class="nav-btn" data-target="show">ANCHOR</button>
-    </aside>
-
-    <main class="content">
-
-      <!-- INFORMATION -->
-      <section id="info" class="panel active">
-        <h2>INFORMATION</h2>
-        <p>
-          Froylan Fahlan Aditya, known online as Liam Dunbar, is an 18-year-old from Indonesia...
-        </p>
-        <p>
-          Fahlan Aditya is a quiet soul who carries many storms inside...
-        </p>
-      </section>
-
-      <!-- WOUNDS -->
-      <section id="wounds" class="panel">
-        <h2>WOUNDS THAT NEVER HEAL</h2>
-        <ul>
-          <li><strong>Social Anxiety</strong> — Excessive fear of social situations.</li>
-          <li><strong>Depression</strong> — Long periods of deep sadness.</li>
-          <li><strong>Intermittent Explosive Disorder</strong></li>
-          <li><strong>Complex PTSD</strong></li>
-          <li><strong>Autism Spectrum Disorder</strong></li>
-          <li><strong>Borderline Personality Traits</strong></li>
-          <li><strong>Executive Dysfunction</strong></li>
-          <li><strong>Dissociative Symptoms</strong></li>
-          <li><strong>Chronic Loneliness and Alienation</strong></li>
-        </ul>
-      </section>
-
-      <!-- MUSIC -->
-      <section id="music" class="panel">
-        <h2>MUSIC</h2>
-        <ul>
-          <li>Lost Boy — Ruth B.</li>
-          <li>Mirror — Lil Wayne ft. Bruno Mars</li>
-          <li>Iris — Goo Goo Dolls</li>
-          <li>Somewhere I Belong — Linkin Park</li>
-          <li>Unwell — Matchbox Twenty</li>
-        </ul>
-      </section>
-
-      <!-- SHOW -->
-      <section id="show" class="panel">
-        <h2>ANCHOR</h2>
-
-        <div id="choiceBox">
-          <p class="question">
-            Can your heart embrace the unsculpted marble of his soul?
-          </p>
-
-          <button class="choice accept" id="acceptBtn">
-            The weight of his truth is already settled upon my spirit.
-          </button>
-
-          <button class="choice reject" id="rejectBtn">
-            My vision yearns for a finished, polished shape.
-          </button>
-        </div>
-
-        <div id="socialBox" class="hidden">
-          <p>Release the anchor.</p>
-          <a href="#">Instagram</a>
-          <a href="#">WhatsApp</a>
-          <a href="#">Telegram</a>
-          <a href="#">Snapchat</a>
-          <a href="#">Twitter</a>
-        </div>
-      </section>
-
-    </main>
+    </div>
   </div>
-</div>
+</section>
+
+<!-- STATE 3: TERMINAL -->
+<section id="state-terminal" class="state">
+  <div class="crt terminal">
+
+    <!-- MAP -->
+    <div class="map-area">
+      <div class="node locked"></div>
+      <div class="node locked"></div>
+      <div class="node active"></div>
+      <div class="node locked"></div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="entry unlocked" data-view="info">LEVEL 1</div>
+      <div class="entry unlocked" data-view="wounds">LEVEL 2 — RESEARCH ZONE 1</div>
+      <div class="entry denied">LEVEL 2 — RESEARCH ZONE 2</div>
+      <div class="entry denied">LEVEL 3</div>
+    </div>
+
+    <!-- DATA VIEW -->
+    <div class="data-view">
+      <pre id="dataContent">
+ACCESS GRANTED
+SELECT A ZONE
+      </pre>
+    </div>
+
+    <div class="footer">AREA AUTHORIZED</div>
+
+  </div>
+</section>
 
 <script src="script.js"></script>
 </body>
