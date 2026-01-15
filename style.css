@@ -1,30 +1,159 @@
-/* existing styles stay — additions below */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-.data-view {
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  font-family: monospace;
+  color: #f2e86d;
+}
+
+/* STATES */
+.state {
+  position: fixed;
+  inset: 0;
+  display: none;
+  background: #000;
+}
+
+.state.active {
+  display: block;
+}
+
+/* CRT */
+.crt {
   position: absolute;
-  bottom: 60px;
-  left: 30px;
-  right: 30px;
-  top: 55%;
+  inset: 0;
+  background: #050505;
+  overflow: hidden;
+}
+
+.crt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.035),
+    rgba(255,255,255,0.035) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+/* CENTER */
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.error-text {
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+
+button {
+  background: transparent;
+  border: 1px solid #f2e86d;
+  color: #f2e86d;
+  padding: 8px 28px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f2e86d;
+  color: #000;
+}
+
+/* LOADING */
+.loading-bar {
+  width: 280px;
+  height: 14px;
+  border: 1px solid #f2e86d;
+}
+
+.loading-fill {
+  height: 100%;
+  width: 0%;
+  background: #f2e86d;
+}
+
+/* TERMINAL */
+.terminal {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  grid-template-rows: 1fr auto;
+  gap: 24px;
+  padding: 28px;
+  height: 100%;
+  width: 100%;
+}
+
+/* MAP */
+.map-area {
+  border: 1px solid #f2e86d;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.node {
+  height: 80px;
+  border: 1px solid #f2e86d;
+}
+
+.node.locked {
+  background: rgba(180,0,0,0.2);
+}
+
+.node.active {
+  background: rgba(0,180,0,0.25);
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.entry {
+  padding: 10px;
+  border: 1px solid #f2e86d;
+  cursor: pointer;
+}
+
+.entry.denied {
+  color: #c44;
+  border-color: #c44;
+}
+
+/* DATA VIEW */
+.data-view {
+  grid-column: 1 / -1;
   border: 1px solid #f2e86d;
   padding: 14px;
-  overflow-y: auto;
   background: rgba(0,0,0,0.85);
+  overflow-y: auto;
+  max-height: 40vh;
   font-size: 13px;
   white-space: pre-wrap;
 }
 
-pre {
-  color: #f2e86d;
-  line-height: 1.5;
-}
-
-/* denied flicker */
-.entry.denied {
-  animation: flicker 1.6s infinite;
-}
-
-@keyframes flicker {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.5; }
+/* FOOTER */
+.footer {
+  position: absolute;
+  bottom: 18px;
+  left: 28px;
+  font-size: 13px;
 }
